@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Travel App</string>
+    <string name="intro_pic">Intro Picture</string>
+    <string name="intro_title">Explore the<font color="#3F95EC">\n World</font> with us</string>
+    <string name="sub_intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="location_title">Location</string>
+    <string name="search_hint">Street, Address, City, …</string>
+    <string name="search_btn">Search</string>
+    <string name="see_all">See All</string>
+
+    <string name="recommended">Recommended</string>
+    <string name="recommended_title">Title</string>
+    <string name="recommended_score">5</string>
+    <string name="recommended_address">Address</string>
+    <string name="recommended_price">$0</string>
+    <string name="recommended_per_person">/ Person</string>
+
+    <string name="popular">Popular Destination</string>
+    <string name="popular_title">Title</string>
+    <string name="popular_price">$0</string>
+    <string name="popular_per_person">/ Person</string>
+    <string name="popular_score">5</string>
+    <string name="popular_address">Address</string>
+
+    <string name="category_title">Title</string>
+
+    <string name="detail_title">Title</string>
+    <string name="detail_location">Location</string>
+    <string name="detail_score">3</string>
+    <string name="detail_min">- min</string>
+    <string name="detail_duration">Duration</string>
+    <string name="detail_0">0</string>
+    <string name="detail_distance">Distance</string>
+    <string name="detail_bed">Bed</string>
+    <string name="detail_description">Description</string>
+    <string name="detail_description_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="detail_add_to_cart">Add to Cart</string>
+    <string name="detail_price">$0</string>
+    <string name="detail_per_person">/ Person</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_favorite">Explorer</string>
+    <string name="menu_cart">Bookmark</string>
+    <string name="menu_profile">Profile</string>
+</resources>

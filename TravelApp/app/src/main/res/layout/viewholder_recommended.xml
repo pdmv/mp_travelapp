@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:paddingBottom="8dp"
+    android:elevation="3dp"
+    android:background="@drawable/white_corner_bg">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/recPicture"
+        android:layout_width="240dp"
+        android:layout_height="130dp"
+        android:layout_margin="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.circleImageView"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/recTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/recommended_title"
+        android:textColor="@color/darkBlue"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="@+id/recPicture"
+        app:layout_constraintTop_toBottomOf="@+id/recPicture" />
+
+    <TextView
+        android:id="@+id/recScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recommended_score"
+        android:textColor="@color/darkBlue"
+
+        app:layout_constraintBottom_toBottomOf="@+id/recTitle"
+        app:layout_constraintEnd_toEndOf="@+id/recPicture"
+        app:layout_constraintTop_toTopOf="@+id/recTitle" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/recScore"
+        app:layout_constraintEnd_toStartOf="@+id/recScore"
+        app:layout_constraintTop_toTopOf="@+id/recScore"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/star" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@+id/recTitle"
+        app:layout_constraintTop_toBottomOf="@+id/recTitle"
+        app:srcCompat="@drawable/location" />
+
+    <TextView
+        android:id="@+id/recAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/recommended_address"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="@+id/recPicture"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+    <TextView
+        android:id="@+id/recPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/recommended_price"
+        android:textColor="@color/blue"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/recPicture"
+        app:layout_constraintTop_toBottomOf="@+id/recAddress" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/recommended_per_person"
+        android:textColor="@color/darkBlue"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/recPrice"
+        app:layout_constraintStart_toEndOf="@+id/recPrice"
+        app:layout_constraintTop_toTopOf="@+id/recPrice" />
+</androidx.constraintlayout.widget.ConstraintLayout>
