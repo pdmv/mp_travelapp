@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@drawable/white_corner_bg"
+    android:elevation="3dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/popularPicture"
+        android:layout_width="125dp"
+        android:layout_height="85dp"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.circleImageView"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/popularTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/popular_title"
+        android:textSize="15sp"
+        android:textColor="@color/darkBlue"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/popularPicture"
+        app:layout_constraintTop_toTopOf="@+id/popularPicture" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/popularPrice"
+        app:layout_constraintStart_toStartOf="@+id/popularTitle"
+        app:layout_constraintTop_toBottomOf="@+id/popularTitle"
+        app:srcCompat="@drawable/location" />
+
+    <TextView
+        android:id="@+id/popularPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/popular_price"
+        android:textSize="15sp"
+        android:textColor="@color/blue"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/popularPicture"
+        app:layout_constraintStart_toStartOf="@+id/popularTitle" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/popular_per_person"
+        android:textColor="@color/darkBlue"
+        app:layout_constraintBottom_toBottomOf="@+id/popularPrice"
+        app:layout_constraintStart_toEndOf="@+id/popularPrice"
+        app:layout_constraintTop_toTopOf="@+id/popularPrice" />
+
+    <TextView
+        android:id="@+id/popularScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/popular_score"
+        android:textSize="12sp"
+        android:textColor="@color/darkBlue"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView8"
+        app:layout_constraintEnd_toEndOf="@+id/popularTitle"
+        app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/popularScore"
+        app:layout_constraintEnd_toStartOf="@+id/popularScore"
+        app:layout_constraintTop_toTopOf="@+id/popularScore"
+        app:srcCompat="@drawable/star" />
+
+    <TextView
+        android:id="@+id/popularAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/popular_address"
+        android:textColor="@color/darkBlue"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+</androidx.constraintlayout.widget.ConstraintLayout>

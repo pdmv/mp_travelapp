@@ -1,0 +1,86 @@
+<resources>
+    <string name="app_name">Travel App</string>
+    <string name="intro_pic">Intro Picture</string>
+    <string name="intro_title">Explore the<font color="#3F95EC">\n World</font> with us</string>
+    <string name="sub_intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="location_title">Location</string>
+    <string name="search_hint">Street, Address, City, …</string>
+    <string name="search_btn">Search</string>
+    <string name="see_all">See All</string>
+
+    <string name="recommended">Recommended</string>
+    <string name="recommended_title">Title</string>
+    <string name="recommended_score">5</string>
+    <string name="recommended_address">Address</string>
+    <string name="recommended_price">$0</string>
+    <string name="recommended_per_person">/ Person</string>
+
+    <string name="popular">Popular Destination</string>
+    <string name="popular_title">Title</string>
+    <string name="popular_price">$0</string>
+    <string name="popular_per_person">/ Person</string>
+    <string name="popular_score">5</string>
+    <string name="popular_address">Address</string>
+
+    <string name="category_title">Title</string>
+
+    <string name="detail_title">Title</string>
+    <string name="detail_location">Location</string>
+    <string name="detail_score">3</string>
+    <string name="detail_min">- min</string>
+    <string name="detail_duration">Duration</string>
+    <string name="detail_0">0</string>
+    <string name="detail_distance">Distance</string>
+    <string name="detail_bed">Bed</string>
+    <string name="detail_description">Description</string>
+    <string name="detail_description_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="detail_add_to_cart">Add to Cart</string>
+    <string name="detail_price">$0</string>
+    <string name="detail_per_person">/ Person</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_favorite">Explorer</string>
+    <string name="menu_cart">Bookmark</string>
+    <string name="menu_profile">Profile</string>
+
+
+    <string name="admin_dashboard_title">Admin Dashboard</string>
+    <string name="admin_dashboard_welcome">Hi username</string>
+    <string name="admin_dashboard_role">Role: Admin</string>
+    <string name="admin_dashboard_btn_1">Location</string>
+    <string name="admin_dashboard_btn_2">Category</string>
+    <string name="admin_dashboard_btn_3">Tour</string>
+    <string name="admin_dashboard_btn_4">Booked</string>
+    <string name="admin_dashboard_btn_5">Banner</string>
+    <string name="admin_dashboard_btn_6">Logout</string>
+    <string name="admin_upload_btn">Upload</string>
+    <string name="admin_choose_image_btn">Choose Image</string>
+
+
+    <string name="admin_location_title">Location Management</string>
+    <string name="admin_location_list">Location List</string>
+    <string name="admin_location_create">Create new Location</string>
+    <string name="admin_location_hint_txt">Please type a location</string>
+
+
+    <string name="admin_category_title">Category Management</string>
+    <string name="admin_category_list">Category List</string>
+    <string name="admin_category_create">Create new Category</string>
+    <string name="admin_category_name_hint_txt">Please type a name</string>
+
+
+    <string name="admin_tour_title">Tour Management</string>
+    <string name="admin_tour_list">Tour List</string>
+    <string name="admin_tour_create">Create new Tour</string>
+    <string name="admin_tour_title_hint_txt">Please type a title for tour</string>
+    <string name="admin_tour_description_hint_txt">Please type a description for tour</string>
+    <string name="admin_tour_duration_hint_txt">Duration for tour</string>
+    <string name="admin_tour_price_hint_txt">Price for tour</string>
+    <string name="admin_tour_date_hint_txt">Trip start date</string>
+    <string name="admin_tour_time_hint_txt">Departure time</string>
+
+
+    <string name="admin_banner_title">Banner Management</string>
+    <string name="admin_banner_list">Banner List</string>
+    <string name="admin_banner_create">Create new Banner</string>
+</resources>
