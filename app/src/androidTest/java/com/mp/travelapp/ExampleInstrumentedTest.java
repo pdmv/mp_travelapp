@@ -1,4 +1,4 @@
-package com.pdmv.travelapp;
+package com.mp.travelapp;
 
 import android.content.Context;
 

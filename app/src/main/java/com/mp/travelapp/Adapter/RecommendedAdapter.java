@@ -1,4 +1,4 @@
-package com.pdmv.travelapp.Adapter;
+package com.mp.travelapp.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.pdmv.travelapp.Activity.DetailActivity;
-import com.pdmv.travelapp.Domain.ItemDomain;
+import com.mp.travelapp.Activity.DetailActivity;
+import com.mp.travelapp.Domain.ItemDomain;
 import com.pdmv.travelapp.databinding.ViewholderRecommendedBinding;
 
 import java.util.ArrayList;

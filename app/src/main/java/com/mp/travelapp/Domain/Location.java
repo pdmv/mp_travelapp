@@ -1,6 +1,4 @@
-package com.pdmv.travelapp.Domain;
-
-import androidx.annotation.NonNull;
+package com.mp.travelapp.Domain;
 
 public class Location {
     private int Id;

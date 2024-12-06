@@ -1,4 +1,4 @@
-package com.pdmv.travelapp.Domain;
+package com.mp.travelapp.Domain;
 
 public class SliderItem {
     private String url;
