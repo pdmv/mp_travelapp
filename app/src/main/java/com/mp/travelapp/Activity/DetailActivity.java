@@ -1,6 +1,7 @@
 package com.mp.travelapp.Activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
@@ -39,7 +40,9 @@ public class DetailActivity extends BaseActivity {
                 .into(binding.detailPicture);
 
         binding.detailAddToCartBtn.setOnClickListener(v -> {
-//            Intent intent = new Intent(DetailActivity.this, ...);
+            Intent intent = new Intent(DetailActivity.this, TicketActivity.class);
+            intent.putExtra("object", item);
+            startActivity(intent);
         });
     }
 
