@@ -1,4 +1,4 @@
-package com.mp.travelapp.Activity;
+package com.mp.travel_app.Activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -15,14 +15,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.mp.travelapp.Adapter.CategoryAdapter;
-import com.mp.travelapp.Adapter.PopularAdapter;
-import com.mp.travelapp.Adapter.RecommendedAdapter;
-import com.mp.travelapp.Adapter.SliderAdapter;
-import com.mp.travelapp.Domain.Category;
-import com.mp.travelapp.Domain.ItemDomain;
-import com.mp.travelapp.Domain.Location;
-import com.mp.travelapp.Domain.SliderItem;
+import com.mp.travel_app.Adapter.CategoryAdapter;
+import com.mp.travel_app.Adapter.PopularAdapter;
+import com.mp.travel_app.Adapter.RecommendedAdapter;
+import com.mp.travel_app.Adapter.SliderAdapter;
+import com.mp.travel_app.Domain.Category;
+import com.mp.travel_app.Domain.ItemDomain;
+import com.mp.travel_app.Domain.Location;
+import com.mp.travel_app.Domain.SliderItem;
 import com.pdmv.travelapp.R;
 import com.pdmv.travelapp.databinding.ActivityMainBinding;
 

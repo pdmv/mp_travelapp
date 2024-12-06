@@ -13,13 +13,13 @@
         android:theme="@style/Theme.TravelApp"
         tools:targetApi="31">
         <activity
-            android:name="com.mp.travelapp.Activity.TicketActivity"
+            android:name="com.mp.travel_app.Activity.TicketActivity"
             android:exported="false" />
         <activity
-            android:name="com.mp.travelapp.Activity.BaseActivity"
+            android:name="com.mp.travel_app.Activity.BaseActivity"
             android:exported="false" />
         <activity
-            android:name="com.mp.travelapp.Activity.IntroActivity"
+            android:name="com.mp.travel_app.Activity.IntroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,10 +28,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mp.travelapp.Activity.DetailActivity"
+            android:name="com.mp.travel_app.Activity.DetailActivity"
             android:exported="true" />
         <activity
-            android:name="com.mp.travelapp.Activity.MainActivity"
+            android:name="com.mp.travel_app.Activity.MainActivity"
             android:exported="true" />
     </application>
 

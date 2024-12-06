@@ -1,4 +1,4 @@
-package com.mp.travelapp.Adapter;
+package com.mp.travel_app.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.mp.travelapp.Domain.Category;
+import com.mp.travel_app.Domain.Category;
 import com.pdmv.travelapp.R;
 import com.pdmv.travelapp.databinding.ViewholderCategoryBinding;
 

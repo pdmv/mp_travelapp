@@ -6,7 +6,7 @@
     android:background="@color/lightGray"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mp.travelapp.Activity.TicketActivity">
+    tools:context="com.mp.travel_app.Activity.TicketActivity">
 
     <ScrollView
         android:layout_width="match_parent"

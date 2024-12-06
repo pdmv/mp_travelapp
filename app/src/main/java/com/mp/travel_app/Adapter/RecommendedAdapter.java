@@ -1,4 +1,4 @@
-package com.mp.travelapp.Adapter;
+package com.mp.travel_app.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,25 +10,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.mp.travelapp.Activity.DetailActivity;
-import com.mp.travelapp.Domain.ItemDomain;
-import com.pdmv.travelapp.databinding.ViewholderPopularBinding;
+import com.mp.travel_app.Activity.DetailActivity;
+import com.mp.travel_app.Domain.ItemDomain;
+import com.pdmv.travelapp.databinding.ViewholderRecommendedBinding;
 
 import java.util.ArrayList;
 
-public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.Viewholder> {
+public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.Viewholder> {
     private final ArrayList<ItemDomain> itemDomains;
     private Context context;
-    private ViewholderPopularBinding binding;
+    private ViewholderRecommendedBinding binding;
 
-    public PopularAdapter(ArrayList<ItemDomain> itemDomains) {
+    public RecommendedAdapter(ArrayList<ItemDomain> itemDomains) {
         this.itemDomains = itemDomains;
     }
 
     @NonNull
     @Override
-    public PopularAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        binding = ViewholderPopularBinding
+    public RecommendedAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        binding = ViewholderRecommendedBinding
                 .inflate(LayoutInflater.from(parent.getContext()), parent, false);
         context = parent.getContext();
 
@@ -37,15 +37,15 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.Viewhold
 
     @SuppressLint("DefaultLocale")
     @Override
-    public void onBindViewHolder(@NonNull PopularAdapter.Viewholder holder, int position) {
-        binding.popularTitle.setText(itemDomains.get(position).getTitle());
-        binding.popularPrice.setText(String.format("$%d", itemDomains.get(position).getPrice()));
-        binding.popularAddress.setText(itemDomains.get(position).getAddress());
-        binding.popularScore.setText(String.format("%.1f", itemDomains.get(position).getScore()));
+    public void onBindViewHolder(@NonNull RecommendedAdapter.Viewholder holder, int position) {
+        binding.recTitle.setText(itemDomains.get(position).getTitle());
+        binding.recPrice.setText(String.format("$%d", itemDomains.get(position).getPrice()));
+        binding.recAddress.setText(itemDomains.get(position).getAddress());
+        binding.recScore.setText(String.format("%.1f", itemDomains.get(position).getScore()));
 
         Glide.with(context)
                 .load(itemDomains.get(position).getPic())
-                .into(binding.popularPicture);
+                .into(binding.recPicture);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailActivity.class);
@@ -60,7 +60,7 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.Viewhold
     }
 
     public static class Viewholder extends RecyclerView.ViewHolder {
-        public Viewholder(@NonNull ViewholderPopularBinding binding) {
+        public Viewholder(@NonNull ViewholderRecommendedBinding binding) {
             super(binding.getRoot());
         }
     }

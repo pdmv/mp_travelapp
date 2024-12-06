@@ -1,11 +1,11 @@
-package com.mp.travelapp.Activity;
+package com.mp.travel_app.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
-import com.mp.travelapp.Domain.ItemDomain;
+import com.mp.travel_app.Domain.ItemDomain;
 import com.pdmv.travelapp.databinding.ActivityDetailBinding;
 
 public class DetailActivity extends BaseActivity {

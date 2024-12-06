@@ -1,19 +1,11 @@
-package com.mp.travelapp.Activity;
+package com.mp.travel_app.Activity;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
-import com.mp.travelapp.Domain.ItemDomain;
-import com.pdmv.travelapp.R;
+import com.mp.travel_app.Domain.ItemDomain;
 import com.pdmv.travelapp.databinding.ActivityTicketBinding;
 
 public class TicketActivity extends BaseActivity {

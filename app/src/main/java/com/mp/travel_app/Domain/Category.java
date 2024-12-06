@@ -1,4 +1,4 @@
-package com.mp.travelapp.Domain;
+package com.mp.travel_app.Domain;
 
 public class Category {
     private int Id;
