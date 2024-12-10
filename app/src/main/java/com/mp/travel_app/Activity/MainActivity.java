@@ -23,8 +23,8 @@ import com.mp.travel_app.Domain.Category;
 import com.mp.travel_app.Domain.ItemDomain;
 import com.mp.travel_app.Domain.Location;
 import com.mp.travel_app.Domain.SliderItem;
-import com.pdmv.travelapp.R;
-import com.pdmv.travelapp.databinding.ActivityMainBinding;
+import com.mp.travel_app.R;
+import com.mp.travel_app.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 import java.util.List;

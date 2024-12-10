@@ -1,11 +1,19 @@
 package com.mp.travel_app.Domain;
 
+import androidx.annotation.NonNull;
+
 public class Category {
     private int Id;
     private String ImagePath;
     private String Name;
 
     public Category() {
+    }
+
+    public Category(int id, String imagePath, String name) {
+        Id = id;
+        ImagePath = imagePath;
+        Name = name;
     }
 
     public int getId() {
@@ -30,5 +38,11 @@ public class Category {
 
     public void setName(String name) {
         Name = name;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return Name;
     }
 }

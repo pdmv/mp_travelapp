@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    android:paddingBottom="8dp"
+    android:elevation="3dp"
+    android:id="@+id/mainLayout"
+    android:background="@drawable/white_corner_bg">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/tourPicture"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.circleImageView"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/tourTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/darkBlue"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="@+id/tourPicture"
+        app:layout_constraintTop_toBottomOf="@+id/tourPicture" />
+
+    <TextView
+        android:id="@+id/tourDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/darkBlue"
+        app:layout_constraintBottom_toBottomOf="@+id/tourTitle"
+        app:layout_constraintEnd_toEndOf="@+id/tourPicture"
+        app:layout_constraintTop_toTopOf="@+id/tourTitle" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="16dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tourDuration"
+        app:layout_constraintEnd_toStartOf="@+id/tourDuration"
+        app:layout_constraintTop_toTopOf="@+id/tourDuration"
+        app:srcCompat="@drawable/hourglass" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/tourLocation"
+        app:layout_constraintStart_toStartOf="@+id/tourTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tourTitle"
+        app:srcCompat="@drawable/location" />
+
+    <TextView
+        android:id="@+id/tourLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:textColor="@color/darkBlue"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintEnd_toStartOf="@+id/imageView4"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+    <TextView
+        android:id="@+id/tourDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/darkBlue"
+        app:layout_constraintBottom_toBottomOf="@+id/tourLocation"
+        app:layout_constraintEnd_toEndOf="@+id/tourPicture"
+        app:layout_constraintTop_toTopOf="@+id/tourLocation" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="16dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tourDate"
+        app:layout_constraintEnd_toStartOf="@+id/tourDate"
+        app:layout_constraintTop_toTopOf="@+id/tourDate"
+        app:srcCompat="@drawable/hourglass" />
+
+    <TextView
+        android:id="@+id/tourCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:background="@drawable/tag"
+        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <TextView
+        android:id="@+id/tourPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/blue"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tourCategory"
+        app:layout_constraintEnd_toStartOf="@+id/imageView5"
+        app:layout_constraintStart_toEndOf="@+id/tourCategory"
+        app:layout_constraintTop_toTopOf="@+id/tourCategory" />
+
+    <TextView
+        android:id="@+id/tourTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/darkBlue"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tourPrice"
+        app:layout_constraintEnd_toEndOf="@+id/tourPicture"
+        app:layout_constraintTop_toTopOf="@+id/tourPrice" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="16dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tourCategory"
+        app:layout_constraintEnd_toStartOf="@+id/tourTime"
+        app:layout_constraintTop_toTopOf="@+id/tourTime"
+        app:srcCompat="@drawable/hourglass" />
+
+    <ImageView
+        android:id="@+id/tourGuideAvatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:clipToOutline="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tourCategory"
+        app:layout_constraintTop_toBottomOf="@+id/tourCategory"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tourGuideFullname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/darkBlue"
+        app:layout_constraintBottom_toBottomOf="@+id/tourGuideAvatar"
+        app:layout_constraintEnd_toEndOf="@+id/tourPicture"
+        app:layout_constraintTop_toTopOf="@+id/tourGuideAvatar" />
+</androidx.constraintlayout.widget.ConstraintLayout>

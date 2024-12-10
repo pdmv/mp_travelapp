@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
 import com.mp.travel_app.Domain.ItemDomain;
-import com.pdmv.travelapp.databinding.ActivityDetailBinding;
+import com.mp.travel_app.databinding.ActivityDetailBinding;
 
 public class DetailActivity extends BaseActivity {
     private ActivityDetailBinding binding;

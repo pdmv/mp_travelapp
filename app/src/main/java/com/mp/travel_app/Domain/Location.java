@@ -6,6 +6,11 @@ public class Location {
 
     public Location() {};
 
+    public Location(int id, String loc) {
+        this.Id = id;
+        this.loc = loc;
+    }
+
     public int getId() {
         return Id;
     }

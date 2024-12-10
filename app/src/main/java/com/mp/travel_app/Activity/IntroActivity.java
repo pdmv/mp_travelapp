@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.pdmv.travelapp.databinding.ActivityIntroBinding;
+import com.mp.travel_app.databinding.ActivityIntroBinding;
 
 public class IntroActivity extends BaseActivity {
     ActivityIntroBinding binding;

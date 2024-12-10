@@ -12,7 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.mp.travel_app.Domain.SliderItem;
-import com.pdmv.travelapp.R;
+import com.mp.travel_app.R;
 
 import java.util.List;
 

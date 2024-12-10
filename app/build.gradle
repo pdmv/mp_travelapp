@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.pdmv.travelapp'
+    namespace 'com.mp.travel_app'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.pdmv.travelapp"
+        applicationId "com.mp.travel_app"
         minSdk 24
         targetSdk 34
         versionCode 1

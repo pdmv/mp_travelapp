@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.mp.travel_app.Activity.DetailActivity;
 import com.mp.travel_app.Domain.ItemDomain;
-import com.pdmv.travelapp.databinding.ViewholderRecommendedBinding;
+import com.mp.travel_app.databinding.ViewholderRecommendedBinding;
 
 import java.util.ArrayList;
 
