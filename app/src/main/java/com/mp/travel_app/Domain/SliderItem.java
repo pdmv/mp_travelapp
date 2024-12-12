@@ -5,7 +5,8 @@ public class SliderItem {
     private String url;
     private Tour tour;
 
-    public SliderItem() {}
+    public SliderItem() {
+    }
 
     public SliderItem(int id, String url, Tour tour) {
         this.id = id;

@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="12dp"
-    android:paddingBottom="8dp"
+    android:background="@drawable/white_corner_bg"
     android:elevation="3dp"
-    android:id="@+id/mainLayout"
-    android:background="@drawable/white_corner_bg">
+    android:paddingBottom="8dp">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/tourPicture"
@@ -39,8 +39,8 @@
         android:id="@+id/tourDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
         android:textColor="@color/darkBlue"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/tourTitle"
         app:layout_constraintEnd_toEndOf="@+id/tourPicture"
         app:layout_constraintTop_toTopOf="@+id/tourTitle" />
@@ -82,8 +82,8 @@
         android:id="@+id/tourDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
         android:textColor="@color/darkBlue"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/tourLocation"
         app:layout_constraintEnd_toEndOf="@+id/tourPicture"
         app:layout_constraintTop_toTopOf="@+id/tourLocation" />
@@ -103,12 +103,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textSize="16sp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
         android:background="@drawable/tag"
+        android:paddingLeft="16dp"
+        android:paddingTop="4dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="4dp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
@@ -161,9 +161,9 @@
         android:id="@+id/tourGuideFullname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/darkBlue"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/darkBlue"
         app:layout_constraintBottom_toBottomOf="@+id/tourGuideAvatar"
         app:layout_constraintEnd_toEndOf="@+id/tourPicture"
         app:layout_constraintTop_toTopOf="@+id/tourGuideAvatar" />

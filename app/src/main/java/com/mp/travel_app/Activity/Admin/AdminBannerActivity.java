@@ -13,17 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 
-import com.mp.travel_app.Activity.BaseActivity;
-import com.mp.travel_app.Adapter.SliderAdapter;
-import com.mp.travel_app.Domain.SliderItem;
-import com.mp.travel_app.Domain.Tour;
-import com.mp.travel_app.Utils.LoadData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.mp.travel_app.Activity.BaseActivity;
+import com.mp.travel_app.Adapter.SliderAdapter;
+import com.mp.travel_app.Domain.SliderItem;
+import com.mp.travel_app.Domain.Tour;
+import com.mp.travel_app.Utils.LoadData;
 import com.mp.travel_app.databinding.ActivityAdminBannerBinding;
 
 import java.util.ArrayList;

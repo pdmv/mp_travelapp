@@ -10,15 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mp.travel_app.Activity.BaseActivity;
-import com.mp.travel_app.Adapter.CategoryAdapter;
-import com.mp.travel_app.Domain.Category;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.mp.travel_app.Activity.BaseActivity;
+import com.mp.travel_app.Adapter.CategoryAdapter;
+import com.mp.travel_app.Domain.Category;
 import com.mp.travel_app.databinding.ActivityAdminCategoryBinding;
 
 import java.util.ArrayList;

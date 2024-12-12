@@ -7,6 +7,7 @@
     <string name="search_hint">Street, Address, City, …</string>
     <string name="search_btn">Search</string>
     <string name="see_all">See All</string>
+    <string name="back_btn">Back</string>
 
     <string name="recommended">Recommended</string>
     <string name="recommended_title">Title</string>
@@ -54,7 +55,6 @@
     <string name="ticket_total_guest">Total Guest</string>
     <string name="ticket_download">Download Ticket</string>
 
-
     <string name="admin_dashboard_title">Admin Dashboard</string>
     <string name="admin_dashboard_welcome">Hi username</string>
     <string name="admin_dashboard_role">Role: Admin</string>
@@ -67,18 +67,15 @@
     <string name="admin_upload_btn">Upload</string>
     <string name="admin_choose_image_btn">Choose Image</string>
 
-
     <string name="admin_location_title">Location Management</string>
     <string name="admin_location_list">Location List</string>
     <string name="admin_location_create">Create new Location</string>
     <string name="admin_location_hint_txt">Please type a location</string>
 
-
     <string name="admin_category_title">Category Management</string>
     <string name="admin_category_list">Category List</string>
     <string name="admin_category_create">Create new Category</string>
     <string name="admin_category_name_hint_txt">Please type a name</string>
-
 
     <string name="admin_tour_title">Tour Management</string>
     <string name="admin_tour_list">Tour List</string>
@@ -90,8 +87,15 @@
     <string name="admin_tour_date_hint_txt">Trip start date</string>
     <string name="admin_tour_time_hint_txt">Departure time</string>
 
-
     <string name="admin_banner_title">Banner Management</string>
     <string name="admin_banner_list">Banner List</string>
     <string name="admin_banner_create">Create new Banner</string>
+
+    <string name="login_title">Login</string>
+    <string name="login_intro_alt">Login picture</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_btn">Login</string>
+    <string name="login_to_register">Don\'t have an account?</string>
+    <string name="login_register_btn">Register</string>
 </resources>

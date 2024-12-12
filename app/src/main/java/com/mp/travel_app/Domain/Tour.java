@@ -8,7 +8,8 @@ public class Tour {
     private Location location;
     private Category category;
 
-    public Tour() {}
+    public Tour() {
+    }
 
     public Tour(int id, double price, String title, String description, String duration, String imagePath, String dateTour, String timeTour, TourGuide tourGuide, Location location, Category category) {
         this.id = id;
@@ -108,7 +109,9 @@ public class Tour {
         return timeTour;
     }
 
-    public void setTimeTour(String timeTour) { this.timeTour = timeTour; }
+    public void setTimeTour(String timeTour) {
+        this.timeTour = timeTour;
+    }
 
     @Override
     public String toString() {

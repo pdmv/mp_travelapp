@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity {
                 if (snapshot.exists()) {
                     ArrayList<ItemDomain> itemDomains = new ArrayList<>();
 
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren())  {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         ItemDomain itemDomain = dataSnapshot.getValue(ItemDomain.class);
                         itemDomains.add(itemDomain);
                     }
@@ -94,7 +94,7 @@ public class MainActivity extends BaseActivity {
                 if (snapshot.exists()) {
                     ArrayList<ItemDomain> itemDomains = new ArrayList<>();
 
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren())  {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         ItemDomain itemDomain = dataSnapshot.getValue(ItemDomain.class);
                         itemDomains.add(itemDomain);
                     }

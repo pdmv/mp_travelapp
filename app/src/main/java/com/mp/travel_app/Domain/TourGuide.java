@@ -4,7 +4,8 @@ public class TourGuide {
     private int id;
     private String fullname, phoneNumber, email, avatar, username, password;
 
-    public TourGuide() {}
+    public TourGuide() {
+    }
 
     public TourGuide(int id, String fullname, String phoneNumber, String email, String avatar, String username, String password) {
         this.id = id;

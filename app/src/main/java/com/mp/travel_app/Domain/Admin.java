@@ -4,7 +4,8 @@ public class Admin {
     private int id;
     private String fullname, phoneNumber, email, avatar, username, password;
 
-    public Admin() {}
+    public Admin() {
+    }
 
     public Admin(int id, String fullname, String phoneNumber, String email, String avatar, String username, String password) {
         this.id = id;

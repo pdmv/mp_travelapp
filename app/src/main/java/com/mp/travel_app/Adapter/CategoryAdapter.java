@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mp.travel_app.Domain.Category;
-import com.mp.travel_app.databinding.ViewholderCategoryBinding;
 import com.mp.travel_app.R;
+import com.mp.travel_app.databinding.ViewholderCategoryBinding;
 
 import java.util.List;
 

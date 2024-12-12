@@ -7,15 +7,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.mp.travel_app.Activity.BaseActivity;
-import com.mp.travel_app.Domain.Location;
-import com.mp.travel_app.Utils.LoadData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.mp.travel_app.Activity.BaseActivity;
+import com.mp.travel_app.Domain.Location;
+import com.mp.travel_app.Utils.LoadData;
 import com.mp.travel_app.databinding.ActivityAdminLocationBinding;
 
 public class AdminLocationActivity extends BaseActivity {

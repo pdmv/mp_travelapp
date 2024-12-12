@@ -71,8 +71,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="16dp"
-                    android:inputType="text"
                     android:hint="@string/admin_tour_description_hint_txt"
+                    android:inputType="text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/newTourTitleTxt" />
@@ -104,9 +104,9 @@
                     android:layout_width="0dp"
                     android:layout_height="65dp"
                     android:layout_margin="16dp"
-                    android:hint="@string/admin_tour_date_hint_txt"
                     android:clickable="true"
                     android:focusable="false"
+                    android:hint="@string/admin_tour_date_hint_txt"
                     app:layout_constraintEnd_toStartOf="@+id/newTourTimeTxt"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/newTourDurationTxt" />
@@ -116,9 +116,9 @@
                     android:layout_width="0dp"
                     android:layout_height="65dp"
                     android:layout_margin="16dp"
-                    android:hint="@string/admin_tour_time_hint_txt"
                     android:clickable="true"
                     android:focusable="false"
+                    android:hint="@string/admin_tour_time_hint_txt"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/newTourDateTxt"
                     app:layout_constraintTop_toBottomOf="@+id/newTourPriceTxt" />

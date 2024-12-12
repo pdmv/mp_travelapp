@@ -4,7 +4,10 @@ public class Location {
     private int Id;
     private String loc;
 
-    public Location() {};
+    public Location() {
+    }
+
+    ;
 
     public Location(int id, String loc) {
         this.Id = id;

@@ -11,11 +11,11 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textColor="@color/darkBlue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/editTxtLocation"
-        app:layout_constraintBottom_toBottomOf="parent" />
-    
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/editTxtLocation"
         android:layout_width="0dp"
@@ -23,39 +23,39 @@
         android:hint="Nhập địa chỉ"
         android:textSize="16sp"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/editBtn"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        app:srcCompat="@drawable/bell_icon"
         android:contentDescription="Sửa"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bell_icon" />
 
     <ImageView
         android:id="@+id/cancelBtn"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/bell_icon"
         android:contentDescription="Hủy"
+        android:src="@drawable/bell_icon"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editBtn"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/editBtn" />
 
     <ImageView
         android:id="@+id/saveBtn"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/bed"
         android:contentDescription="Lưu"
+        android:src="@drawable/bed"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editBtn"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/editBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
