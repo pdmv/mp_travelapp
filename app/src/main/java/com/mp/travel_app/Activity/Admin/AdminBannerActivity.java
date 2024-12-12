@@ -1,8 +1,10 @@
 package com.mp.travel_app.Activity.Admin;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.mp.travel_app.Activity.BaseActivity;
 import com.mp.travel_app.Adapter.SliderAdapter;
 import com.mp.travel_app.Domain.SliderItem;
@@ -20,13 +24,11 @@ import com.mp.travel_app.Domain.Tour;
 import com.mp.travel_app.Utils.LoadData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.mp.travel_app.databinding.ActivityAdminBannerBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdminBannerActivity extends BaseActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -36,7 +38,7 @@ public class AdminBannerActivity extends BaseActivity {
     String imagePath;
     Tour selectedTour;
     DatabaseReference bannerRef;
-
+    Uri selectedImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,25 +72,13 @@ public class AdminBannerActivity extends BaseActivity {
     private void initBanner() {
         binding.progressBarBanner.setVisibility(View.VISIBLE);
 
-        bannerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        ArrayAdapter<SliderItem> bannerAdapter = new ArrayAdapter<>(AdminBannerActivity.this, android.R.layout.simple_list_item_1);
+
+        LoadData.loadDataFromDatabaseTest(AdminBannerActivity.this, bannerRef, bannerAdapter, SliderItem.class, new LoadData.DataCallback<SliderItem>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    ArrayList<SliderItem> sliderItems = new ArrayList<>();
-
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        SliderItem sliderItem = dataSnapshot.getValue(SliderItem.class);
-                        sliderItems.add(sliderItem);
-                    }
-
-                    banners(sliderItems);
-                    binding.progressBarBanner.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onDataLoaded(List<SliderItem> sliderItems) {
+                banners(new ArrayList<>(sliderItems));
+                binding.progressBarBanner.setVisibility(View.GONE);
             }
         });
     }
@@ -97,14 +87,22 @@ public class AdminBannerActivity extends BaseActivity {
         DatabaseReference tourRef = database.getReference("Tour");
 
         ArrayAdapter<Tour> tourAdapter = new ArrayAdapter<>(AdminBannerActivity.this, android.R.layout.simple_spinner_dropdown_item);
-        LoadData.loadDataFromDatabase(AdminBannerActivity.this, tourRef, tourAdapter, Tour.class);
+
+        LoadData.loadDataFromDatabaseTest(AdminBannerActivity.this, tourRef, tourAdapter, Tour.class, new LoadData.DataCallback<Tour>() {
+            @Override
+            public void onDataLoaded(List<Tour> tourList) {
+                tourAdapter.clear();
+                tourAdapter.addAll(tourList);
+                tourAdapter.notifyDataSetChanged();
+            }
+        });
 
         binding.newTourSpinner.setAdapter(tourAdapter);
 
         binding.newTourSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                Tour selectedTour = (Tour) parentView.getItemAtPosition(position);
+                selectedTour = (Tour) parentView.getItemAtPosition(position);
             }
 
             @Override
@@ -126,55 +124,67 @@ public class AdminBannerActivity extends BaseActivity {
 
         if (resultCode == RESULT_OK && data != null) {
             if (requestCode == PICK_IMAGE_REQUEST) {
-                Uri selectedImageUri = data.getData();
+                selectedImageUri = data.getData();
+
                 if (selectedImageUri != null) {
                     binding.newBannerImageView.setImageURI(selectedImageUri);
-                    imagePath = selectedImageUri.toString();
                 }
             }
         }
+    }
+
+    private void uploadImageToFirebaseStorage(Uri imageUri, final Runnable onSuccess) {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
+        StorageReference imageRef = storageRef.child("image_banner_" + System.currentTimeMillis() + ".jpg");
+
+        imageRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        imagePath = uri.toString();
+                        Log.d("UploadImage", "Image uploaded successfully " + imagePath);
+                        onSuccess.run();
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("UploadImage", "Image upload failed: ", e);
+                    Toast.makeText(AdminBannerActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void createNewBanner() {
-        selectedTour = (Tour) binding.newTourSpinner.getSelectedItem();
+        if (selectedImageUri != null) {
+            uploadImageToFirebaseStorage(selectedImageUri, () -> {
+                if (imagePath != null) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+                    int maxId = sharedPreferences.getInt("max_Banner_id", 1);
+                    id = maxId + 1;
 
+                    SliderItem banner = new SliderItem(id, imagePath, selectedTour);
 
-        if (imagePath == null) {
-            Toast.makeText(AdminBannerActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-            return;
-        }
+                    bannerRef.child(String.valueOf(id)).setValue(banner).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("max_Banner_id", id);
+                                editor.apply();
 
-        bannerRef.orderByChild("id").limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        SliderItem lastBanner = snapshot.getValue(SliderItem.class);
-                        assert lastBanner != null;
-                        id = lastBanner.getId() + 1;
-                    }
-                }
+                                binding.newBannerImageView.setImageResource(android.R.drawable.ic_menu_gallery);
+                                binding.newTourSpinner.setSelection(0);
 
-                SliderItem banner = new SliderItem(id, imagePath, selectedTour);
-
-                bannerRef.child(String.valueOf(id)).setValue(banner).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(AdminBannerActivity.this, "Đã thêm thành công", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(AdminBannerActivity.this, "Thêm thất bại: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AdminBannerActivity.this, "Added successfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(AdminBannerActivity.this, "Add failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AdminBannerActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                    });
+                } else {
+                    Toast.makeText(AdminBannerActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(AdminBannerActivity.this, "Please select an image", Toast.LENGTH_SHORT).show();
+        }
     }
-
-
 }

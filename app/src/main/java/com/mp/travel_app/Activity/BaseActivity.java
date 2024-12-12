@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
 public class BaseActivity extends AppCompatActivity {
     public FirebaseDatabase database;

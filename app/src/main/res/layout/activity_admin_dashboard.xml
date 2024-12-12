@@ -120,7 +120,7 @@
                         android:id="@+id/textView9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/admin_dashboard_btn_1"
                         android:textColor="@color/white"
                         android:textSize="18sp"
@@ -161,7 +161,7 @@
                         android:id="@+id/textView10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/admin_dashboard_btn_2"
                         android:textColor="@color/white"
                         android:textSize="18sp"
@@ -211,7 +211,7 @@
                         android:id="@+id/textView11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/admin_dashboard_btn_3"
                         android:textColor="@color/white"
                         android:textSize="18sp"
@@ -252,7 +252,7 @@
                         android:id="@+id/textView12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/admin_dashboard_btn_4"
                         android:textColor="@color/white"
                         android:textSize="18sp"
@@ -285,7 +285,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:srcCompat="@drawable/light_3" />
+                        app:srcCompat="@drawable/light_5" />
 
                     <ImageView
                         android:id="@+id/imageView15"
@@ -296,13 +296,13 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.29000002"
-                        app:srcCompat="@drawable/btn_3" />
+                        app:srcCompat="@drawable/btn_5" />
 
                     <TextView
                         android:id="@+id/textView13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/admin_dashboard_btn_5"
                         android:textColor="@color/white"
                         android:textSize="18sp"
@@ -326,7 +326,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:srcCompat="@drawable/light_4" />
+                        app:srcCompat="@drawable/light_6" />
 
                     <ImageView
                         android:id="@+id/imageView17"
@@ -337,13 +337,13 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.29000002"
-                        app:srcCompat="@drawable/btn_4" />
+                        app:srcCompat="@drawable/btn_6" />
 
                     <TextView
                         android:id="@+id/textView14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/admin_dashboard_btn_6"
                         android:textColor="@color/white"
                         android:textSize="18sp"

@@ -66,6 +66,7 @@
     <string name="admin_dashboard_btn_6">Logout</string>
     <string name="admin_upload_btn">Upload</string>
     <string name="admin_choose_image_btn">Choose Image</string>
+    <string name="admin_no_data_txt">No data to show</string>
 
 
     <string name="admin_location_title">Location Management</string>
