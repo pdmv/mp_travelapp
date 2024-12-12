@@ -6,11 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-<<<<<<< HEAD
     tools:context="com.mp.travel_app.Activity.Admin.AdminCategoryActivity">
-=======
-    tools:context=".Activity.Admin.AdminCategoryActivity">
->>>>>>> fa22fe8403d04acae2b6e2598a9af2f960a59348
 
     <ScrollView
         android:layout_width="match_parent"

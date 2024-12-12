@@ -102,7 +102,7 @@ public class AdminCategoryActivity extends BaseActivity {
     private void uploadImageToFirebaseStorage(Uri imageUri, final Runnable onSuccess) {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
-        StorageReference imageRef = storageRef.child("image_tour_" + System.currentTimeMillis() + ".jpg");
+        StorageReference imageRef = storageRef.child("img_category_" + System.currentTimeMillis() + ".jpg");
 
         imageRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> {

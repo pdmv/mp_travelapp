@@ -1,21 +1,41 @@
 {
   "project_info": {
-    "project_number": "284099908774",
-    "project_id": "travelapp-85176",
-    "storage_bucket": "travelapp-85176.firebasestorage.app"
+    "project_number": "88814529670",
+    "firebase_url": "https://travel-app-75022-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "travel-app-75022",
+    "storage_bucket": "travel-app-75022.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:284099908774:android:2f8354e2aeae66fef75067",
+        "mobilesdk_app_id": "1:88814529670:android:078694979e630ba7d17507",
         "android_client_info": {
-          "package_name": "com.example.travel_app"
+          "package_name": "com.mp.travel_app"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDf93rtfAJk9lJHyz9CJtNaDRrEvIdMKw8"
+          "current_key": "AIzaSyDdsWQcAWSlSGGRioJwnKRseb0LniJlodA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88814529670:android:4d9f91018d0db176d17507",
+        "android_client_info": {
+          "package_name": "com.pdmv.travelapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdsWQcAWSlSGGRioJwnKRseb0LniJlodA"
         }
       ],
       "services": {

@@ -5,11 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< HEAD
     tools:context="com.mp.travel_app.Activity.DetailActivity">
-=======
-    tools:context=".Activity.DetailActivity">
->>>>>>> fa22fe8403d04acae2b6e2598a9af2f960a59348
 
     <ScrollView
         android:id="@+id/scrollView2"

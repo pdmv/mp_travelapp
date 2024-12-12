@@ -43,7 +43,6 @@
     <string name="menu_cart">Bookmark</string>
     <string name="menu_profile">Profile</string>
 
-<<<<<<< HEAD
     <string name="ticket_detail">Title Detail</string>
     <string name="ticket_id">Order ID: 123456</string>
     <string name="ticket_upcoming">Upcoming trip</string>
@@ -55,8 +54,6 @@
     <string name="ticket_total_guest">Total Guest</string>
     <string name="ticket_download">Download Ticket</string>
 
-=======
->>>>>>> fa22fe8403d04acae2b6e2598a9af2f960a59348
 
     <string name="admin_dashboard_title">Admin Dashboard</string>
     <string name="admin_dashboard_welcome">Hi username</string>

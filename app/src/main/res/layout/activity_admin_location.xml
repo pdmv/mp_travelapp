@@ -6,11 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-<<<<<<< HEAD
     tools:context="com.mp.travel_app.Activity.Admin.AdminLocationActivity">
-=======
-    tools:context=".Activity.Admin.AdminLocationActivity">
->>>>>>> fa22fe8403d04acae2b6e2598a9af2f960a59348
 
     <ScrollView
         android:layout_width="match_parent"
@@ -76,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="16dp"
                     android:layout_weight="1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView">

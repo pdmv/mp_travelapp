@@ -30,11 +30,9 @@ render.experimental.xml
 google-services.json
 
 # Android Profiling
-<<<<<<< HEAD
 *.hprof
 
 # MacOS
 **/.DS_Store
-=======
-*.hprof
->>>>>>> fa22fe8403d04acae2b6e2598a9af2f960a59348
+
+./app/google-services.json

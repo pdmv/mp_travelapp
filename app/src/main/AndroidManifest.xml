@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelApp"
         tools:targetApi="31">
-<<<<<<< HEAD
 
         <activity
             android:name="com.mp.travel_app.Activity.Admin.AdminBannerActivity"
@@ -47,25 +46,6 @@
             android:exported="false" />
         <activity
             android:name="com.mp.travel_app.Activity.IntroActivity"
-=======
-        <activity
-            android:name=".Activity.Admin.AdminBannerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.Admin.AdminCategoryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.Admin.AdminCreateTourActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.Admin.AdminTourActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.Admin.AdminLocationActivity"
-            android:exported="true" />
-        <activity
-            android:name=".Activity.Admin.AdminDashboardActivity"
->>>>>>> fa22fe8403d04acae2b6e2598a9af2f960a59348
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -74,31 +54,10 @@
             </intent-filter>
         </activity>
         <activity
-<<<<<<< HEAD
             android:name="com.mp.travel_app.Activity.DetailActivity"
             android:exported="true" />
         <activity
             android:name="com.mp.travel_app.Activity.MainActivity"
-=======
-            android:name=".Activity.BaseActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.IntroActivity"
-            android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity
-            android:name=".Activity.DetailActivity"
-            android:exported="true" />
-        <activity
-            android:name=".Activity.MainActivity"
->>>>>>> fa22fe8403d04acae2b6e2598a9af2f960a59348
             android:exported="true" />
     </application>
 

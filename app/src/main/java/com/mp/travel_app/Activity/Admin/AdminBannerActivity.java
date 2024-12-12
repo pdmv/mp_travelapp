@@ -136,7 +136,7 @@ public class AdminBannerActivity extends BaseActivity {
     private void uploadImageToFirebaseStorage(Uri imageUri, final Runnable onSuccess) {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
-        StorageReference imageRef = storageRef.child("image_banner_" + System.currentTimeMillis() + ".jpg");
+        StorageReference imageRef = storageRef.child("img_banner" + System.currentTimeMillis() + ".jpg");
 
         imageRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> {
