@@ -98,4 +98,5 @@
     <string name="login_btn">Login</string>
     <string name="login_to_register">Don\'t have an account?</string>
     <string name="login_register_btn">Register</string>
+    <string name="login_choose_role">Choose your role</string>
 </resources>
