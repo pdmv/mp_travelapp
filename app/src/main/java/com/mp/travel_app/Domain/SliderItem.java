@@ -37,9 +37,4 @@ public class SliderItem {
     public void setUrl(String url) {
         this.url = url;
     }
-
-//    @Override
-//    public String toString() {
-//        return title;
-//    }
 }

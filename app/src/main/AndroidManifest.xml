@@ -21,8 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".Activity.User.RegisterActivity"
+            android:exported="false">
+        </activity>
+
+        <activity
+            android:name=".Activity.Admin.AdminTicketActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.Admin.AdminBannerActivity"
@@ -42,12 +48,12 @@
         <activity
             android:name=".Activity.Admin.AdminDashboardActivity"
             android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
+
         <activity
             android:name=".Activity.TicketActivity"
             android:exported="false" />

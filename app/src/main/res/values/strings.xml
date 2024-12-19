@@ -91,6 +91,12 @@
     <string name="admin_banner_list">Banner List</string>
     <string name="admin_banner_create">Create new Banner</string>
 
+    <string name="admin_ticket_title">Ticket Management</string>
+    <string name="admin_ticket_price">Price</string>
+    <string name="admin_ticket_time">Time</string>
+
+    <string name="admin_no_data_txt">No data to show</string>
+
     <string name="login_title">Login</string>
     <string name="login_intro_alt">Login picture</string>
     <string name="login_username">Username</string>
@@ -101,9 +107,9 @@
     <string name="login_choose_role">Choose your role</string>
 
     <string name="register_title">Register</string>
-    <string name="register_full_name">Your full name</string>
-    <string name="register_phone_number">Your phone number</string>
-    <string name="register_email">Your email</string>
+    <string name="register_full_name">Full Name</string>
+    <string name="register_email">Email</string>
+    <string name="register_phone_number">Phone number</string>
     <string name="register_choose_avatar">Choose your avatar</string>
     <string name="register_avatar_alt">Avatar picture</string>
     <string name="register_to_login">Already have an account?</string>

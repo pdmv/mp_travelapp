@@ -37,21 +37,21 @@ public class LoginActivity extends BaseActivity {
 
         initRoleChoice();
 
-        binding.btnBack.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+        binding.btnBack.setOnClickListener(v -> back());
 
         binding.btnLogin.setOnClickListener(v -> {
             username = binding.txtUsername.getText().toString();
             password = binding.txtPassword.getText().toString();
             String role = binding.roleSpinner.getSelectedItem().toString();
 
-            Log.d("LoginActivity", String.format("Username: %s, Password: %s, Role: %s", username, password, role));
-
             binding.btnLogin.setEnabled(false);
             login(role);
             binding.btnLogin.setEnabled(true);
         });
 
-        binding.btnToRegister.setOnClickListener(v -> toActivity(RegisterActivity.class));
+        binding.btnToRegister.setOnClickListener(v -> {
+            Common.toActivity(LoginActivity.this, RegisterActivity.class);
+        });
     }
 
     public void login(String role) {
@@ -69,7 +69,7 @@ public class LoginActivity extends BaseActivity {
 
                         if (Common.checkPassword(password, passwordFromDatabase)) {
                             // Login success
-                            toActivity(AdminDashboardActivity.class);
+                            Common.toActivity(LoginActivity.this, AdminDashboardActivity.class);
                         } else {
                             // Login failed
                             Log.d("LoginActivity",
@@ -95,16 +95,15 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
+    public void back() {
+        finish();
+    }
+
     private void initRoleChoice() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, roles);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.roleSpinner.setAdapter(adapter);
-    }
-
-    public void toActivity(Class<?> toActivity) {
-         Intent intent = new Intent(LoginActivity.this, toActivity);
-         startActivity(intent);
     }
 
     public static void showToast(Context context, String message) {

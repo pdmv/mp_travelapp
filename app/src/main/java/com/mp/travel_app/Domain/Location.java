@@ -1,5 +1,7 @@
 package com.mp.travel_app.Domain;
 
+import androidx.annotation.NonNull;
+
 public class Location {
     private int Id;
     private String loc;
@@ -30,6 +32,7 @@ public class Location {
         this.loc = loc;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return this.loc;

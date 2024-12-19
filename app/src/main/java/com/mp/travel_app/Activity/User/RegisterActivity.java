@@ -35,7 +35,7 @@ public class RegisterActivity extends BaseActivity {
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        databaseReference = database.getReference("Admin");
+        databaseReference = database.getReference("Customer");
         storageReference = storage.getReference();
 
         pickMedia = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
