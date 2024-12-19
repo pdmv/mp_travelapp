@@ -95,4 +95,10 @@
     <string name="admin_banner_title">Banner Management</string>
     <string name="admin_banner_list">Banner List</string>
     <string name="admin_banner_create">Create new Banner</string>
+
+
+    <string name="admin_ticket_title">Ticket Management</string>
+    <string name="admin_ticket_price">Price</string>
+    <string name="admin_ticket_time">Time</string>
+
 </resources>

@@ -21,7 +21,6 @@ import com.mp.travel_app.Domain.Category;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
-import com.mp.travel_app.Domain.Tour;
 import com.mp.travel_app.Utils.LoadData;
 import com.mp.travel_app.databinding.ActivityAdminCategoryBinding;
 
