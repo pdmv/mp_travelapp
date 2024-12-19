@@ -19,8 +19,7 @@ public class AdminDashboardActivity extends BaseActivity {
         binding.adminLocationBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminLocationActivity.class)));
         binding.adminTourBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminTourActivity.class)));
         binding.adminCategoryBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminCategoryActivity.class)));
-
+        binding.adminBookedBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminTicketActivity.class)));
         binding.adminBannerBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminBannerActivity.class)));
-        binding.adminBookedBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, MainActivity.class)));
     }
 }

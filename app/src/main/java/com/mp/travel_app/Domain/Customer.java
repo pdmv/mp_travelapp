@@ -2,14 +2,13 @@ package com.mp.travel_app.Domain;
 
 import androidx.annotation.NonNull;
 
-public class TourGuide {
+public class Customer {
     private int id;
     private String fullname, phoneNumber, email, avatar, username, password;
 
-    public TourGuide() {
-    }
+    public Customer() {}
 
-    public TourGuide(int id, String fullname, String phoneNumber, String email, String avatar, String username, String password) {
+    public Customer(int id, String fullname, String phoneNumber, String email, String avatar, String username, String password) {
         this.id = id;
         this.fullname = fullname;
         this.phoneNumber = phoneNumber;

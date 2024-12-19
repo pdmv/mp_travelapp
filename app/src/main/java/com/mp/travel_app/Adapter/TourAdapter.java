@@ -1,5 +1,6 @@
 package com.mp.travel_app.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourViewHolder
         return new TourViewHolder(binding);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull TourViewHolder holder, int position) {
         Tour tour = tours.get(position);

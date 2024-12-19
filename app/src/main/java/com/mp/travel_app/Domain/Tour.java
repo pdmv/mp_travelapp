@@ -1,5 +1,7 @@
 package com.mp.travel_app.Domain;
 
+import androidx.annotation.NonNull;
+
 public class Tour {
     private int id;
     private double price;
@@ -113,6 +115,7 @@ public class Tour {
         this.timeTour = timeTour;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return title;

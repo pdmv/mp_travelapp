@@ -1,5 +1,7 @@
 package com.mp.travel_app.Domain;
 
+import androidx.annotation.NonNull;
+
 public class Admin {
     private int id;
     private String fullname, phoneNumber, email, avatar, username, password;
@@ -73,6 +75,7 @@ public class Admin {
         this.password = password;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return id + " - " + fullname;
