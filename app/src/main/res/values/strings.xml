@@ -99,4 +99,13 @@
     <string name="login_to_register">Don\'t have an account?</string>
     <string name="login_register_btn">Register</string>
     <string name="login_choose_role">Choose your role</string>
+
+    <string name="register_title">Register</string>
+    <string name="register_full_name">Your full name</string>
+    <string name="register_phone_number">Your phone number</string>
+    <string name="register_email">Your email</string>
+    <string name="register_choose_avatar">Choose your avatar</string>
+    <string name="register_avatar_alt">Avatar picture</string>
+    <string name="register_to_login">Already have an account?</string>
+    <string name="register_login_btn">Login</string>
 </resources>

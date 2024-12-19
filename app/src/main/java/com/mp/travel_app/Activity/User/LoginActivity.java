@@ -17,6 +17,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mp.travel_app.Activity.Admin.AdminDashboardActivity;
 import com.mp.travel_app.Activity.BaseActivity;
+import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends BaseActivity {
@@ -36,17 +37,21 @@ public class LoginActivity extends BaseActivity {
 
         initRoleChoice();
 
-        binding.btnBack.setOnClickListener(v -> back());
+        binding.btnBack.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
         binding.btnLogin.setOnClickListener(v -> {
             username = binding.txtUsername.getText().toString();
             password = binding.txtPassword.getText().toString();
             String role = binding.roleSpinner.getSelectedItem().toString();
 
+            Log.d("LoginActivity", String.format("Username: %s, Password: %s, Role: %s", username, password, role));
+
             binding.btnLogin.setEnabled(false);
             login(role);
             binding.btnLogin.setEnabled(true);
         });
+
+        binding.btnToRegister.setOnClickListener(v -> toActivity(RegisterActivity.class));
     }
 
     public void login(String role) {
@@ -62,7 +67,7 @@ public class LoginActivity extends BaseActivity {
                         String passwordFromDatabase =
                                 dataSnapshot.child("password").getValue(String.class);
 
-                        if (password.equals(passwordFromDatabase)) {
+                        if (Common.checkPassword(password, passwordFromDatabase)) {
                             // Login success
                             toActivity(AdminDashboardActivity.class);
                         } else {
@@ -90,10 +95,6 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    public void back() {
-        finish();
-    }
-
     private void initRoleChoice() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, roles);
@@ -104,7 +105,6 @@ public class LoginActivity extends BaseActivity {
     public void toActivity(Class<?> toActivity) {
          Intent intent = new Intent(LoginActivity.this, toActivity);
          startActivity(intent);
-         finish();
     }
 
     public static void showToast(Context context, String message) {
