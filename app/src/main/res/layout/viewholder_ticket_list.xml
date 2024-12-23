@@ -6,14 +6,14 @@
     android:layout_height="wrap_content"
     android:padding="25dp"
     android:id="@+id/mainLayout"
-    android:background="@drawable/admin_background_4"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="#F5F5DC">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

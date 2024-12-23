@@ -56,7 +56,6 @@
     <string name="ticket_download">Download Ticket</string>
 
     <string name="admin_dashboard_title">Admin Dashboard</string>
-    <string name="admin_dashboard_welcome">Hi username</string>
     <string name="admin_dashboard_role">Role: Admin</string>
     <string name="admin_dashboard_btn_1">Location</string>
     <string name="admin_dashboard_btn_2">Category</string>
