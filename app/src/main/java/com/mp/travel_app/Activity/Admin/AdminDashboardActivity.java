@@ -12,7 +12,7 @@ import com.mp.travel_app.databinding.ActivityAdminDashboardBinding;
 
 public class AdminDashboardActivity extends BaseActivity {
     ActivityAdminDashboardBinding binding;
-    private static final String RECEIVE_CURRENT_USER_USERNAME = "CURRENT_USER_USERNAME";
+    private static final String RECEIVE_CURRENT_USER_FULLNAME = "CURRENT_USER_FULLNAME";
     private static final String RECEIVE_CURRENT_USER_AVATAR = "CURRENT_USER_AVATAR";
 
     @SuppressLint("SetTextI18n")
@@ -28,12 +28,14 @@ public class AdminDashboardActivity extends BaseActivity {
         binding.adminBookedBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminTicketActivity.class)));
         binding.adminBannerBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminBannerActivity.class)));
 
-        String USERNAME = getIntent().getStringExtra(RECEIVE_CURRENT_USER_USERNAME);
+        String fullname = getIntent().getStringExtra(RECEIVE_CURRENT_USER_FULLNAME);
         String avatar = getIntent().getStringExtra(RECEIVE_CURRENT_USER_AVATAR);
 
-        binding.usernameTxt.setText("Hi " + USERNAME);
+        if (fullname != null) {
+            binding.fullnameTxt.setText("Hi " + fullname);
+        }
 
-        if (avatar != null && !avatar.isEmpty()) {
+        if (avatar != null) {
             Glide.with(AdminDashboardActivity.this)
                     .load(avatar).circleCrop()
                     .into(binding.adminAvatar);
