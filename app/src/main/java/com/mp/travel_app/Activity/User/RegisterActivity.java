@@ -3,6 +3,7 @@ package com.mp.travel_app.Activity.User;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -17,7 +18,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.mp.travel_app.Activity.BaseActivity;
-import com.mp.travel_app.Domain.Customer;
+import com.mp.travel_app.Domain.Users;
 import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ActivityRegisterBinding;
 
@@ -25,6 +26,7 @@ public class RegisterActivity extends BaseActivity {
     DatabaseReference databaseReference;
     StorageReference storageReference;
     ActivityRegisterBinding binding;
+    public static final String[] roles = {"Customer", "TourGuide", "Admin"};
     ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
 
     private boolean isRegistering = false;
@@ -35,7 +37,9 @@ public class RegisterActivity extends BaseActivity {
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        databaseReference = database.getReference("Customer");
+        initRoleChoice();
+
+        databaseReference = database.getReference("Users");
         storageReference = storage.getReference();
 
         pickMedia = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
@@ -65,28 +69,31 @@ public class RegisterActivity extends BaseActivity {
         isRegistering = true;
         binding.btnRegister.setEnabled(false);
 
-        Customer customer = new Customer();
+        Users users = new Users();
 
-        customer.setFullname(binding.txtFullName.getText().toString());
-        customer.setPhoneNumber(binding.txtPhoneNumber.getText().toString());
-        customer.setEmail(binding.txtEmail.getText().toString());
-        customer.setUsername(binding.txtUsername.getText().toString());
-        customer.setPassword(
+        users.setFullname(binding.txtFullName.getText().toString());
+        users.setPhoneNumber(binding.txtPhoneNumber.getText().toString());
+        users.setEmail(binding.txtEmail.getText().toString());
+        users.setUsername(binding.txtUsername.getText().toString());
+        users.setPassword(
                 Common.hashPassword(binding.txtPassword.getText().toString()));
 
+        String role = binding.roleSpinner.getSelectedItem().toString();
+        users.setRole(role);
+
         if (
-                customer.getFullname().isEmpty() ||
-                customer.getPhoneNumber().isEmpty() ||
-                customer.getEmail().isEmpty() ||
-                customer.getUsername().isEmpty() ||
-                customer.getPassword().isEmpty()
+                users.getFullname().isEmpty() ||
+                users.getPhoneNumber().isEmpty() ||
+                users.getEmail().isEmpty() ||
+                users.getUsername().isEmpty() ||
+                users.getPassword().isEmpty()
         ) {
             Common.showToast(RegisterActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT);
             resetRegisterButtonState();
             return;
         }
 
-        Query query = databaseReference.orderByChild("username").equalTo(customer.getUsername());
+        Query query = databaseReference.orderByChild("username").equalTo(users.getUsername());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -97,15 +104,15 @@ public class RegisterActivity extends BaseActivity {
                     Object tag = binding.userAvatar.getTag();
                     if (tag == null) {
                         // Default avatar
-                        customer.setAvatar("https://firebasestorage.googleapis.com/v0/b/travel-app-75022.firebasestorage.app/o/profile.png?alt=media&token=7dbb862d-5513-4549-bf8b-503ac7809655");
-                        createUser(customer);
+                        users.setAvatar("https://firebasestorage.googleapis.com/v0/b/travel-app-75022.firebasestorage.app/o/profile.png?alt=media&token=7dbb862d-5513-4549-bf8b-503ac7809655");
+                        createUser(users);
                         resetRegisterButtonState();
                     } else {
                         handleImageUpload(Uri.parse(tag.toString()), new OnImageUploadListener() {
                             @Override
                             public void onUploadSuccess(String downloadUrl) {
-                                customer.setAvatar(downloadUrl);
-                                createUser(customer);
+                                users.setAvatar(downloadUrl);
+                                createUser(users);
                                 resetRegisterButtonState();
                             }
 
@@ -145,10 +152,10 @@ public class RegisterActivity extends BaseActivity {
                 .addOnFailureListener(e -> listener.onUploadFailed(e.getMessage()));
     }
 
-    public void createUser(Customer customer) {
+    public void createUser(Users user) {
         String userId = databaseReference.push().getKey();
         if (userId != null) {
-            databaseReference.child(userId).setValue(customer).addOnCompleteListener(task -> {
+            databaseReference.child(userId).setValue(user).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Common.showToast(RegisterActivity.this, "Register successfully", Toast.LENGTH_SHORT);
                     Common.toActivity(RegisterActivity.this, LoginActivity.class);
@@ -174,5 +181,12 @@ public class RegisterActivity extends BaseActivity {
     private void resetRegisterButtonState() {
         isRegistering = false;
         binding.btnRegister.setEnabled(true);
+    }
+
+    private void initRoleChoice() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, roles);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.roleSpinner.setAdapter(adapter);
     }
 }

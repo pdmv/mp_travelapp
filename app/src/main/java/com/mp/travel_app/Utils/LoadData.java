@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Method;
@@ -66,10 +65,6 @@ public class LoadData {
             }
         });
     }
-
-
-
-
 
     public static <T> void loadDataFromDatabaseTest(Context context, DatabaseReference databaseReference, final ArrayAdapter<T> adapter, final Class<T> dataClass, final DataCallback<T> callback) {
         databaseReference.addValueEventListener(new ValueEventListener() {

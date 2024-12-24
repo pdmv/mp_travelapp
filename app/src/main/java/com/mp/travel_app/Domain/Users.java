@@ -2,86 +2,12 @@ package com.mp.travel_app.Domain;
 
 import androidx.annotation.NonNull;
 
+import lombok.Data;
+
+@Data
 public class Users {
     private int id;
     private String fullname, phoneNumber, email, avatar, username, password, role;
-
-    public Users() {}
-
-    public Users(int id, String fullname, String phoneNumber, String email, String avatar, String username, String password, String role) {
-        this.id = id;
-        this.fullname = fullname;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.avatar = avatar;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFullname() {
-        return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     @NonNull
     @Override

@@ -68,34 +68,11 @@
             android:layout_height="wrap_content"
             android:text="@string/login_title" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/chooseRole"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/login_choose_role"
-                android:textColor="@color/darkBlue"
-                android:textSize="16sp" />
-
-            <Spinner
-                android:id="@+id/roleSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:overlapAnchor="false" />
-        </LinearLayout>
-
         <EditText
             android:id="@+id/txtUsername"
             android:layout_width="match_parent"
             android:layout_height="55dp"
+            android:layout_marginTop="8dp"
             android:autofillHints=""
             android:background="@drawable/rounded_border"
             android:ems="10"

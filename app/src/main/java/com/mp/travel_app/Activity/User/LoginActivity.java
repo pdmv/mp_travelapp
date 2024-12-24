@@ -17,16 +17,15 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mp.travel_app.Activity.Admin.AdminDashboardActivity;
 import com.mp.travel_app.Activity.BaseActivity;
+import com.mp.travel_app.Activity.MainActivity;
 import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ActivityLoginBinding;
+
+import java.util.Objects;
 
 public class LoginActivity extends BaseActivity {
     ActivityLoginBinding binding;
     DatabaseReference databaseReference;
-    public static final String[] roles = {"Admin", "Customer", "TourGuide"};
-    private static final String CURRENT_USER_FULLNAME = "CURRENT_USER_FULLNAME";
-    private static final String CURRENT_USER_AVATAR = "CURRENT_USER_AVATAR";
-
     private String username;
     private String password;
 
@@ -37,17 +36,14 @@ public class LoginActivity extends BaseActivity {
 
         setContentView(binding.getRoot());
 
-        initRoleChoice();
-
         binding.btnBack.setOnClickListener(v -> back());
 
         binding.btnLogin.setOnClickListener(v -> {
             username = binding.txtUsername.getText().toString();
             password = binding.txtPassword.getText().toString();
-            String role = binding.roleSpinner.getSelectedItem().toString();
 
             binding.btnLogin.setEnabled(false);
-            login(role);
+            login();
             binding.btnLogin.setEnabled(true);
         });
 
@@ -56,9 +52,8 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    public void login(String role) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference(role);
+    public void login() {
+        databaseReference = database.getReference("Users");
 
         Query query = databaseReference.orderByChild("username").equalTo(username);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -70,15 +65,13 @@ public class LoginActivity extends BaseActivity {
                                 dataSnapshot.child("password").getValue(String.class);
 
                         if (Common.checkPassword(password, passwordFromDatabase)) {
-                            // Login success
-                            String fullname = dataSnapshot.child("fullname").getValue(String.class);
-                            String avatar = dataSnapshot.child("avatar").getValue(String.class);
+                            Common.storeUserCredentials(username, password);
 
-                            Intent intent = new Intent(LoginActivity.this, AdminDashboardActivity.class);
-                            intent.putExtra(CURRENT_USER_FULLNAME, fullname);
-                            intent.putExtra(CURRENT_USER_AVATAR, avatar);
-                            startActivity(intent);
-                            finish();
+                            if (Objects.equals(dataSnapshot.child("role").getValue(String.class), "Admin")) {
+                                Common.toActivity(LoginActivity.this, AdminDashboardActivity.class);
+                            } else {
+                                Common.toActivity(LoginActivity.this, MainActivity.class);
+                            }
                         } else {
                             // Login failed
                             Log.d("LoginActivity",
@@ -106,13 +99,6 @@ public class LoginActivity extends BaseActivity {
 
     public void back() {
         finish();
-    }
-
-    private void initRoleChoice() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, roles);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.roleSpinner.setAdapter(adapter);
     }
 
     public static void showToast(Context context, String message) {
