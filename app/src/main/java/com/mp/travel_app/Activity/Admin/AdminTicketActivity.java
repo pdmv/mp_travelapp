@@ -4,15 +4,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.mp.travel_app.Activity.BaseActivity;
-import com.mp.travel_app.Adapter.CategoryAdapter;
 import com.mp.travel_app.Adapter.TicketAdapter;
-import com.mp.travel_app.Domain.Category;
 import com.mp.travel_app.Domain.Ticket;
 import com.mp.travel_app.Utils.LoadData;
 import com.mp.travel_app.databinding.ActivityAdminTicketBinding;

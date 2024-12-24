@@ -24,6 +24,8 @@ public class LoginActivity extends BaseActivity {
     ActivityLoginBinding binding;
     DatabaseReference databaseReference;
     public static final String[] roles = {"Admin", "Customer", "TourGuide"};
+    private static final String CURRENT_USER_FULLNAME = "CURRENT_USER_FULLNAME";
+    private static final String CURRENT_USER_AVATAR = "CURRENT_USER_AVATAR";
 
     private String username;
     private String password;
@@ -69,7 +71,14 @@ public class LoginActivity extends BaseActivity {
 
                         if (Common.checkPassword(password, passwordFromDatabase)) {
                             // Login success
-                            Common.toActivity(LoginActivity.this, AdminDashboardActivity.class);
+                            String fullname = dataSnapshot.child("fullname").getValue(String.class);
+                            String avatar = dataSnapshot.child("avatar").getValue(String.class);
+
+                            Intent intent = new Intent(LoginActivity.this, AdminDashboardActivity.class);
+                            intent.putExtra(CURRENT_USER_FULLNAME, fullname);
+                            intent.putExtra(CURRENT_USER_AVATAR, avatar);
+                            startActivity(intent);
+                            finish();
                         } else {
                             // Login failed
                             Log.d("LoginActivity",

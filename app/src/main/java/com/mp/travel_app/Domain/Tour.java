@@ -6,14 +6,14 @@ public class Tour {
     private int id;
     private double price;
     private String title, description, duration, imagePath, dateTour, timeTour;
-    private TourGuide tourGuide;
+    private Users tourGuide;
     private Location location;
     private Category category;
 
     public Tour() {
     }
 
-    public Tour(int id, double price, String title, String description, String duration, String imagePath, String dateTour, String timeTour, TourGuide tourGuide, Location location, Category category) {
+    public Tour(int id, double price, String title, String description, String duration, String imagePath, String dateTour, String timeTour, Users tourGuide, Location location, Category category) {
         this.id = id;
         this.price = price;
         this.title = title;
@@ -27,11 +27,11 @@ public class Tour {
         this.category = category;
     }
 
-    public TourGuide getTourGuide() {
+    public Users getTourGuide() {
         return tourGuide;
     }
 
-    public void setTourGuide(TourGuide tourGuide) {
+    public void setTourGuide(Users tourGuide) {
         this.tourGuide = tourGuide;
     }
 

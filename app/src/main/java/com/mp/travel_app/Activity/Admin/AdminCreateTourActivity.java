@@ -2,29 +2,29 @@ package com.mp.travel_app.Activity.Admin;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 import com.mp.travel_app.Activity.BaseActivity;
 import com.mp.travel_app.Domain.Category;
 import com.mp.travel_app.Domain.Location;
 import com.mp.travel_app.Domain.Tour;
-import com.mp.travel_app.Domain.TourGuide;
+import com.mp.travel_app.Domain.Users;
+import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.Utils.LoadData;
 import com.mp.travel_app.databinding.ActivityAdminCreateTourBinding;
 
@@ -33,23 +33,32 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class AdminCreateTourActivity extends BaseActivity {
-    private static final int PICK_IMAGE_REQUEST = 1;
+    private boolean isUploading = false;
+
     ActivityAdminCreateTourBinding binding;
-    int id;
-    Double price;
-    String title, description, duration, dateTour, timeTour, imagePath, priceString;
-    TourGuide selectedTourGuide;
-    Location selectedLocation;
-    Category selectedCategory;
     DatabaseReference tourRef;
+    StorageReference storageReference;
+    ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
+    String priceString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAdminCreateTourBinding.inflate(getLayoutInflater());
         tourRef = database.getReference("Tour");
+        storageReference = storage.getReference();
 
         setContentView(binding.getRoot());
+
+        pickMedia = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+            if (uri != null) {
+                Log.d("PhotoPicker", "Selected URI: " + uri);
+                binding.newTourImageView.setImageURI(uri);
+                binding.newTourImageView.setTag(uri);
+            } else {
+                Log.d("PhotoPicker", "No media selected");
+            }
+        });
 
         initLocation();
         initCategory();
@@ -58,18 +67,37 @@ public class AdminCreateTourActivity extends BaseActivity {
         binding.newTourDateTxt.setOnClickListener(v -> showDatePicker());
         binding.newTourTimeTxt.setOnClickListener(v -> showTimePicker());
         binding.newTourSelectImageBtn.setOnClickListener(v -> openImagePicker());
-        binding.newTourUploadBtn.setOnClickListener(v -> createNewTour());
+        binding.uploadTourBtn.setOnClickListener(v -> sendTourData());
         binding.newTourBackBtn.setOnClickListener(v -> finish());
     }
 
     private void initTourGuide() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference tourGuideRef = database.getReference("TourGuide");
+        DatabaseReference usersRef = database.getReference("Users");
 
-        ArrayAdapter<TourGuide> tourGuideAdapter = new ArrayAdapter<>(AdminCreateTourActivity.this, android.R.layout.simple_spinner_dropdown_item);
-        LoadData.loadDataFromDatabase(AdminCreateTourActivity.this, tourGuideRef, tourGuideAdapter, TourGuide.class);
+        ArrayAdapter<Users> tourGuideAdapter = new ArrayAdapter<>(AdminCreateTourActivity.this, android.R.layout.simple_spinner_dropdown_item);
 
-        setupSpinner(binding.newTourGuideSpinner, tourGuideAdapter);
+        usersRef.orderByChild("role").equalTo("TourGuide").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Users tourGuide = snapshot.getValue(Users.class);
+
+                    if (tourGuide != null) {
+                        tourGuideAdapter.add(tourGuide);
+                    }
+                }
+
+                tourGuideAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        binding.newTourGuideSpinner.setAdapter(tourGuideAdapter);
     }
 
     private void initLocation() {
@@ -79,7 +107,7 @@ public class AdminCreateTourActivity extends BaseActivity {
         ArrayAdapter<Location> locationAdapter = new ArrayAdapter<>(AdminCreateTourActivity.this, android.R.layout.simple_spinner_dropdown_item);
         LoadData.loadDataFromDatabase(AdminCreateTourActivity.this, locationRef, locationAdapter, Location.class);
 
-        setupSpinner(binding.newTourLocationSpinner, locationAdapter);
+        binding.newTourLocationSpinner.setAdapter(locationAdapter);
     }
 
     private void initCategory() {
@@ -89,24 +117,7 @@ public class AdminCreateTourActivity extends BaseActivity {
         ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<>(AdminCreateTourActivity.this, android.R.layout.simple_spinner_dropdown_item);
         LoadData.loadDataFromDatabase(AdminCreateTourActivity.this, categoryRef, categoryAdapter, Category.class);
 
-        setupSpinner(binding.newTourCategorySpinner, categoryAdapter);
-    }
-
-    private <T> void setupSpinner(Spinner spinner, ArrayAdapter<T> adapter) {
-        spinner.setAdapter(adapter);
-
-        // Thiết lập OnItemSelectedListener cho Spinner
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                T selectedItem = (T) parentView.getItemAtPosition(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-
-            }
-        });
+        binding.newTourCategorySpinner.setAdapter(categoryAdapter);
     }
 
     private void showDatePicker() {
@@ -160,81 +171,107 @@ public class AdminCreateTourActivity extends BaseActivity {
 
         return sdf.format(calendar.getTime());
     }
-
     private void openImagePicker() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        pickMedia.launch(new PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                .build());
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK && data != null) {
-            if (requestCode == PICK_IMAGE_REQUEST) {
-                Uri selectedImageUri = data.getData();
-                if (selectedImageUri != null) {
-                    binding.newTourImageView.setImageURI(selectedImageUri);
-                    imagePath = selectedImageUri.toString();
-                }
-            }
-        }
+    public interface OnImageUploadListener {
+        void onUploadSuccess(String downloadUrl);
+        void onUploadFailed(String errorMessage);
     }
 
-    private void createNewTour() {
-        title = binding.newTourTitleTxt.getText().toString();
-        description = binding.newTourDescriptionTxt.getText().toString();
-        duration = binding.newTourDurationTxt.getText().toString();
-        priceString = binding.newTourPriceTxt.getText().toString();
-        dateTour = binding.newTourDateTxt.getText().toString();
-        timeTour = binding.newTourTimeTxt.getText().toString();
-        selectedTourGuide = (TourGuide) binding.newTourGuideSpinner.getSelectedItem();
-        selectedLocation = (Location) binding.newTourLocationSpinner.getSelectedItem();
-        selectedCategory = (Category) binding.newTourCategorySpinner.getSelectedItem();
-
-        if (title.isEmpty() || description.isEmpty() || duration.isEmpty() || priceString.isEmpty() || dateTour.isEmpty() || timeTour.isEmpty() || imagePath == null) {
-            Toast.makeText(AdminCreateTourActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+    private void handleImageUpload(Uri imageUri, final AdminCreateTourActivity.OnImageUploadListener listener) {
+        if (imageUri == null) {
             return;
         }
 
-        tourRef.orderByChild("id").limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+        StorageReference imageRef = storageReference.child("images/tour_" + imageUri.getLastPathSegment());
+
+        imageRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    Log.d("UploadImage", "Upload image successfully. URL: " + uri.toString());
+                    listener.onUploadSuccess(uri.toString());
+                }).addOnFailureListener(e -> {
+                    Log.e("UploadImage", "Get download URL failed", e);
+                    listener.onUploadFailed(e.getMessage());
+                }));
+    }
+
+    private void sendTourData() {
+        if (isUploading) {
+            return;
+        }
+
+        isUploading = true;
+        binding.uploadTourBtn.setEnabled(false);
+
+        priceString = binding.newTourPriceTxt.getText().toString();
+
+        Object tag = binding.newTourImageView.getTag();
+
+        Tour newTour = new Tour();
+
+        newTour.setTitle(binding.newTourTitleTxt.getText().toString());
+        newTour.setDescription(binding.newTourDescriptionTxt.getText().toString());
+        newTour.setDuration(binding.newTourDurationTxt.getText().toString());
+        newTour.setDateTour(binding.newTourDateTxt.getText().toString());
+        newTour.setTimeTour(binding.newTourTimeTxt.getText().toString());
+        newTour.setCategory((Category) binding.newTourCategorySpinner.getSelectedItem());
+        newTour.setTourGuide((Users) binding.newTourGuideSpinner.getSelectedItem());
+        newTour.setLocation((Location) binding.newTourLocationSpinner.getSelectedItem());
+
+        if (newTour.getTitle().isEmpty() || newTour.getDescription().isEmpty() || newTour.getDuration().isEmpty()
+                || priceString.isEmpty() || newTour.getDateTour().isEmpty() || newTour.getTimeTour().isEmpty() || tag == null) {
+            Common.showToast(AdminCreateTourActivity.this, "Please fill in all information", Toast.LENGTH_SHORT);
+            resetUploadButtonState();
+            return;
+        }
+
+        newTour.setPrice(Double.parseDouble(priceString));
+
+        handleImageUpload(Uri.parse(tag.toString()), new AdminCreateTourActivity.OnImageUploadListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Tour lastTour = snapshot.getValue(Tour.class);
-                        id = lastTour.getId() + 1;
-                    }
-                }
-
-                try {
-                    price = Double.parseDouble(priceString);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    Toast.makeText(AdminCreateTourActivity.this, "Giá không hợp lệ", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Tour tour = new Tour(id, price, title, description, duration, imagePath, dateTour, timeTour, selectedTourGuide, selectedLocation, selectedCategory);
-
-                tourRef.child(String.valueOf(id)).setValue(tour).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(AdminCreateTourActivity.this, "Đã thêm thành công", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(AdminCreateTourActivity.this, "Thêm thất bại: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+            public void onUploadSuccess(String downloadUrl) {
+                newTour.setImagePath(downloadUrl);
+                createTour(newTour);
+                resetUploadButtonState();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AdminCreateTourActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onUploadFailed(String errorMessage) {
+                Log.e("UploadImage", "Upload image failed", new Exception(errorMessage));
+                resetUploadButtonState();
             }
         });
+    }
 
+    private void createTour(Tour newTour) {
+        String tourId = tourRef.push().getKey();
+        if (tourId != null) {
+            tourRef.child(tourId).setValue(newTour).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Common.showToast(AdminCreateTourActivity.this, "Create success", Toast.LENGTH_SHORT);
+                    binding.newTourTitleTxt.setText("");
+                    binding.newTourDescriptionTxt.setText("");
+                    binding.newTourDurationTxt.setText("");
+                    binding.newTourDateTxt.setText("");
+                    binding.newTourTimeTxt.setText("");
+                    binding.newTourCategorySpinner.setSelection(0);
+                    binding.newTourGuideSpinner.setSelection(0);
+                    binding.newTourLocationSpinner.setSelection(0);
+                    binding.newTourImageView.setImageResource(android.R.drawable.ic_menu_gallery);
+                    binding.newTourPriceTxt.setText("");
+                } else {
+                    Common.showToast(AdminCreateTourActivity.this, "Create failure", Toast.LENGTH_SHORT);
+                }
+            });
+        }
+    }
+
+    private void resetUploadButtonState() {
+        isUploading = false;
+        binding.uploadTourBtn.setEnabled(true);
     }
 }

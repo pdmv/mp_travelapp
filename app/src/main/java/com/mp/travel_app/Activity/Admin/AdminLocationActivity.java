@@ -5,23 +5,15 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.mp.travel_app.Activity.BaseActivity;
 import com.mp.travel_app.Domain.Location;
+import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.Utils.LoadData;
 import com.mp.travel_app.databinding.ActivityAdminLocationBinding;
 
 public class AdminLocationActivity extends BaseActivity {
     ActivityAdminLocationBinding binding;
-    int id;
-    String loc;
     DatabaseReference locationRef;
 
     @Override
@@ -34,7 +26,7 @@ public class AdminLocationActivity extends BaseActivity {
 
         initLocation();
 
-        binding.uploadLocBtn.setOnClickListener(v -> createNewLocation());
+        binding.uploadLocBtn.setOnClickListener(v -> sendLocationData());
         binding.locationBackBtn.setOnClickListener(v -> finish());
     }
 
@@ -48,42 +40,26 @@ public class AdminLocationActivity extends BaseActivity {
         binding.progressBarLocation.setVisibility(View.GONE);
     }
 
-    private void createNewLocation() {
-        loc = binding.newLocationTxt.getText().toString();
+    private void sendLocationData() {
+        Location newLocation = new Location();
 
-        if (loc.isEmpty()) {
-            Toast.makeText(AdminLocationActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+        newLocation.setLoc(binding.newLocationTxt.getText().toString());
+
+        if (newLocation.getLoc().isEmpty()) {
+            Common.showToast(AdminLocationActivity.this, "Please fill in all information", Toast.LENGTH_SHORT);
             return;
         }
 
-        locationRef.orderByChild("id").limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Location lastLocation = snapshot.getValue(Location.class);
-                        id = lastLocation.getId() + 1;
-                    }
+        String locationId = locationRef.push().getKey();
+        if (locationId != null) {
+            locationRef.child(locationId).setValue(newLocation).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Common.showToast(AdminLocationActivity.this, "Create success", Toast.LENGTH_SHORT);
+                    binding.newLocationTxt.setText("");
+                } else {
+                    Common.showToast(AdminLocationActivity.this, "Create failure", Toast.LENGTH_SHORT);
                 }
-
-                Location location = new Location(id, loc);
-
-                locationRef.child(String.valueOf(id)).setValue(location).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(AdminLocationActivity.this, "Đã thêm thành công", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(AdminLocationActivity.this, "Thêm thất bại: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AdminLocationActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+            });
+        }
     }
 }
