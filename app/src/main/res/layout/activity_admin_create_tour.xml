@@ -162,16 +162,16 @@
 
                 <ImageView
                     android:id="@+id/newTourImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_margin="16dp"
                     android:src="@android:drawable/ic_menu_gallery"
                     app:layout_constraintEnd_toEndOf="@+id/newTourSelectImageBtn"
-                    app:layout_constraintStart_toStartOf="@+id/newTourSelectImageBtn"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/newTourSelectImageBtn" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/newTourUploadBtn"
+                    android:id="@+id/uploadTourBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="16dp"

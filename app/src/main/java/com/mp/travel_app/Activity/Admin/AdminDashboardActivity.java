@@ -6,8 +6,6 @@ import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
 import com.mp.travel_app.Activity.BaseActivity;
-import com.mp.travel_app.Activity.MainActivity;
-import com.mp.travel_app.Domain.Admin;
 import com.mp.travel_app.databinding.ActivityAdminDashboardBinding;
 
 public class AdminDashboardActivity extends BaseActivity {
@@ -24,9 +22,9 @@ public class AdminDashboardActivity extends BaseActivity {
 
         binding.adminLocationBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminLocationActivity.class)));
         binding.adminTourBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminTourActivity.class)));
-        binding.adminCategoryBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminCategoryActivity.class)));
+        binding.adminCategoryBannerBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminCategoryBannerActivity.class)));
         binding.adminBookedBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminTicketActivity.class)));
-        binding.adminBannerBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminBannerActivity.class)));
+        binding.adminUsersBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminUsersActivity.class)));
 
         String fullname = getIntent().getStringExtra(RECEIVE_CURRENT_USER_FULLNAME);
         String avatar = getIntent().getStringExtra(RECEIVE_CURRENT_USER_AVATAR);

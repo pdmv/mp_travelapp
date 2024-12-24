@@ -44,6 +44,11 @@
     <string name="menu_cart">Bookmark</string>
     <string name="menu_profile">Profile</string>
 
+
+    <string name="menu_admin_category">Category</string>
+    <string name="menu_admin_banner">Banner</string>
+
+
     <string name="ticket_detail">Title Detail</string>
     <string name="ticket_id">Order ID: 123456</string>
     <string name="ticket_upcoming">Upcoming trip</string>
@@ -58,10 +63,10 @@
     <string name="admin_dashboard_title">Admin Dashboard</string>
     <string name="admin_dashboard_role">Role: Admin</string>
     <string name="admin_dashboard_btn_1">Location</string>
-    <string name="admin_dashboard_btn_2">Category</string>
+    <string name="admin_dashboard_btn_2">Category &amp; Banner</string>
     <string name="admin_dashboard_btn_3">Tour</string>
     <string name="admin_dashboard_btn_4">Booked</string>
-    <string name="admin_dashboard_btn_5">Banner</string>
+    <string name="admin_dashboard_btn_5">Account</string>
     <string name="admin_dashboard_btn_6">Logout</string>
     <string name="admin_upload_btn">Upload</string>
     <string name="admin_choose_image_btn">Choose Image</string>
@@ -94,6 +99,10 @@
     <string name="admin_ticket_price">Price</string>
     <string name="admin_ticket_time">Time</string>
 
+    <string name="admin_users_title">Account Management</string>
+    <string name="admin_users_list">Account List</string>
+    <string name="admin_users_create">Create new Account</string>
+
     <string name="admin_no_data_txt">No data to show</string>
 
     <string name="login_title">Login</string>
@@ -113,4 +122,6 @@
     <string name="register_avatar_alt">Avatar picture</string>
     <string name="register_to_login">Already have an account?</string>
     <string name="register_login_btn">Login</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

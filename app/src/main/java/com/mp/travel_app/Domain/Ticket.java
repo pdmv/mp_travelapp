@@ -6,11 +6,11 @@ public class Ticket {
     int id;
     String createdAt;
     Tour tour;
-    Customer customer;
+    Users customer;
 
     public Ticket() {}
 
-    public Ticket(int id, String createdAt, Tour tour, Customer customer) {
+    public Ticket(int id, String createdAt, Tour tour, Users customer) {
         this.id = id;
         this.createdAt = createdAt;
         this.tour = tour;
@@ -41,11 +41,11 @@ public class Ticket {
         this.tour = tour;
     }
 
-    public Customer getCustomer() {
+    public Users getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(Users customer) {
         this.customer = customer;
     }
 }

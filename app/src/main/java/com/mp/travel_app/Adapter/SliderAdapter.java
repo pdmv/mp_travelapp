@@ -28,6 +28,11 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
 //        }
 //    };
 
+
+    public SliderAdapter(List<SliderItem> sliderItems) {
+        this.sliderItems = sliderItems;
+    }
+
     public SliderAdapter(List<SliderItem> sliderItems, ViewPager2 viewPager2) {
         this.sliderItems = sliderItems;
         this.viewPager2 = viewPager2;

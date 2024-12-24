@@ -48,7 +48,6 @@
                     android:id="@+id/adminAvatar"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:clipToOutline="true"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +129,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/adminCategoryBtn"
+                    android:id="@+id/adminCategoryBannerBtn"
                     android:layout_width="0dp"
                     android:layout_height="180dp"
                     android:layout_marginStart="12dp"
@@ -271,7 +270,7 @@
                 android:orientation="horizontal">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/adminBannerBtn"
+                    android:id="@+id/adminUsersBtn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="12dp"
