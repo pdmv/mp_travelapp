@@ -3,24 +3,19 @@ package com.mp.travel_app.Domain;
 import androidx.annotation.NonNull;
 
 public class Location {
-    private int Id;
-    private String loc;
+    private String Id, loc;
 
     public Location() {
     }
 
-    ;
-
-    public Location(int id, String loc) {
+    public Location(String id, String loc) {
         this.Id = id;
         this.loc = loc;
     }
 
-    public int getId() {
-        return Id;
-    }
+    public String getId() { return Id; }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.Id = id;
     }
 

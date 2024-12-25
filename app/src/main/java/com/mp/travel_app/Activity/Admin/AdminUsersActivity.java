@@ -24,6 +24,7 @@ import com.mp.travel_app.Activity.BaseActivity;
 import com.mp.travel_app.Adapter.UsersAdapter;
 import com.mp.travel_app.Domain.Users;
 import com.mp.travel_app.Utils.Common;
+import com.mp.travel_app.Utils.LoadData;
 import com.mp.travel_app.databinding.ActivityAdminUsersBinding;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class AdminUsersActivity extends BaseActivity {
 
         binding.usersBackBtn.setOnClickListener(v -> finish());
         binding.uploadUserBtn.setOnClickListener(v -> sendUserData());
-        binding.newUserSelectImageBtn.setOnClickListener(v -> openImagePicker());
+        binding.newUserSelectImageBtn.setOnClickListener(v -> Common.openImagePicker(pickMedia));
     }
 
     private void initRoleChoice() {
@@ -98,6 +99,10 @@ public class AdminUsersActivity extends BaseActivity {
                         binding.recyclerViewUsers.setAdapter(userAdapter);
                     }
 
+                    binding.noDataTxt.setVisibility(View.GONE);
+                    binding.progressBarUsers.setVisibility(View.GONE);
+                } else {
+                    binding.noDataTxt.setVisibility(View.VISIBLE);
                     binding.progressBarUsers.setVisibility(View.GONE);
                 }
             }
@@ -109,41 +114,10 @@ public class AdminUsersActivity extends BaseActivity {
         });
     }
 
-    private void openImagePicker() {
-        pickMedia.launch(new PickVisualMediaRequest.Builder()
-                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                .build());
-    }
-
-    public interface OnImageUploadListener {
-        void onUploadSuccess(String downloadUrl);
-        void onUploadFailed(String errorMessage);
-    }
-
-    private void handleImageUpload(Uri imageUri, final AdminUsersActivity.OnImageUploadListener listener) {
-        if (imageUri == null) {
-            return;
-        }
-
-        StorageReference imageRef = storageReference.child("images/avatar_" + imageUri.getLastPathSegment());
-
-        imageRef.putFile(imageUri)
-                .addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    Log.d("UploadImage", "Upload image successfully. URL: " + uri.toString());
-                    listener.onUploadSuccess(uri.toString());
-                }).addOnFailureListener(e -> {
-                    Log.e("UploadImage", "Get download URL failed", e);
-                    listener.onUploadFailed(e.getMessage());
-                }));
-    }
-
     private void sendUserData() {
-        if (isUploading) {
+        if (!Common.checkIsInProcess(isUploading, binding.uploadUserBtn)) {
             return;
         }
-
-        isUploading = true;
-        binding.uploadUserBtn.setEnabled(false);
 
         Users user = new Users();
 
@@ -155,9 +129,8 @@ public class AdminUsersActivity extends BaseActivity {
                 Common.hashPassword(binding.newUserPasswordTxt.getText().toString()));
         user.setRole(binding.newUserRoleSpinner.getSelectedItem().toString());
 
-        if (user.getFullname().isEmpty() || user.getPhoneNumber().isEmpty() || user.getEmail().isEmpty() ||
-                user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
-            Common.showToast(AdminUsersActivity.this, "Please fill in all information", Toast.LENGTH_SHORT);
+        if (!Common.checkFields(AdminUsersActivity.this, user.getFullname(), user.getPhoneNumber(),
+                user.getEmail(), user.getUsername(), user.getPassword())) {
             resetUploadButtonState();
             return;
         }
@@ -175,14 +148,14 @@ public class AdminUsersActivity extends BaseActivity {
                     if (tag == null) {
                         // Default avatar
                         user.setAvatar("https://firebasestorage.googleapis.com/v0/b/travel-app-75022.firebasestorage.app/o/profile.png?alt=media&token=7dbb862d-5513-4549-bf8b-503ac7809655");
-                        createUser(user);
+                        Common.createData(AdminUsersActivity.this, usersRef, user);
                         resetUploadButtonState();
                     } else {
-                        handleImageUpload(Uri.parse(tag.toString()), new AdminUsersActivity.OnImageUploadListener() {
+                        Common.handleImageUpload(Uri.parse(tag.toString()), new Common.OnImageUploadListener() {
                             @Override
                             public void onUploadSuccess(String downloadUrl) {
                                 user.setAvatar(downloadUrl);
-                                createUser(user);
+                                Common.createData(AdminUsersActivity.this, usersRef, user);
                                 resetUploadButtonState();
                             }
 
@@ -202,26 +175,15 @@ public class AdminUsersActivity extends BaseActivity {
                 resetUploadButtonState();
             }
         });
-    }
 
-    private void createUser(Users user) {
-        String userId = usersRef.push().getKey();
-        if (userId != null) {
-            usersRef.child(userId).setValue(user).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Common.showToast(AdminUsersActivity.this, "Register successfully", Toast.LENGTH_SHORT);
-                    binding.newUserFullNameTxt.setText("");
-                    binding.newUserPhoneNumberTxt.setText("");
-                    binding.newUserEmailTxt.setText("");
-                    binding.newUserUsernameTxt.setText("");
-                    binding.newUserPasswordTxt.setText("");
-                    binding.newUserImageView.setImageResource(android.R.drawable.ic_menu_gallery);
-                    binding.newUserRoleSpinner.setSelection(0);
-                } else {
-                    Common.showToast(AdminUsersActivity.this, "Registration failed", Toast.LENGTH_SHORT);
-                }
-            });
-        }
+        binding.newUserFullNameTxt.setText("");
+        binding.newUserPhoneNumberTxt.setText("");
+        binding.newUserEmailTxt.setText("");
+        binding.newUserUsernameTxt.setText("");
+        binding.newUserPasswordTxt.setText("");
+        binding.newUserImageView.setImageResource(android.R.drawable.ic_menu_gallery);
+        binding.newUserImageView.setTag(null);
+        binding.newUserRoleSpinner.setSelection(0);
     }
 
     private void resetUploadButtonState() {

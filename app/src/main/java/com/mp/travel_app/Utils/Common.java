@@ -4,9 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,6 +24,8 @@ import com.mp.travel_app.Activity.BaseActivity;
 import com.mp.travel_app.Domain.Users;
 
 import org.mindrot.jbcrypt.BCrypt;
+
+import java.lang.reflect.Method;
 
 public class Common extends BaseActivity {
     public static final String USERNAME_KEY = "USERNAME";
@@ -126,6 +134,12 @@ public class Common extends BaseActivity {
         toActivity(context, toActivityClass);
     }
 
+    public static void openImagePicker(ActivityResultLauncher<PickVisualMediaRequest> pickMedia) {
+        pickMedia.launch(new PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                .build());
+    }
+
     public static void handleImageUpload(Uri imageUri, final OnImageUploadListener listener) {
         if (imageUri == null) {
             return;
@@ -142,6 +156,50 @@ public class Common extends BaseActivity {
                     Log.e("UploadImage", "Upload image failed: " + e.getMessage());
                     listener.onUploadFailed(e.getMessage());
                 });
+    }
+
+    public static boolean checkFields(Context context, String... fields) {
+        for (String field : fields) {
+            if (field.trim().isEmpty()) {
+                showToast(context, "Please fill in all information", Toast.LENGTH_SHORT);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean checkIsInProcess(boolean isProcessing, AppCompatButton uploadBtn) {
+        if (isProcessing) {
+            return false;
+        }
+
+        isProcessing = true;
+        uploadBtn.setEnabled(false);
+
+        return isProcessing;
+    }
+
+    public static <T> void createData(Context context, DatabaseReference databaseReference, T data) {
+        String id = databaseReference.push().getKey();
+
+        try {
+            Method setIdMethod = data.getClass().getMethod("setId", String.class);
+            setIdMethod.invoke(data, id);
+
+            if (id != null) {
+                databaseReference.child(id).setValue(data).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        showToast(context, "Create success", Toast.LENGTH_SHORT);
+                    } else {
+                        showToast(context, "Create failure", Toast.LENGTH_SHORT);
+                    }
+                });
+            }
+        } catch (Exception e) {
+            Log.e("Error", "Error: ", e);
+            showToast(context, "Error while creating data", Toast.LENGTH_SHORT);
+        }
     }
 
     public static void getFileFromFirebase(String filePath, final OnGetFileListener listener) {

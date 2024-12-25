@@ -6,27 +6,21 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mp.travel_app.Adapter.CategoryAdapter;
 import com.mp.travel_app.Domain.Category;
 import com.mp.travel_app.Utils.Common;
+import com.mp.travel_app.Utils.LoadData;
 import com.mp.travel_app.databinding.FragmentAdminCategoryBinding;
 
 import java.util.ArrayList;
@@ -39,7 +33,6 @@ public class AdminCategoryFragment extends Fragment {
     private String mParam2;
     private boolean isUploading = false;
 
-    AdminCategoryBannerActivity.OnImageUploadListener onImageUploadListener;
     FragmentAdminCategoryBinding binding;
 
     FirebaseDatabase database;
@@ -47,10 +40,6 @@ public class AdminCategoryFragment extends Fragment {
     DatabaseReference categoryRef;
     StorageReference storageReference;
     ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
-
-    public void setOnImageUploadListener(AdminCategoryBannerActivity.OnImageUploadListener listener) {
-        this.onImageUploadListener = listener;
-    }
 
     public AdminCategoryFragment() {
         // Required empty public constructor
@@ -97,123 +86,54 @@ public class AdminCategoryFragment extends Fragment {
         initCategory();
 
         binding.categoryBackBtn.setOnClickListener(v -> getActivity().finish());
-        binding.newCategorySelectImageBtn.setOnClickListener(v -> openImagePicker());
+        binding.newCategorySelectImageBtn.setOnClickListener(v -> Common.openImagePicker(pickMedia));
         binding.uploadCategoryBtn.setOnClickListener(v -> sendCategoryData());
 
         return binding.getRoot();
     }
 
     private void initCategory() {
-        binding.progressBarCategory.setVisibility(View.VISIBLE);
+        List<Category> categories = new ArrayList<>();
 
-        categoryRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    List<Category> categories = new ArrayList<>();
+        CategoryAdapter categoryAdapter = new CategoryAdapter(categories);
 
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Category category = dataSnapshot.getValue(Category.class);
-                        categories.add(category);
-                    }
-
-                    if (!categories.isEmpty()) {
-                        binding.recyclerViewCategory.setLayoutManager(new LinearLayoutManager(
-                                requireContext(),
-                                RecyclerView.HORIZONTAL,
-                                false
-                        ));
-                        RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> categoryAdapter
-                                = new CategoryAdapter(categories);
-                        binding.recyclerViewCategory.setAdapter(categoryAdapter);
-                    }
-
-                    binding.progressBarCategory.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void handleImageUpload(Uri imageUri) {
-        if (imageUri == null) {
-            return;
-        }
-
-        StorageReference imageRef = storageReference.child("images/category_" + imageUri.getLastPathSegment());
-
-        imageRef.putFile(imageUri)
-                .addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    Log.d("UploadImage", "Upload image successfully. URL: " + uri.toString());
-                    if (onImageUploadListener != null) {
-                        onImageUploadListener.onUploadSuccess(uri.toString());
-                        resetUploadButtonState();
-                    }
-
-                    createCategory(uri.toString());
-                    resetUploadButtonState();
-                }).addOnFailureListener(e -> {
-                    Log.e("UploadImage", "Get download URL failed", e);
-                    if (onImageUploadListener != null) {
-                        onImageUploadListener.onUploadFailed(e.getMessage());
-                        resetUploadButtonState();
-                    }
-                }));
-    }
-
-    private void openImagePicker() {
-        pickMedia.launch(new PickVisualMediaRequest.Builder()
-                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                .build());
+        LoadData.loadDataIntoRecyclerView(categoryRef, binding.recyclerViewCategory, binding.progressBarCategory,
+                binding.noDataTxt, Category.class, categoryAdapter, categories);
     }
 
     private void sendCategoryData() {
-        if (isUploading) {
+        if (!Common.checkIsInProcess(isUploading, binding.uploadCategoryBtn)) {
             return;
         }
 
-        isUploading = true;
-        binding.uploadCategoryBtn.setEnabled(false);
+        Category newCategory = new Category();
+        newCategory.setName(binding.newCategoryNameTxt.getText().toString());
 
         Object tag = binding.newCategoryImageView.getTag();
 
-        if (tag == null) {
-            Toast.makeText(getContext(), "Please fill in all information", Toast.LENGTH_SHORT).show();
+        if (!Common.checkFields(binding.getRoot().getContext(), newCategory.getName(), tag != null ? tag.toString() : "")) {
             resetUploadButtonState();
             return;
         }
 
-        handleImageUpload(Uri.parse(tag.toString()));
-    }
+        Common.handleImageUpload(Uri.parse(tag.toString()), new Common.OnImageUploadListener() {
+            @Override
+            public void onUploadSuccess(String imagePath) {
+                newCategory.setImagePath(imagePath);
+                Common.createData(binding.getRoot().getContext(), categoryRef, newCategory);
+                resetUploadButtonState();
+            }
 
-    private void createCategory(String imageUrl) {
-        Category newCategory = new Category();
+            @Override
+            public void onUploadFailed(String errorMessage) {
+                Log.e("UploadImage", "Upload image failed", new Exception(errorMessage));
+                resetUploadButtonState();
+            }
+        });
 
-        newCategory.setName(binding.newCategoryNameTxt.getText().toString());
-        newCategory.setImagePath(imageUrl);
-
-        if (newCategory.getName().isEmpty()) {
-            Common.showToast(getContext(), "Please fill in all information", Toast.LENGTH_SHORT);
-            resetUploadButtonState();
-            return;
-        }
-
-        String categoryId = categoryRef.push().getKey();
-        if (categoryId != null) {
-            categoryRef.child(categoryId).setValue(newCategory).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Common.showToast(getContext(), "Create success", Toast.LENGTH_SHORT);
-                    binding.newCategoryImageView.setImageResource(android.R.drawable.ic_menu_gallery);
-                    binding.newCategoryNameTxt.setText("");
-                } else {
-                    Common.showToast(getContext(), "Create failure", Toast.LENGTH_SHORT);
-                }
-            });
-        }
+        binding.newCategoryImageView.setImageResource(android.R.drawable.ic_menu_gallery);
+        binding.newCategoryImageView.setTag(null);
+        binding.newCategoryNameTxt.setText("");
     }
 
     private void resetUploadButtonState() {

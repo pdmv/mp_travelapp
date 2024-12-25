@@ -10,13 +10,6 @@ import com.mp.travel_app.databinding.ActivityAdminCategoryBannerBinding;
 public class AdminCategoryBannerActivity extends BaseActivity {
     ActivityAdminCategoryBannerBinding binding;
 
-    public interface OnImageUploadListener {
-        void onUploadSuccess(String downloadUrl);
-        void onUploadFailed(String errorMessage);
-    }
-
-    private OnImageUploadListener onImageUploadListener;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +30,5 @@ public class AdminCategoryBannerActivity extends BaseActivity {
                     break;
             }
         }).attach();
-    }
-
-    public void setOnImageUploadListener(OnImageUploadListener listener) {
-        this.onImageUploadListener = listener;
     }
 }

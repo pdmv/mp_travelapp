@@ -1,14 +1,14 @@
 package com.mp.travel_app.Domain;
 
 public class SliderItem {
-    private int id;
+    private String id;
     private String url;
     private Tour tour;
 
     public SliderItem() {
     }
 
-    public SliderItem(int id, String url, Tour tour) {
+    public SliderItem(String id, String url, Tour tour) {
         this.id = id;
         this.url = url;
         this.tour = tour;
@@ -22,11 +22,11 @@ public class SliderItem {
         this.tour = tour;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

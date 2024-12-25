@@ -135,4 +135,10 @@
     <string name="profile_change_password">Change password</string>
     <string name="profile_change_avatar">Change avatar</string>
     <string name="profile_logout">Logout</string>
+
+    <string name="edit_profile_title">Edit User Profile</string>
+    <string name="edit_profile_current_password">Current password</string>
+    <string name="edit_profile_new_password">New password</string>
+    <string name="edit_profile_re_password">Re-enter new password</string>
+    <string name="admin_save_btn">Save</string>
 </resources>

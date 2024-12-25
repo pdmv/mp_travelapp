@@ -8,21 +8,15 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mp.travel_app.Adapter.SliderAdapter;
@@ -42,7 +36,6 @@ public class AdminBannerFragment extends Fragment {
     private String mParam2;
     private boolean isUploading = false;
 
-    AdminCategoryBannerActivity.OnImageUploadListener onImageUploadListener;
     FragmentAdminBannerBinding binding;
 
     FirebaseDatabase database;
@@ -50,10 +43,6 @@ public class AdminBannerFragment extends Fragment {
     DatabaseReference bannerRef;
     StorageReference storageReference;
     ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
-
-    public void setOnImageUploadListener(AdminCategoryBannerActivity.OnImageUploadListener listener) {
-        this.onImageUploadListener = listener;
-    }
 
     public AdminBannerFragment() {
         // Required empty public constructor
@@ -101,126 +90,63 @@ public class AdminBannerFragment extends Fragment {
         initTour();
 
         binding.bannerBackBtn.setOnClickListener(v -> getActivity().finish());
-        binding.newBannerSelectImageBtn.setOnClickListener(v -> openImagePicker());
+        binding.newBannerSelectImageBtn.setOnClickListener(v -> Common.openImagePicker(pickMedia));
         binding.uploadBannerBtn.setOnClickListener(v -> sendBannerData());
 
         return binding.getRoot();
     }
 
-    private void handleImageUpload(Uri imageUri) {
-        if (imageUri == null) {
-            return;
-        }
-
-        StorageReference imageRef = storageReference.child("images/banner_" + imageUri.getLastPathSegment());
-
-        imageRef.putFile(imageUri)
-                .addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    Log.d("UploadImage", "Upload image successfully. URL: " + uri.toString());
-                    if (onImageUploadListener != null) {
-                        onImageUploadListener.onUploadSuccess(uri.toString());
-                        resetUploadButtonState();
-                    }
-
-                    createBanner(uri.toString());
-                    resetUploadButtonState();
-                }).addOnFailureListener(e -> {
-                    Log.e("UploadImage", "Get download URL failed", e);
-                    if (onImageUploadListener != null) {
-                        onImageUploadListener.onUploadFailed(e.getMessage());
-                        resetUploadButtonState();
-                    }
-                }));
-    }
-
-    private void openImagePicker() {
-        pickMedia.launch(new PickVisualMediaRequest.Builder()
-                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                .build());
-    }
-
     private void initBanner() {
-        binding.progressBarBanner.setVisibility(View.VISIBLE);
+        List<SliderItem> sliderItems = new ArrayList<>();
 
-        bannerRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    List<SliderItem> sliderItems = new ArrayList<>();
+        SliderAdapter sliderAdapter = new SliderAdapter(sliderItems);
 
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        SliderItem sliderItem = dataSnapshot.getValue(SliderItem.class);
-                        sliderItems.add(sliderItem);
-                    }
-
-                    if (!sliderItems.isEmpty()) {
-                        binding.recyclerViewBanner.setLayoutManager(new LinearLayoutManager(
-                                requireContext(),
-                                RecyclerView.HORIZONTAL,
-                                false
-                        ));
-                        RecyclerView.Adapter<SliderAdapter.SliderViewHolder> sliderAdapter
-                                = new SliderAdapter(sliderItems);
-                        binding.recyclerViewBanner.setAdapter(sliderAdapter);
-                    }
-
-                    binding.progressBarBanner.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        LoadData.loadDataIntoRecyclerView(bannerRef, binding.recyclerViewBanner, binding.progressBarBanner,
+                binding.noDataTxt, SliderItem.class, sliderAdapter, sliderItems);
     }
 
     private void initTour() {
         DatabaseReference tourRef = database.getReference("Tour");
 
-        ArrayAdapter<Tour> tourAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item);
-        LoadData.loadDataFromDatabase(getContext(), tourRef, tourAdapter, Tour.class);
+        ArrayAdapter<Tour> tourAdapter = new ArrayAdapter<>(binding.getRoot().getContext(), android.R.layout.simple_spinner_dropdown_item);
+        LoadData.loadDataFromDatabase(binding.getRoot().getContext(), tourRef, tourAdapter, Tour.class);
 
         binding.newTourSpinner.setAdapter(tourAdapter);
     }
 
     private void sendBannerData() {
-        if (isUploading) {
+        if (!Common.checkIsInProcess(isUploading, binding.uploadBannerBtn)) {
             return;
         }
 
-        isUploading = true;
-        binding.uploadBannerBtn.setEnabled(false);
+        SliderItem newSliderItem = new SliderItem();
+        newSliderItem.setTour((Tour) binding.newTourSpinner.getSelectedItem());
 
         Object tag = binding.newBannerImageView.getTag();
 
-        if (tag == null) {
-            Common.showToast(getContext(), "Please fill in all information", Toast.LENGTH_SHORT);
+        if (!Common.checkFields(binding.getRoot().getContext(), tag != null ? tag.toString() : "")) {
             resetUploadButtonState();
             return;
         }
 
-        handleImageUpload(Uri.parse(tag.toString()));
-    }
+        Common.handleImageUpload(Uri.parse(tag.toString()), new Common.OnImageUploadListener() {
+            @Override
+            public void onUploadSuccess(String imagePath) {
+                newSliderItem.setUrl(imagePath);
+                Common.createData(binding.getRoot().getContext(), bannerRef, newSliderItem);
+                resetUploadButtonState();
+            }
 
-    private void createBanner(String imageUrl) {
-        SliderItem newSliderItem = new SliderItem();
+            @Override
+            public void onUploadFailed(String errorMessage) {
+                Log.e("UploadImage", "Upload image failed", new Exception(errorMessage));
+                resetUploadButtonState();
+            }
+        });
 
-        newSliderItem.setTour((Tour) binding.newTourSpinner.getSelectedItem());
-        newSliderItem.setUrl(imageUrl);
-
-        String bannerId = bannerRef.push().getKey();
-        if (bannerId != null) {
-            bannerRef.child(bannerId).setValue(newSliderItem).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Common.showToast(getContext(), "Create successful banners", Toast.LENGTH_SHORT);
-                    binding.newBannerImageView.setImageResource(android.R.drawable.ic_menu_gallery);
-                    binding.newTourSpinner.setSelection(0);
-                } else {
-                    Common.showToast(getContext(), "Banner creation failed", Toast.LENGTH_SHORT);
-                }
-            });
-        }
+        binding.newBannerImageView.setImageResource(android.R.drawable.ic_menu_gallery);
+        binding.newBannerImageView.setTag(null);
+        binding.newTourSpinner.setSelection(0);
     }
 
     private void resetUploadButtonState() {

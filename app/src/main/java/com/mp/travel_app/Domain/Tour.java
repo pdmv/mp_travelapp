@@ -3,9 +3,8 @@ package com.mp.travel_app.Domain;
 import androidx.annotation.NonNull;
 
 public class Tour {
-    private int id;
     private double price;
-    private String title, description, duration, imagePath, dateTour, timeTour;
+    private String id, title, description, duration, imagePath, dateTour, timeTour;
     private Users tourGuide;
     private Location location;
     private Category category;
@@ -13,7 +12,7 @@ public class Tour {
     public Tour() {
     }
 
-    public Tour(int id, double price, String title, String description, String duration, String imagePath, String dateTour, String timeTour, Users tourGuide, Location location, Category category) {
+    public Tour(String id, double price, String title, String description, String duration, String imagePath, String dateTour, String timeTour, Users tourGuide, Location location, Category category) {
         this.id = id;
         this.price = price;
         this.title = title;
@@ -51,11 +50,11 @@ public class Tour {
         this.category = category;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
