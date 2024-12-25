@@ -311,7 +311,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/logoutBtn"
+                    android:id="@+id/adminLogoutBtn"
                     android:layout_width="0dp"
                     android:layout_height="180dp"
                     android:layout_marginStart="12dp"

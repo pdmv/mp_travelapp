@@ -2,6 +2,7 @@ package com.mp.travel_app.Utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mp.travel_app.Activity.BaseActivity;
+import com.mp.travel_app.Activity.User.LoginActivity;
 import com.mp.travel_app.Domain.Users;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -112,6 +114,15 @@ public class Common extends BaseActivity {
                 callback.onFailure("Error: " + error.getMessage());
             }
         });
+    }
+
+    public static void logout(Context context) {
+        sharedPreferences.edit()
+                .remove(USERNAME_KEY)
+                .remove(PASSWORD_KEY)
+                .apply();
+
+        toActivity(context, LoginActivity.class);
     }
 
     public interface GetUserCallback {

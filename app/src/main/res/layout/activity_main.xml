@@ -110,12 +110,13 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="16dp">
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/viewPagerSlider"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewBanner"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -126,10 +127,10 @@
                     style="?android:attr/progressBarStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/viewPagerSlider"
+                    app:layout_constraintBottom_toBottomOf="@+id/recyclerViewBanner"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/viewPagerSlider" />
+                    app:layout_constraintTop_toTopOf="@+id/recyclerViewBanner" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
