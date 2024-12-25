@@ -159,7 +159,7 @@ public class AdminBannerFragment extends Fragment {
                                 RecyclerView.HORIZONTAL,
                                 false
                         ));
-                        RecyclerView.Adapter<SliderAdapter.SliderViewholder> sliderAdapter
+                        RecyclerView.Adapter<SliderAdapter.SliderViewHolder> sliderAdapter
                                 = new SliderAdapter(sliderItems);
                         binding.recyclerViewBanner.setAdapter(sliderAdapter);
                     }

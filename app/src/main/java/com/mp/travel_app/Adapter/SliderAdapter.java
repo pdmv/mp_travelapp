@@ -1,59 +1,44 @@
 package com.mp.travel_app.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.mp.travel_app.Domain.SliderItem;
-import com.mp.travel_app.R;
+import com.mp.travel_app.databinding.ViewholderBannerBinding;
 
 import java.util.List;
 
-public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderViewholder> {
-    private List<SliderItem> sliderItems;
-    private ViewPager2 viewPager2;
+public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderViewHolder> {
+    private final List<SliderItem> sliderItems;
     private Context context;
-//    private Runnable runnable = new Runnable() {
-//        @Override
-//        public void run() {
-//            sliderItems.addAll(sliderItems);
-//            notifyDataSetChanged();
-//        }
-//    };
-
 
     public SliderAdapter(List<SliderItem> sliderItems) {
         this.sliderItems = sliderItems;
     }
 
-    public SliderAdapter(List<SliderItem> sliderItems, ViewPager2 viewPager2) {
-        this.sliderItems = sliderItems;
-        this.viewPager2 = viewPager2;
-    }
-
     @NonNull
     @Override
-    public SliderAdapter.SliderViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SliderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-
-        return new SliderViewholder(LayoutInflater
-                .from(context)
-                .inflate(R.layout.slider_item_container, parent, false));
+        LayoutInflater inflater = LayoutInflater.from(context);
+        ViewholderBannerBinding binding = ViewholderBannerBinding.inflate(inflater, parent, false);
+        return new SliderViewHolder(binding);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
-    public void onBindViewHolder(@NonNull SliderAdapter.SliderViewholder holder, int position) {
-        holder.setImage(sliderItems.get(position));
-//        if (position == sliderItems.size() - 2) {
-//            viewPager2.post(runnable);
-//        }
+    public void onBindViewHolder(@NonNull SliderViewHolder holder, int position) {
+        SliderItem sliderItem = sliderItems.get(position);
+
+        Glide.with(holder.itemView.getContext())
+                .load(sliderItem.getUrl())
+                .into(holder.binding.bannerPic);
     }
 
     @Override
@@ -61,16 +46,12 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
         return sliderItems.size();
     }
 
-    public class SliderViewholder extends RecyclerView.ViewHolder {
-        private ImageView imageView;
+    public static class SliderViewHolder extends RecyclerView.ViewHolder {
+        private final ViewholderBannerBinding binding;
 
-        public SliderViewholder(@NonNull View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.imageSlide);
-        }
-
-        void setImage(SliderItem sliderItem) {
-            Glide.with(context).load(sliderItem.getUrl()).into(imageView);
+        public SliderViewHolder(ViewholderBannerBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

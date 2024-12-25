@@ -8,8 +8,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.CompositePageTransformer;
-import androidx.viewpager2.widget.MarginPageTransformer;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -185,35 +183,34 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void banners(ArrayList<SliderItem> sliderItems) {
-        binding.viewPagerSlider.setAdapter(new SliderAdapter(sliderItems, binding.viewPagerSlider));
-        binding.viewPagerSlider.setClipToPadding(false);
-        binding.viewPagerSlider.setClipChildren(false);
-        binding.viewPagerSlider.setOffscreenPageLimit(3);
-        binding.viewPagerSlider.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-
-        CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
-        compositePageTransformer.addTransformer(new MarginPageTransformer(40));
-
-        binding.viewPagerSlider.setPageTransformer(compositePageTransformer);
-    }
-
     private void initBanner() {
-        DatabaseReference databaseReference = database.getReference("Banner");
+        DatabaseReference bannerRef = database.getReference("Banner");
+
         binding.progressBarBanner.setVisibility(View.VISIBLE);
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        bannerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    ArrayList<SliderItem> sliderItems = new ArrayList<>();
+                    List<SliderItem> sliderItems = new ArrayList<>();
 
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         SliderItem sliderItem = dataSnapshot.getValue(SliderItem.class);
                         sliderItems.add(sliderItem);
                     }
 
-                    banners(sliderItems);
+                    if (!sliderItems.isEmpty()) {
+                        binding.recyclerViewBanner.setLayoutManager(new LinearLayoutManager(
+                                MainActivity.this,
+                                RecyclerView.HORIZONTAL,
+                                false
+                        ));
+                        RecyclerView.Adapter<SliderAdapter.SliderViewHolder> sliderAdapter
+                                = new SliderAdapter(sliderItems);
+                        binding.recyclerViewBanner.setAdapter(sliderAdapter);
+                    }
+
                     binding.progressBarBanner.setVisibility(View.GONE);
                 }
             }
@@ -223,6 +220,5 @@ public class MainActivity extends BaseActivity {
 
             }
         });
-
     }
 }

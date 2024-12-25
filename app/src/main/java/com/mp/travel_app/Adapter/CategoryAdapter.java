@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private final List<Category> categories;
-    private int selectedPosition = -1;
+    private int selectedPosition = 0;
     private int lastSelectedPosition = -1;
     private Context context;
 

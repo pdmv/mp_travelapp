@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mp.travel_app.Activity.BaseActivity;
+import com.mp.travel_app.Activity.User.LoginActivity;
 import com.mp.travel_app.Domain.Users;
 import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ActivityAdminDashboardBinding;
@@ -26,6 +27,7 @@ public class AdminDashboardActivity extends BaseActivity {
         binding.adminCategoryBannerBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminCategoryBannerActivity.class)));
         binding.adminBookedBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminTicketActivity.class)));
         binding.adminUsersBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminUsersActivity.class)));
+        binding.adminLogoutBtn.setOnClickListener(v -> Common.logout(AdminDashboardActivity.this));
 
         Common.getCurrentUser(this, new Common.GetUserCallback() {
             @Override
