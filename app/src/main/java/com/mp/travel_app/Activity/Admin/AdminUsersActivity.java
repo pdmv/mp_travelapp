@@ -1,6 +1,5 @@
 package com.mp.travel_app.Activity.Admin;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,10 +21,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.mp.travel_app.Activity.BaseActivity;
-import com.mp.travel_app.Activity.User.LoginActivity;
-import com.mp.travel_app.Activity.User.RegisterActivity;
 import com.mp.travel_app.Adapter.UsersAdapter;
-import com.mp.travel_app.Domain.Customer;
 import com.mp.travel_app.Domain.Users;
 import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ActivityAdminUsersBinding;
@@ -160,7 +156,7 @@ public class AdminUsersActivity extends BaseActivity {
         user.setRole(binding.newUserRoleSpinner.getSelectedItem().toString());
 
         if (user.getFullname().isEmpty() || user.getPhoneNumber().isEmpty() || user.getEmail().isEmpty() ||
-                    user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
+                user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
             Common.showToast(AdminUsersActivity.this, "Please fill in all information", Toast.LENGTH_SHORT);
             resetUploadButtonState();
             return;

@@ -13,6 +13,9 @@
         android:theme="@style/Theme.TravelApp"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.User.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.Admin.AdminCategoryBannerActivity"
             android:exported="false" />
         <activity
@@ -21,11 +24,11 @@
         <activity
             android:name=".Activity.User.LoginActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-             <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Activity.User.RegisterActivity"
@@ -44,8 +47,7 @@
             android:exported="true" />
         <activity
             android:name=".Activity.Admin.AdminDashboardActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".Activity.TicketActivity"
             android:exported="false" />

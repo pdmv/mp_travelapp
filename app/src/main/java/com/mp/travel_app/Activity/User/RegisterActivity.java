@@ -108,7 +108,7 @@ public class RegisterActivity extends BaseActivity {
                         createUser(users);
                         resetRegisterButtonState();
                     } else {
-                        handleImageUpload(Uri.parse(tag.toString()), new OnImageUploadListener() {
+                        Common.handleImageUpload(Uri.parse(tag.toString()), new Common.OnImageUploadListener() {
                             @Override
                             public void onUploadSuccess(String downloadUrl) {
                                 users.setAvatar(downloadUrl);
@@ -134,27 +134,12 @@ public class RegisterActivity extends BaseActivity {
         });
     }
 
-    private void handleImageUpload(Uri imageUri, final OnImageUploadListener listener) {
-        if (imageUri == null) {
-            return;
-        }
-
-        StorageReference imageRef = storageReference.child("images/" + imageUri.getLastPathSegment());
-
-        imageRef.putFile(imageUri)
-                .addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    Log.d("UploadImage", "Upload image successfully. URL: " + uri.toString());
-                    listener.onUploadSuccess(uri.toString());
-                }).addOnFailureListener(e -> {
-                    Log.e("UploadImage", "Get download URL failed", e);
-                    listener.onUploadFailed(e.getMessage());
-                }))
-                .addOnFailureListener(e -> listener.onUploadFailed(e.getMessage()));
-    }
-
     public void createUser(Users user) {
         String userId = databaseReference.push().getKey();
         if (userId != null) {
+            // Set user id
+            user.setId(userId);
+
             databaseReference.child(userId).setValue(user).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Common.showToast(RegisterActivity.this, "Register successfully", Toast.LENGTH_SHORT);
@@ -165,11 +150,6 @@ public class RegisterActivity extends BaseActivity {
                 }
             });
         }
-    }
-
-    public interface OnImageUploadListener {
-        void onUploadSuccess(String downloadUrl);
-        void onUploadFailed(String errorMessage);
     }
 
     private void showImagePicker() {

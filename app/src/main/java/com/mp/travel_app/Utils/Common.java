@@ -2,6 +2,7 @@ package com.mp.travel_app.Utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,8 +13,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 import com.mp.travel_app.Activity.BaseActivity;
-import com.mp.travel_app.Activity.User.LoginActivity;
 import com.mp.travel_app.Domain.Users;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -116,17 +117,98 @@ public class Common extends BaseActivity {
         });
     }
 
-    public static void logout(Context context) {
+    public static void logout(Context context, Class<?> toActivityClass) {
         sharedPreferences.edit()
                 .remove(USERNAME_KEY)
                 .remove(PASSWORD_KEY)
                 .apply();
 
-        toActivity(context, LoginActivity.class);
+        toActivity(context, toActivityClass);
+    }
+
+    public static void handleImageUpload(Uri imageUri, final OnImageUploadListener listener) {
+        if (imageUri == null) {
+            return;
+        }
+
+        StorageReference imageRef = storage.getReference().child("images/" + imageUri.getLastPathSegment());
+
+        imageRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    Log.d("UploadImage", "Upload image successfully. URL: " + imageRef.getPath());
+                    listener.onUploadSuccess(imageRef.getPath());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("UploadImage", "Upload image failed: " + e.getMessage());
+                    listener.onUploadFailed(e.getMessage());
+                });
+    }
+
+    public static void getFileFromFirebase(String filePath, final OnGetFileListener listener) {
+        if (filePath == null) {
+            return;
+        }
+
+        StorageReference imageRef = storage.getReference().child(filePath);
+
+        imageRef.getDownloadUrl()
+                .addOnSuccessListener(uri -> {
+                    Log.d("GetFile", "Get file successfully. URL: " + uri.toString());
+                    listener.onUploadSuccess(uri.toString());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("GetFile", "Get file failed: " + e.getMessage());
+                    listener.onUploadFailed(e.getMessage());
+                });
+    }
+
+    public static void deleteFileFromFirebase(String filePath, final OnDeleteFileListener listener) {
+        if (filePath == null) {
+            return;
+        }
+
+        StorageReference fileRef = storage.getReference().child(filePath);
+
+        fileRef.delete()
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("DeleteFile", "Delete file successfully");
+                    listener.onDeleteSuccess();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("DeleteFile", "Delete file failed: " + e.getMessage());
+                    listener.onDeleteFailed(e.getMessage());
+                });
+    }
+
+    public static void updateUserInfo(Users user, final OnUpdateUserInfoListener listener) {
+        DatabaseReference databaseReference = database.getReference("Users");
+        databaseReference.child(user.getId()).setValue(user)
+                .addOnCompleteListener(task -> listener.onUpdateSuccess())
+                .addOnFailureListener(e -> listener.onUpdateFailed(e.getMessage()));
     }
 
     public interface GetUserCallback {
         void onSuccess(Users user);
         void onFailure(String errorMessage);
+    }
+
+    public interface OnImageUploadListener {
+        void onUploadSuccess(String imagePath);
+        void onUploadFailed(String errorMessage);
+    }
+
+    public interface OnGetFileListener {
+        void onUploadSuccess(String downloadUrl);
+        void onUploadFailed(String errorMessage);
+    }
+
+    public interface OnDeleteFileListener {
+        void onDeleteSuccess();
+        void onDeleteFailed(String errorMessage);
+    }
+
+    public interface OnUpdateUserInfoListener {
+        void onUpdateSuccess();
+        void onUpdateFailed(String errorMessage);
     }
 }

@@ -124,4 +124,15 @@
     <string name="register_login_btn">Login</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="profile_title">Profile</string>
+    <string name="profile_role">Customer</string>
+    <string name="profile_username">Username</string>
+    <string name="profile_full_name">Full Name</string>
+    <string name="profile_note">Your personal information is always kept private and secure.</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_phone_number">Phone number</string>
+    <string name="profile_change_password">Change password</string>
+    <string name="profile_change_avatar">Change avatar</string>
+    <string name="profile_logout">Logout</string>
 </resources>

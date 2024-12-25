@@ -6,8 +6,7 @@ import lombok.Data;
 
 @Data
 public class Users {
-    private int id;
-    private String fullname, phoneNumber, email, avatar, username, password, role;
+    private String id, fullname, phoneNumber, email, avatar, username, password, role;
 
     @NonNull
     @Override

@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mp.travel_app.Activity.BaseActivity;
+import com.mp.travel_app.Activity.User.LoginActivity;
 import com.mp.travel_app.Domain.Users;
 import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ActivityAdminDashboardBinding;
@@ -27,7 +28,7 @@ public class AdminDashboardActivity extends BaseActivity {
         binding.adminBookedBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminTicketActivity.class)));
         binding.adminUsersBtn.setOnClickListener(v -> startActivity(new Intent(AdminDashboardActivity.this, AdminUsersActivity.class)));
         binding.adminLogoutBtn.setOnClickListener(v -> {
-            Common.logout(AdminDashboardActivity.this);
+            Common.logout(AdminDashboardActivity.this, LoginActivity.class);
             finish();
         });
 
@@ -37,9 +38,20 @@ public class AdminDashboardActivity extends BaseActivity {
                 if (user != null) {
                     binding.fullnameTxt.setText("Hi " + user.getFullname());
 
-                    Glide.with(AdminDashboardActivity.this)
-                            .load(user.getAvatar()).circleCrop()
-                            .into(binding.adminAvatar);
+                    Common.getFileFromFirebase(user.getAvatar(), new Common.OnGetFileListener() {
+                        @Override
+                        public void onUploadSuccess(String downloadUrl) {
+                            Glide.with(AdminDashboardActivity.this)
+                                    .load(downloadUrl)
+                                    .circleCrop()
+                                    .into(binding.adminAvatar);
+                        }
+
+                        @Override
+                        public void onUploadFailed(String errorMessage) {
+
+                        }
+                    });
                 }
             }
 
