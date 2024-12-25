@@ -1,10 +1,8 @@
 package com.mp.travel_app.Activity.User;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,7 +10,6 @@ import androidx.annotation.NonNull;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mp.travel_app.Activity.Admin.AdminDashboardActivity;
@@ -47,9 +44,7 @@ public class LoginActivity extends BaseActivity {
             binding.btnLogin.setEnabled(true);
         });
 
-        binding.btnToRegister.setOnClickListener(v -> {
-            Common.toActivity(LoginActivity.this, RegisterActivity.class);
-        });
+        binding.btnToRegister.setOnClickListener(v -> Common.toActivity(LoginActivity.this, RegisterActivity.class));
     }
 
     public void login() {
@@ -65,6 +60,7 @@ public class LoginActivity extends BaseActivity {
                                 dataSnapshot.child("password").getValue(String.class);
 
                         if (Common.checkPassword(password, passwordFromDatabase)) {
+                            // Login successful
                             Common.storeUserCredentials(username, password);
 
                             if (Objects.equals(dataSnapshot.child("role").getValue(String.class), "Admin")) {
@@ -72,6 +68,8 @@ public class LoginActivity extends BaseActivity {
                             } else {
                                 Common.toActivity(LoginActivity.this, MainActivity.class);
                             }
+
+                            finish();
                         } else {
                             // Login failed
                             Log.d("LoginActivity",
@@ -98,10 +96,16 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void back() {
+        resetView();
         finish();
     }
 
     public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void resetView() {
+        binding.txtUsername.setText("");
+        binding.txtPassword.setText("");
     }
 }
