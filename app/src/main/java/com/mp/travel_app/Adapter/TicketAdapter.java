@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mp.travel_app.Domain.Ticket;
+import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ViewholderTicketListBinding;
 
 import java.time.OffsetDateTime;
@@ -52,9 +53,21 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         holder.binding.txtTicketCustomerPhone.setText(ticket.getCustomer().getPhoneNumber());
         holder.binding.txtTicketCustomerEmail.setText(ticket.getCustomer().getEmail());
 
-        Glide.with(holder.itemView.getContext())
-                .load(ticket.getTour().getImagePath())
-                .into(holder.binding.imageViewTour);
+        Common.getFileFromFirebase(ticket.getTour().getImagePath(), new Common.OnGetFileListener() {
+            @Override
+            public void onUploadSuccess(String downloadUrl) {
+                Glide.with(holder.itemView.getContext())
+                        .load(downloadUrl)
+                        .into(holder.binding.imageViewTour);
+            }
+
+            @Override
+            public void onUploadFailed(String errorMessage) {
+                Glide.with(holder.itemView.getContext())
+                        .load(ticket.getTour().getImagePath())
+                        .into(holder.binding.imageViewTour);
+            }
+        });
     }
 
     @Override

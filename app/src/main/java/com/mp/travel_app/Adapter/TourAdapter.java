@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mp.travel_app.Domain.Tour;
+import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ViewholderTourBinding;
 
 import java.util.List;
@@ -44,15 +45,37 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourViewHolder
         holder.binding.tourTime.setText(tour.getTimeTour());
         holder.binding.tourGuideFullname.setText(tour.getTourGuide().getFullname());
 
+        Common.getFileFromFirebase(tour.getImagePath(), new Common.OnGetFileListener() {
+            @Override
+            public void onUploadSuccess(String downloadUrl) {
+                Glide.with(holder.itemView.getContext())
+                        .load(downloadUrl)
+                        .into(holder.binding.tourPicture);
+            }
 
-        Glide.with(holder.itemView.getContext())
-                .load(tour.getImagePath())
-                .into(holder.binding.tourPicture);
+            @Override
+            public void onUploadFailed(String errorMessage) {
+                Glide.with(holder.itemView.getContext())
+                        .load(tour.getImagePath())
+                        .into(holder.binding.tourPicture);
+            }
+        });
 
-        Glide.with(holder.itemView.getContext())
-                .load(tour.getTourGuide().getAvatar()).circleCrop()
-                .into(holder.binding.tourGuideAvatar);
+        Common.getFileFromFirebase(tour.getTourGuide().getAvatar(), new Common.OnGetFileListener() {
+            @Override
+            public void onUploadSuccess(String downloadUrl) {
+                Glide.with(holder.itemView.getContext())
+                        .load(downloadUrl).circleCrop()
+                        .into(holder.binding.tourGuideAvatar);
+            }
 
+            @Override
+            public void onUploadFailed(String errorMessage) {
+                Glide.with(holder.itemView.getContext())
+                        .load(tour.getTourGuide().getAvatar()).circleCrop()
+                        .into(holder.binding.tourGuideAvatar);
+            }
+        });
     }
 
     @Override

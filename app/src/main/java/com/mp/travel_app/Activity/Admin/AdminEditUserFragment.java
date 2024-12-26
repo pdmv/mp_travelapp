@@ -88,9 +88,22 @@ public class AdminEditUserFragment extends DialogFragment {
         binding.editFullnameTxt.setText(user.getFullname());
         binding.editPhoneNumberTxt.setText(user.getPhoneNumber());
         binding.editEmailTxt.setText(user.getEmail());
-        Glide.with(binding.getRoot().getContext())
-                .load(user.getAvatar()).circleCrop()
-                .into(binding.editImageView);
+
+        Common.getFileFromFirebase(user.getAvatar(), new Common.OnGetFileListener() {
+            @Override
+            public void onUploadSuccess(String downloadUrl) {
+                Glide.with(binding.getRoot().getContext())
+                        .load(downloadUrl).circleCrop()
+                        .into(binding.editImageView);
+            }
+
+            @Override
+            public void onUploadFailed(String errorMessage) {
+                Glide.with(binding.getRoot().getContext())
+                        .load(user.getAvatar()).circleCrop()
+                        .into(binding.editImageView);
+            }
+        });
 
         binding.editSelectImageBtn.setOnClickListener(v -> Common.openImagePicker(pickMedia));
 
@@ -121,7 +134,9 @@ public class AdminEditUserFragment extends DialogFragment {
         String newPasswordInput = binding.editNewPasswordTxt.getText().toString();
         String reNewPasswordInput = binding.editRePasswordTxt.getText().toString();
 
-        if (Common.checkFields(binding.getRoot().getContext(), currentPasswordInput, newPasswordInput, reNewPasswordInput)) {
+        if (currentPasswordInput.isEmpty() || newPasswordInput.isEmpty() || reNewPasswordInput.isEmpty()) {
+            Log.d("NoPasswordChange", "User did not change password");
+        } else {
             if (Common.checkPassword(currentPasswordInput, currentPassword) && newPasswordInput.equals(reNewPasswordInput)) {
                 user.setPassword(Common.hashPassword(binding.editNewPasswordTxt.getText().toString()));
             } else {
@@ -129,8 +144,6 @@ public class AdminEditUserFragment extends DialogFragment {
                 resetSaveButtonState();
                 return;
             }
-        } else {
-            Log.d("NoPasswordChange", "User did not change password");
         }
 
         Object tag = binding.editImageView.getTag();
