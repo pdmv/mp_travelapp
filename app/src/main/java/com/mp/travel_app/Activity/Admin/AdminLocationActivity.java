@@ -45,21 +45,12 @@ public class AdminLocationActivity extends BaseActivity {
 
         newLocation.setLoc(binding.newLocationTxt.getText().toString());
 
-        if (newLocation.getLoc().isEmpty()) {
-            Common.showToast(AdminLocationActivity.this, "Please fill in all information", Toast.LENGTH_SHORT);
+        if (!Common.checkFields(AdminLocationActivity.this, newLocation.getLoc())) {
             return;
         }
 
-        String locationId = locationRef.push().getKey();
-        if (locationId != null) {
-            locationRef.child(locationId).setValue(newLocation).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Common.showToast(AdminLocationActivity.this, "Create success", Toast.LENGTH_SHORT);
-                    binding.newLocationTxt.setText("");
-                } else {
-                    Common.showToast(AdminLocationActivity.this, "Create failure", Toast.LENGTH_SHORT);
-                }
-            });
-        }
+        Common.createData(AdminLocationActivity.this, locationRef, newLocation);
+
+        binding.newLocationTxt.setText("");
     }
 }

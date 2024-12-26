@@ -6,11 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.mp.travel_app.Activity.Admin.AdminEditUserFragment;
 import com.mp.travel_app.Domain.Category;
 import com.mp.travel_app.R;
+import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ViewholderCategoryBinding;
 
 import java.util.List;
@@ -39,9 +42,21 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category category = categories.get(position);
         holder.binding.categoryTitle.setText(category.getName());
 
-        Glide.with(holder.itemView.getContext())
-                .load(category.getImagePath())
-                .into(holder.binding.categoryPic);
+        Common.getFileFromFirebase(category.getImagePath(), new Common.OnGetFileListener() {
+            @Override
+            public void onUploadSuccess(String downloadUrl) {
+                Glide.with(holder.itemView.getContext())
+                        .load(downloadUrl)
+                        .into(holder.binding.categoryPic);
+            }
+
+            @Override
+            public void onUploadFailed(String errorMessage) {
+                Glide.with(holder.itemView.getContext())
+                        .load(category.getImagePath())
+                        .into(holder.binding.categoryPic);
+            }
+        });
 
         holder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override

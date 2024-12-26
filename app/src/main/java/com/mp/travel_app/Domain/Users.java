@@ -11,6 +11,6 @@ public class Users {
     @NonNull
     @Override
     public String toString() {
-        return id + " - " + fullname;
+        return fullname + " - " + phoneNumber;
     }
 }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mp.travel_app.Domain.SliderItem;
+import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ViewholderBannerBinding;
 
 import java.util.List;
@@ -36,9 +37,21 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
     public void onBindViewHolder(@NonNull SliderViewHolder holder, int position) {
         SliderItem sliderItem = sliderItems.get(position);
 
-        Glide.with(holder.itemView.getContext())
-                .load(sliderItem.getUrl())
-                .into(holder.binding.bannerPic);
+        Common.getFileFromFirebase(sliderItem.getUrl(), new Common.OnGetFileListener() {
+            @Override
+            public void onUploadSuccess(String downloadUrl) {
+                Glide.with(holder.itemView.getContext())
+                        .load(downloadUrl)
+                        .into(holder.binding.bannerPic);
+            }
+
+            @Override
+            public void onUploadFailed(String errorMessage) {
+                Glide.with(holder.itemView.getContext())
+                        .load(sliderItem.getUrl())
+                        .into(holder.binding.bannerPic);
+            }
+        });
     }
 
     @Override

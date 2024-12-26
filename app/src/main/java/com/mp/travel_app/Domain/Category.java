@@ -3,24 +3,22 @@ package com.mp.travel_app.Domain;
 import androidx.annotation.NonNull;
 
 public class Category {
-    private int Id;
-    private String ImagePath;
-    private String Name;
+    private String Id, ImagePath, Name;
 
     public Category() {
     }
 
-    public Category(int id, String imagePath, String name) {
+    public Category(String id, String imagePath, String name) {
         Id = id;
         ImagePath = imagePath;
         Name = name;
     }
 
-    public int getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         Id = id;
     }
 

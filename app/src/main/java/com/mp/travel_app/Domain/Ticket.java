@@ -1,27 +1,24 @@
 package com.mp.travel_app.Domain;
 
-import androidx.annotation.NonNull;
-
 public class Ticket {
-    int id;
-    String createdAt;
+    String id, createdAt;
     Tour tour;
     Users customer;
 
     public Ticket() {}
 
-    public Ticket(int id, String createdAt, Tour tour, Users customer) {
+    public Ticket(String id, String createdAt, Tour tour, Users customer) {
         this.id = id;
         this.createdAt = createdAt;
         this.tour = tour;
         this.customer = customer;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
