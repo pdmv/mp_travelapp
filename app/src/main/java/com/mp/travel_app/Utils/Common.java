@@ -48,6 +48,33 @@ public class Common extends BaseActivity {
         return BCrypt.checkpw(password, hashed);
     }
 
+    public static void changePassword(String username, String oldPassword, String newPassword, final OnChangePasswordListener listener) {
+        DatabaseReference databaseReference = database.getReference("Users");
+        Query query = databaseReference.orderByChild("username").equalTo(username);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Users user = snapshot.getValue(Users.class);
+                    if (user != null && checkPassword(oldPassword, user.getPassword())) {
+                        user.setPassword(hashPassword(newPassword));
+                        databaseReference.child(user.getId()).setValue(user);
+                        listener.onSuccess();
+                        return;
+                    }
+
+                    listener.onFailed("User not found or password incorrect");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public boolean isAuthorized(Context context, String username, String password) {
         DatabaseReference databaseReference = database.getReference("Users");
 
@@ -133,6 +160,7 @@ public class Common extends BaseActivity {
 
         toActivity(context, toActivityClass);
     }
+
 
     public static void openImagePicker(ActivityResultLauncher<PickVisualMediaRequest> pickMedia) {
         pickMedia.launch(new PickVisualMediaRequest.Builder()
@@ -268,5 +296,10 @@ public class Common extends BaseActivity {
     public interface OnUpdateUserInfoListener {
         void onUpdateSuccess();
         void onUpdateFailed(String errorMessage);
+    }
+
+    public interface OnChangePasswordListener {
+        void onSuccess();
+        void onFailed(String errorMessage);
     }
 }
