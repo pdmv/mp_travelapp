@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.google.firebase.database.DatabaseReference;
@@ -40,11 +41,11 @@ public class HomeFragment extends Fragment {
     FirebaseStorage storage;
     DatabaseReference popularRef, locationRef, bannerRef, categoryRef, itemRef;
     StorageReference storageReference;
+    private List<ItemDomain> itemDomains = new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
     }
-    
 
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
@@ -85,12 +86,23 @@ public class HomeFragment extends Fragment {
         initRecommended();
         initPopular();
 
+        binding.locationSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Location selectedLocation = (Location) parent.getItemAtPosition(position);
+                filterDataByLocation(selectedLocation);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         return binding.getRoot();
     }
 
     private void initPopular() {
-        List<ItemDomain> itemDomains = new ArrayList<>();
-
         PopularAdapter popularAdapter = new PopularAdapter(itemDomains);
 
         LoadData.loadDataIntoRecyclerView(popularRef, binding.recyclerViewPopular, binding.progressBarPopular,
@@ -98,8 +110,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void initRecommended() {
-        List<ItemDomain> itemDomains = new ArrayList<>();
-
         RecommendedAdapter recommendedAdapter = new RecommendedAdapter(itemDomains);
 
         LoadData.loadDataIntoRecyclerView(itemRef, binding.recyclerViewRecommended, binding.progressBarRecommended,
@@ -130,5 +140,20 @@ public class HomeFragment extends Fragment {
 
         LoadData.loadDataFromDatabase(binding.getRoot().getContext(), locationRef, locationAdapter, Location.class);
         binding.locationSp.setAdapter(locationAdapter);
+    }
+
+    private void filterDataByLocation(Location location) {
+        List<ItemDomain> filteredItem = new ArrayList<>();
+
+        for (ItemDomain itemDomain : itemDomains) {
+            if (itemDomain.getAddress().equals(location.getLoc())) {
+                filteredItem.add(itemDomain);
+            }
+        }
+
+        RecommendedAdapter filteredRecommendedAdapter = new RecommendedAdapter(filteredItem);
+        PopularAdapter filteredPopularAdapter = new PopularAdapter(filteredItem);
+        binding.recyclerViewRecommended.setAdapter(filteredRecommendedAdapter);
+        binding.recyclerViewPopular.setAdapter(filteredPopularAdapter);
     }
 }

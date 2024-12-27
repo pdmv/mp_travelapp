@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mp.travel_app.Domain.Category;
+import com.mp.travel_app.Domain.ItemDomain;
+import com.mp.travel_app.Fragment.User.HomeFragment;
 import com.mp.travel_app.R;
 import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ViewholderCategoryBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {

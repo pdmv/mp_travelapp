@@ -6,8 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class SliderItem {
-    private String id;
-    private String url;
+    private String id, url;
     private Tour tour;
 
     public SliderItem() {
