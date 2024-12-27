@@ -1,4 +1,4 @@
-package com.mp.travel_app.Activity.Admin;
+package com.mp.travel_app.Fragment.Admin;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +28,7 @@ import com.mp.travel_app.databinding.FragmentAdminBannerBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AdminBannerFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
@@ -89,7 +90,7 @@ public class AdminBannerFragment extends Fragment {
         initBanner();
         initTour();
 
-        binding.bannerBackBtn.setOnClickListener(v -> getActivity().finish());
+        binding.bannerBackBtn.setOnClickListener(v -> requireActivity().onBackPressed());
         binding.newBannerSelectImageBtn.setOnClickListener(v -> Common.openImagePicker(pickMedia));
         binding.uploadBannerBtn.setOnClickListener(v -> sendBannerData());
 
@@ -129,7 +130,7 @@ public class AdminBannerFragment extends Fragment {
             return;
         }
 
-        Common.handleImageUpload(Uri.parse(tag.toString()), new Common.OnImageUploadListener() {
+        Common.handleImageUpload(Uri.parse(Objects.requireNonNull(tag).toString()), new Common.OnImageUploadListener() {
             @Override
             public void onUploadSuccess(String imagePath) {
                 newSliderItem.setUrl(imagePath);

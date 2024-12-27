@@ -30,6 +30,7 @@ import com.mp.travel_app.databinding.ActivityAdminCreateTourBinding;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public class AdminCreateTourActivity extends BaseActivity {
     private boolean isUploading = false;
@@ -196,7 +197,7 @@ public class AdminCreateTourActivity extends BaseActivity {
                     return;
         }
 
-        Common.handleImageUpload(Uri.parse(tag.toString()), new Common.OnImageUploadListener() {
+        Common.handleImageUpload(Uri.parse(Objects.requireNonNull(tag).toString()), new Common.OnImageUploadListener() {
             @Override
             public void onUploadSuccess(String imagePath) {
                 newTour.setImagePath(imagePath);

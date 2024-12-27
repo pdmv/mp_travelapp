@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/main"
     android:background="@color/white"
-    tools:context="com.mp.travel_app.Activity.Admin.AdminCategoryFragment">
+    tools:context="com.mp.travel_app.Fragment.Admin.AdminCategoryFragment">
 
     <ScrollView
         android:layout_width="match_parent"

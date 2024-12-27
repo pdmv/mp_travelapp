@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.mp.travel_app.Activity.Admin.AdminBannerFragment;
-import com.mp.travel_app.Activity.Admin.AdminCategoryFragment;
+import com.mp.travel_app.Fragment.Admin.AdminBannerFragment;
+import com.mp.travel_app.Fragment.Admin.AdminCategoryFragment;
 
 public class AdminViewPagerAdapter extends FragmentStateAdapter {
     public AdminViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {

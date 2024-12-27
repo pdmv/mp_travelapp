@@ -2,6 +2,11 @@ package com.mp.travel_app.Domain;
 
 import androidx.annotation.NonNull;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class Tour {
     private double price;
     private String id, title, description, duration, imagePath, dateTour, timeTour;
@@ -24,94 +29,6 @@ public class Tour {
         this.tourGuide = tourGuide;
         this.location = location;
         this.category = category;
-    }
-
-    public Users getTourGuide() {
-        return tourGuide;
-    }
-
-    public void setTourGuide(Users tourGuide) {
-        this.tourGuide = tourGuide;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public String getDateTour() {
-        return dateTour;
-    }
-
-    public void setDateTour(String dateTour) {
-        this.dateTour = dateTour;
-    }
-
-    public String getTimeTour() {
-        return timeTour;
-    }
-
-    public void setTimeTour(String timeTour) {
-        this.timeTour = timeTour;
     }
 
     @NonNull

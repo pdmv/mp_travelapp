@@ -1,5 +1,10 @@
 package com.mp.travel_app.Domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Ticket {
     String id, createdAt;
     Tour tour;
@@ -14,35 +19,4 @@ public class Ticket {
         this.customer = customer;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Tour getTour() {
-        return tour;
-    }
-
-    public void setTour(Tour tour) {
-        this.tour = tour;
-    }
-
-    public Users getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Users customer) {
-        this.customer = customer;
-    }
 }

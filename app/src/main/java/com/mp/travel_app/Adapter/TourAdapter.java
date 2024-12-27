@@ -17,7 +17,6 @@ import java.util.List;
 
 public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourViewHolder> {
     private final List<Tour> tours;
-    private Context context;
 
     public TourAdapter(List<Tour> tours) {
         this.tours = tours;
@@ -26,7 +25,7 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourViewHolder
     @NonNull
     @Override
     public TourViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
+        Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         ViewholderTourBinding binding = ViewholderTourBinding.inflate(inflater, parent, false);
         return new TourViewHolder(binding);

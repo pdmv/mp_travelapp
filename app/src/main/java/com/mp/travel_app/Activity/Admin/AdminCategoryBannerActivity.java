@@ -31,4 +31,13 @@ public class AdminCategoryBannerActivity extends BaseActivity {
             }
         }).attach();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (binding.viewPager.getCurrentItem() == 0) {
+            super.onBackPressed();
+        } else {
+            binding.viewPager.setCurrentItem(0, true);
+        }
+    }
 }

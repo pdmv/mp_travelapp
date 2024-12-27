@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mp.travel_app.Activity.Admin.AdminEditUserFragment;
+import com.mp.travel_app.Fragment.Admin.AdminEditUserFragment;
 import com.mp.travel_app.Domain.Users;
 import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ViewholderUserListBinding;

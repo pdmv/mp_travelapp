@@ -1,4 +1,4 @@
-package com.mp.travel_app.Activity.Admin;
+package com.mp.travel_app.Fragment.Admin;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.mp.travel_app.databinding.FragmentAdminCategoryBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AdminCategoryFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
@@ -69,7 +71,7 @@ public class AdminCategoryFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentAdminCategoryBinding.inflate(inflater, container, false);
 
@@ -85,7 +87,7 @@ public class AdminCategoryFragment extends Fragment {
 
         initCategory();
 
-        binding.categoryBackBtn.setOnClickListener(v -> getActivity().finish());
+        binding.categoryBackBtn.setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
         binding.newCategorySelectImageBtn.setOnClickListener(v -> Common.openImagePicker(pickMedia));
         binding.uploadCategoryBtn.setOnClickListener(v -> sendCategoryData());
 
@@ -116,7 +118,7 @@ public class AdminCategoryFragment extends Fragment {
             return;
         }
 
-        Common.handleImageUpload(Uri.parse(tag.toString()), new Common.OnImageUploadListener() {
+        Common.handleImageUpload(Uri.parse(Objects.requireNonNull(tag).toString()), new Common.OnImageUploadListener() {
             @Override
             public void onUploadSuccess(String imagePath) {
                 newCategory.setImagePath(imagePath);
