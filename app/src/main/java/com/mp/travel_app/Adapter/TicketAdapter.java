@@ -44,10 +44,10 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
 
         holder.binding.txtTicketTourDuration.setText(ticket.getTour().getDuration());
         holder.binding.txtTicketCreatedAt.setText(offsetDateTime.format(formatter));
-        holder.binding.txtTicketId.setText(String.valueOf(ticket.getId()));
+        holder.binding.txtTicketTourTitle.setText(ticket.getTour().getTitle());
         holder.binding.txtTicketTourLocation.setText(ticket.getTour().getLocation().getLoc());
         holder.binding.txtTicketPrice.setText(String.format("$%.2f", ticket.getTour().getPrice()));
-        holder.binding.txtTicketDate.setText("Date Tour: " + ticket.getTour().getDateTour());
+        holder.binding.txtTicketDate.setText(ticket.getTour().getDateTour());
         holder.binding.txtTicketTime.setText(ticket.getTour().getTimeTour());
         holder.binding.txtTicketCustomerName.setText(ticket.getCustomer().getFullname());
         holder.binding.txtTicketCustomerPhone.setText(ticket.getCustomer().getPhoneNumber());
