@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -24,7 +25,6 @@ import com.mp.travel_app.Activity.BaseActivity;
 import com.mp.travel_app.Adapter.UsersAdapter;
 import com.mp.travel_app.Domain.Users;
 import com.mp.travel_app.Utils.Common;
-import com.mp.travel_app.Utils.LoadData;
 import com.mp.travel_app.databinding.ActivityAdminUsersBinding;
 
 import java.util.ArrayList;
@@ -33,6 +33,8 @@ import java.util.List;
 public class AdminUsersActivity extends BaseActivity {
     private boolean isUploading = false;
     public static final String[] roles = {"Admin", "Customer", "TourGuide"};
+    public static final String[] roleFilterOptions = {"All", "Admin", "TourGuide", "Customer"};
+    private final List<Users> users = new ArrayList<>();
 
     ActivityAdminUsersBinding binding;
     DatabaseReference usersRef;
@@ -48,6 +50,7 @@ public class AdminUsersActivity extends BaseActivity {
         storageReference = storage.getReference();
 
         initRoleChoice();
+        initRoleFilter();
         initUsers();
 
         pickMedia = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
@@ -65,6 +68,18 @@ public class AdminUsersActivity extends BaseActivity {
         binding.usersBackBtn.setOnClickListener(v -> finish());
         binding.uploadUserBtn.setOnClickListener(v -> sendUserData());
         binding.newUserSelectImageBtn.setOnClickListener(v -> Common.openImagePicker(pickMedia));
+        binding.spinnerRoleFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedRole = parent.getItemAtPosition(position).toString();
+                filterUsersByRole(selectedRole);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                filterUsersByRole("All");
+            }
+        });
     }
 
     private void initRoleChoice() {
@@ -74,6 +89,13 @@ public class AdminUsersActivity extends BaseActivity {
         binding.newUserRoleSpinner.setAdapter(adapter);
     }
 
+    private void initRoleFilter() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                AdminUsersActivity.this, android.R.layout.simple_spinner_item, roleFilterOptions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerRoleFilter.setAdapter(adapter);
+    }
+
     private void initUsers() {
         binding.progressBarUsers.setVisibility(View.VISIBLE);
 
@@ -81,12 +103,14 @@ public class AdminUsersActivity extends BaseActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    List<Users> users = new ArrayList<>();
+                    users.clear();
 
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Users user = dataSnapshot.getValue(Users.class);
                         users.add(user);
                     }
+
+                    filterUsersByRole("All");
 
                     if (!users.isEmpty()) {
                         binding.recyclerViewUsers.setLayoutManager(new LinearLayoutManager(
@@ -189,5 +213,22 @@ public class AdminUsersActivity extends BaseActivity {
     private void resetUploadButtonState() {
         isUploading = false;
         binding.uploadUserBtn.setEnabled(true);
+    }
+
+    private void filterUsersByRole(String role) {
+        List<Users> filteredUsers = new ArrayList<>();
+
+        if ("All".equals(role)) {
+            filteredUsers.addAll(users);
+        } else {
+            for (Users user : users) {
+                if (user.getRole().equals(role)) {
+                    filteredUsers.add(user);
+                }
+            }
+        }
+
+        UsersAdapter filteredAdapter = new UsersAdapter(filteredUsers);
+        binding.recyclerViewUsers.setAdapter(filteredAdapter);
     }
 }
