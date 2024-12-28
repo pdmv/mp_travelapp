@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity {
 
             if (itemId == R.id.menuHome) {
                 selectedFragment = new HomeFragment();
-            } else if (itemId == R.id.menuFavorite) {
+            } else if (itemId == R.id.menuAllTour) {
                 selectedFragment = new AllTourFragment();
             } else if (itemId == R.id.menuCart) {
                 selectedFragment = new CartFragment();

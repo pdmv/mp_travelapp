@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -24,11 +26,13 @@ import com.mp.travel_app.Domain.Location;
 import com.mp.travel_app.Domain.SliderItem;
 import com.mp.travel_app.Domain.Tour;
 import com.mp.travel_app.R;
+import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.Utils.LoadData;
 import com.mp.travel_app.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
@@ -101,6 +105,14 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
+        binding.searchBtn.setOnClickListener(v -> {
+            String query = binding.searchBox.getText().toString().trim();
+            filterBySearch(query);
+        });
+
+        binding.recommendedSeeAllBtn.setOnClickListener(v -> toAllTour());
+        binding.popularSeeAllBtn.setOnClickListener(v -> toAllTour());
 
         return binding.getRoot();
     }
@@ -182,7 +194,31 @@ public class HomeFragment extends Fragment {
         binding.recyclerViewPopular.setAdapter(filteredPopularAdapter);
     }
 
-    public void onCategorySelected(Category category) {
-        filterDataByCategory(category);
+    private void filterBySearch(String query) {
+        filteredItem.clear();
+
+        String queryLower = query.toLowerCase();
+
+        for (Tour itemDomain : itemDomains) {
+            if (itemDomain.getDateTour().toLowerCase().contains(queryLower)
+                    || itemDomain.getDuration().toLowerCase().contains(queryLower)
+                    || itemDomain.getTimeTour().toLowerCase().contains(queryLower)
+                    || String.valueOf(itemDomain.getPrice()).toLowerCase().contains(queryLower)
+                    || itemDomain.getTourGuide().getFullname().toLowerCase().contains(queryLower)
+                    || itemDomain.getTourGuide().getPhoneNumber().toLowerCase().contains(queryLower)) {
+                        filteredItem.add(itemDomain);
+            }
+        }
+
+        filteredRecommendedAdapter = new RecommendedAdapter(filteredItem);
+        filteredPopularAdapter = new PopularAdapter(filteredItem);
+        binding.recyclerViewRecommended.setAdapter(filteredRecommendedAdapter);
+        binding.recyclerViewPopular.setAdapter(filteredPopularAdapter);
+    }
+
+    private void toAllTour() {
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setSelectedItemId(R.id.menuAllTour);
     }
 }
