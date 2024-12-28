@@ -1,11 +1,13 @@
 package com.mp.travel_app.Domain;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class SliderItem {
+public class SliderItem implements Serializable {
     private String id, url;
     private Tour tour;
 

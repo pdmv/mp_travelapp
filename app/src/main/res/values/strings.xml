@@ -49,16 +49,16 @@
     <string name="menu_admin_banner">Banner</string>
 
 
-    <string name="ticket_detail">Title Detail</string>
+    <string name="ticket_detail">Ticket Detail</string>
     <string name="ticket_id">Order ID: 123456</string>
-    <string name="ticket_upcoming">Upcoming trip</string>
+    <string name="ticket_upcoming">Unpaid</string>
     <string name="ticket_title">Title</string>
     <string name="ticket_note">Show this ticket to your tour guide before departure.</string>
     <string name="ticket_tour_guide">Tour Guide</string>
     <string name="ticket_time">Time</string>
     <string name="ticket_trip_duration">Trip Duration</string>
     <string name="ticket_total_guest">Total Guest</string>
-    <string name="ticket_download">Download Ticket</string>
+    <string name="ticket_payment">Pay now</string>
 
     <string name="admin_dashboard_title">Admin Dashboard</string>
     <string name="admin_dashboard_role">Role: Admin</string>

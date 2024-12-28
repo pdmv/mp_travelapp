@@ -20,9 +20,9 @@ import com.mp.travel_app.Adapter.PopularAdapter;
 import com.mp.travel_app.Adapter.RecommendedAdapter;
 import com.mp.travel_app.Adapter.SliderAdapter;
 import com.mp.travel_app.Domain.Category;
-import com.mp.travel_app.Domain.ItemDomain;
 import com.mp.travel_app.Domain.Location;
 import com.mp.travel_app.Domain.SliderItem;
+import com.mp.travel_app.Domain.Tour;
 import com.mp.travel_app.R;
 import com.mp.travel_app.Utils.LoadData;
 import com.mp.travel_app.databinding.FragmentHomeBinding;
@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
     FirebaseStorage storage;
     DatabaseReference popularRef, locationRef, bannerRef, categoryRef, itemRef;
     StorageReference storageReference;
-    private List<ItemDomain> itemDomains = new ArrayList<>();
+    private List<Tour> itemDomains = new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -69,8 +69,8 @@ public class HomeFragment extends Fragment {
         bannerRef = database.getReference("Banner");
         locationRef = database.getReference("Location");
         categoryRef = database.getReference("Category");
-        itemRef = database.getReference("Item");
-        popularRef = database.getReference("Popular");
+        itemRef = database.getReference("Tour");
+        popularRef = database.getReference("Populars");
         storageReference = storage.getReference();
     }
 
@@ -106,14 +106,14 @@ public class HomeFragment extends Fragment {
         PopularAdapter popularAdapter = new PopularAdapter(itemDomains);
 
         LoadData.loadDataIntoRecyclerView(popularRef, binding.recyclerViewPopular, binding.progressBarPopular,
-                binding.noDataPopularTxt, ItemDomain.class, popularAdapter, itemDomains);
+                binding.noDataPopularTxt, Tour.class, popularAdapter, itemDomains);
     }
 
     private void initRecommended() {
         RecommendedAdapter recommendedAdapter = new RecommendedAdapter(itemDomains);
 
         LoadData.loadDataIntoRecyclerView(itemRef, binding.recyclerViewRecommended, binding.progressBarRecommended,
-                binding.noDataRecommendedTxt, ItemDomain.class, recommendedAdapter, itemDomains);
+                binding.noDataRecommendedTxt, Tour.class, recommendedAdapter, itemDomains);
     }
 
     private void initCategory() {
@@ -143,10 +143,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void filterDataByLocation(Location location) {
-        List<ItemDomain> filteredItem = new ArrayList<>();
+        List<Tour> filteredItem = new ArrayList<>();
 
-        for (ItemDomain itemDomain : itemDomains) {
-            if (itemDomain.getAddress().equals(location.getLoc())) {
+        for (Tour itemDomain : itemDomains) {
+            if (itemDomain.getLocation().getLoc().equals(location.getLoc())) {
                 filteredItem.add(itemDomain);
             }
         }

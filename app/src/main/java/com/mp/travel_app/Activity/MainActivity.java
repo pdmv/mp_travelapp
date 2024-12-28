@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.mp.travel_app.Fragment.User.CartFragment;
 import com.mp.travel_app.Fragment.User.HomeFragment;
 import com.mp.travel_app.Fragment.User.ProfileFragment;
 import com.mp.travel_app.R;
@@ -33,7 +34,7 @@ public class MainActivity extends BaseActivity {
             } else if (itemId == R.id.menuFavorite) {
                 Common.showToast(MainActivity.this, "Choose Favorite", Toast.LENGTH_SHORT);
             } else if (itemId == R.id.menuCart) {
-                Common.showToast(MainActivity.this, "Choose Cart", Toast.LENGTH_SHORT);
+                selectedFragment = new CartFragment();
             } else {
                 selectedFragment = new ProfileFragment();
             }

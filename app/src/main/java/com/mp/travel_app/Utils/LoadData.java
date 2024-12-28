@@ -30,7 +30,6 @@ public class LoadData {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     ArrayList<T> dataList = new ArrayList<>();
-                    int maxId = -1;
 
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         T data = dataSnapshot.getValue(dataClass);
@@ -39,13 +38,6 @@ public class LoadData {
                         try {
                             Method getIdMethod = dataClass.getMethod("getId");
                             Object idObject = getIdMethod.invoke(data);
-
-                            if (idObject != null) {
-                                int id = (int) idObject;
-                                if (id > maxId) {
-                                    maxId = id;
-                                }
-                            }
                         } catch (NoSuchMethodException e) {
                             Log.e("LoadData", "Method getId() not found for class: " + dataClass.getSimpleName(), e);
                         } catch (Exception e) {
@@ -55,7 +47,7 @@ public class LoadData {
 
                     SharedPreferences sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putInt("max_" + dataClass.getSimpleName() + "_id", maxId);
+                    editor.putInt("max_" + dataClass.getSimpleName() + "_id", (int) snapshot.getChildrenCount());
                     editor.apply();
 
 

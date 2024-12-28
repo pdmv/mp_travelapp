@@ -2,12 +2,14 @@ package com.mp.travel_app.Domain;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class Tour {
+public class Tour implements Serializable {
     private double price;
     private String id, title, description, duration, imagePath, dateTour, timeTour;
     private Users tourGuide;

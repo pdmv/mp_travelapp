@@ -2,12 +2,14 @@ package com.mp.travel_app.Domain;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class Location {
+public class Location implements Serializable {
     private String Id, loc;
 
     public Location() {

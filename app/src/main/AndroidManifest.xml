@@ -44,7 +44,7 @@
             android:exported="true" />
         <activity
             android:name=".Activity.Admin.AdminDashboardActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".Activity.TicketActivity"
             android:exported="false" />

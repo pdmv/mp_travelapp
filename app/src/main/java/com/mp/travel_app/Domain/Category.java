@@ -2,12 +2,14 @@ package com.mp.travel_app.Domain;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class Category {
+public class Category implements Serializable {
     private String Id, ImagePath, Name;
 
     public Category() {
