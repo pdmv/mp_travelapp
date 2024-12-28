@@ -143,4 +143,6 @@
     <string name="edit_profile_new_password">New password</string>
     <string name="edit_profile_re_password">Re-enter new password</string>
     <string name="admin_save_btn">Save</string>
+
+    <string name="all_tour_title">All Tour</string>
 </resources>

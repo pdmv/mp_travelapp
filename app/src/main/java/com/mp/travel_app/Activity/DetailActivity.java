@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
-import com.mp.travel_app.Domain.ItemDomain;
 import com.mp.travel_app.Domain.Tour;
 import com.mp.travel_app.databinding.ActivityDetailBinding;
 

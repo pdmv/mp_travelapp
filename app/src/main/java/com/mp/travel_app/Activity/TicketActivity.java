@@ -6,14 +6,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
-import com.mp.travel_app.Domain.ItemDomain;
 import com.mp.travel_app.Domain.Tour;
 import com.mp.travel_app.Domain.Users;
 import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.Utils.Stripe;
 import com.mp.travel_app.databinding.ActivityTicketBinding;
 import com.stripe.android.paymentsheet.PaymentSheet;
-import com.stripe.android.paymentsheet.PaymentSheetResult;
 
 public class TicketActivity extends BaseActivity {
     private static final String TAG = "TicketActivity";

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mp.travel_app.Activity.DetailActivity;
-import com.mp.travel_app.Domain.ItemDomain;
 import com.mp.travel_app.Domain.Tour;
 import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ViewholderPopularBinding;

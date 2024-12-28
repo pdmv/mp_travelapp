@@ -35,13 +35,16 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
     private String mParam2;
+    private final List<Tour> itemDomains = new ArrayList<>();
+    private final List<Tour> filteredItem = new ArrayList<>();
+    private RecommendedAdapter filteredRecommendedAdapter;
+    private PopularAdapter filteredPopularAdapter;
 
     FragmentHomeBinding binding;
     FirebaseDatabase database;
     FirebaseStorage storage;
     DatabaseReference popularRef, locationRef, bannerRef, categoryRef, itemRef;
     StorageReference storageReference;
-    private List<Tour> itemDomains = new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -121,6 +124,13 @@ public class HomeFragment extends Fragment {
 
         CategoryAdapter categoryAdapter = new CategoryAdapter(categories);
 
+        categoryAdapter.setOnCategorySelectedListener(new CategoryAdapter.OnCategorySelectedListener() {
+            @Override
+            public void onCategorySelected(Category category) {
+                filterDataByCategory(category);
+            }
+        });
+
         LoadData.loadDataIntoRecyclerView(categoryRef, binding.recyclerViewCategory, binding.progressBarCategory,
                 binding.noDataCategoryTxt, Category.class, categoryAdapter, categories);
     }
@@ -143,7 +153,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void filterDataByLocation(Location location) {
-        List<Tour> filteredItem = new ArrayList<>();
+        filteredItem.clear();
 
         for (Tour itemDomain : itemDomains) {
             if (itemDomain.getLocation().getLoc().equals(location.getLoc())) {
@@ -151,9 +161,28 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        RecommendedAdapter filteredRecommendedAdapter = new RecommendedAdapter(filteredItem);
-        PopularAdapter filteredPopularAdapter = new PopularAdapter(filteredItem);
+        filteredRecommendedAdapter = new RecommendedAdapter(filteredItem);
+        filteredPopularAdapter = new PopularAdapter(filteredItem);
         binding.recyclerViewRecommended.setAdapter(filteredRecommendedAdapter);
         binding.recyclerViewPopular.setAdapter(filteredPopularAdapter);
+    }
+
+    private void filterDataByCategory(Category category) {
+        filteredItem.clear();
+
+        for (Tour itemDomain : itemDomains) {
+            if (itemDomain.getCategory().getName().equals(category.getName())) {
+                filteredItem.add(itemDomain);
+            }
+        }
+
+        filteredRecommendedAdapter = new RecommendedAdapter(filteredItem);
+        filteredPopularAdapter = new PopularAdapter(filteredItem);
+        binding.recyclerViewRecommended.setAdapter(filteredRecommendedAdapter);
+        binding.recyclerViewPopular.setAdapter(filteredPopularAdapter);
+    }
+
+    public void onCategorySelected(Category category) {
+        filterDataByCategory(category);
     }
 }
