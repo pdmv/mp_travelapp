@@ -1,23 +1,26 @@
 package com.mp.travel_app.Activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.bumptech.glide.Glide;
-import com.mp.travel_app.Domain.ItemDomain;
 import com.mp.travel_app.Domain.Tour;
+import com.mp.travel_app.Utils.TourCartManager;
 import com.mp.travel_app.databinding.ActivityDetailBinding;
 
 public class DetailActivity extends BaseActivity {
     private ActivityDetailBinding binding;
     private Tour item;
+    private TourCartManager cartManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        cartManager = new TourCartManager(this);
 
         getIntentExtra();
         setVariables();
@@ -41,9 +44,8 @@ public class DetailActivity extends BaseActivity {
                 .into(binding.detailPicture);
 
         binding.detailAddToCartBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(DetailActivity.this, TicketActivity.class);
-            intent.putExtra("object", item);
-            startActivity(intent);
+            cartManager.addTour(item);
+            Log.d("DetailActivity", "Added to cart: " + item.getTitle());
         });
     }
 

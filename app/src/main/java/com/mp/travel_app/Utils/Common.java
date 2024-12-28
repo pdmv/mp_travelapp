@@ -73,6 +73,10 @@ public class Common extends BaseActivity {
         });
     }
 
+    public static String getCurrentDateTime() {
+        return java.time.OffsetDateTime.now().toString();
+    }
+
     public boolean isAuthorized(Context context, String username, String password) {
         DatabaseReference databaseReference = database.getReference("Users");
 
@@ -270,6 +274,8 @@ public class Common extends BaseActivity {
                 .addOnCompleteListener(task -> listener.onUpdateSuccess())
                 .addOnFailureListener(e -> listener.onUpdateFailed(e.getMessage()));
     }
+
+
 
     public interface GetUserCallback {
         void onSuccess(Users user);
