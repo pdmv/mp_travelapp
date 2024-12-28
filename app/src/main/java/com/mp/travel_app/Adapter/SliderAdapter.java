@@ -17,7 +17,6 @@ import java.util.List;
 
 public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderViewHolder> {
     private final List<SliderItem> sliderItems;
-    private Context context;
 
     public SliderAdapter(List<SliderItem> sliderItems) {
         this.sliderItems = sliderItems;
@@ -26,7 +25,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
     @NonNull
     @Override
     public SliderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
+        Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         ViewholderBannerBinding binding = ViewholderBannerBinding.inflate(inflater, parent, false);
         return new SliderViewHolder(binding);

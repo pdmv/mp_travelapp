@@ -1,8 +1,12 @@
 package com.mp.travel_app.Domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class SliderItem {
-    private String id;
-    private String url;
+    private String id, url;
     private Tour tour;
 
     public SliderItem() {
@@ -14,27 +18,4 @@ public class SliderItem {
         this.tour = tour;
     }
 
-    public Tour getTour() {
-        return tour;
-    }
-
-    public void setTour(Tour tour) {
-        this.tour = tour;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }

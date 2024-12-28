@@ -1,4 +1,4 @@
-package com.mp.travel_app.Activity.Admin;
+package com.mp.travel_app.Fragment.Admin;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import android.util.Log;
@@ -70,7 +71,7 @@ public class AdminEditUserFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentAdminEditUserBinding.inflate(inflater, container, false);
 

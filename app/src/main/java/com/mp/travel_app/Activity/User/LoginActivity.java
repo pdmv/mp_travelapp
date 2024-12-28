@@ -66,7 +66,7 @@ public class LoginActivity extends BaseActivity {
                             if (Objects.equals(dataSnapshot.child("role").getValue(String.class), "Admin")) {
                                 Common.toActivity(LoginActivity.this, AdminDashboardActivity.class);
                             } else {
-                                Common.toActivity(LoginActivity.this, ProfileActivity.class);
+                                Common.toActivity(LoginActivity.this, MainActivity.class);
                             }
 
                             finish();

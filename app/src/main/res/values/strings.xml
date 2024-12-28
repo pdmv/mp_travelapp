@@ -98,6 +98,8 @@
     <string name="admin_ticket_title">Ticket Management</string>
     <string name="admin_ticket_price">Price</string>
     <string name="admin_ticket_time">Time</string>
+    <string name="admin_ticket_date">Date</string>
+    <string name="admin_ticket_created_at">Created At</string>
 
     <string name="admin_users_title">Account Management</string>
     <string name="admin_users_list">Account List</string>
