@@ -21,16 +21,18 @@ import com.mp.travel_app.Adapter.CartAdapter;
 import com.mp.travel_app.Domain.Tour;
 import com.mp.travel_app.R;
 import com.mp.travel_app.Utils.LoadData;
+import com.mp.travel_app.Utils.TourCartManager;
 import com.mp.travel_app.databinding.FragmentCartBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class CartFragment extends Fragment {
+    private TourCartManager cartManager;
     FragmentCartBinding binding;
     FirebaseDatabase database;
-    DatabaseReference cartRef;
 
     private List<Tour> cartItems = new ArrayList<>();
 
@@ -51,12 +53,13 @@ public class CartFragment extends Fragment {
         database = FirebaseDatabase
                 .getInstance("https://travel-app-75022-default-rtdb.asia-southeast1.firebasedatabase.app");
 
-        // TODO: Get date and add to cartItems here
-        cartRef = database.getReference("Tour");
+        cartManager = new TourCartManager(requireContext());
+
+        cartItems = cartManager.getTours();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCartBinding.inflate(inflater, container, false);
 
@@ -66,42 +69,17 @@ public class CartFragment extends Fragment {
 
         binding.progressBarRecommended.setVisibility(View.VISIBLE);
 
-        cartRef.addValueEventListener(new ValueEventListener() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    cartItems.clear();
+        if (!cartItems.isEmpty()) {
+            binding.listCart.setLayoutManager(new LinearLayoutManager(
+                    binding.listCart.getContext(),
+                    RecyclerView.VERTICAL,
+                    false
+            ));
 
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Tour data = dataSnapshot.getValue(Tour.class);
-                        cartItems.add(data);
-                    }
+            binding.listCart.setAdapter(cartAdapter);
+        }
 
-                    if (!cartItems.isEmpty()) {
-                        binding.listCart.setLayoutManager(new LinearLayoutManager(
-                                binding.listCart.getContext(),
-                                RecyclerView.VERTICAL,
-                                false
-                        ));
-
-                        cartAdapter.notifyDataSetChanged();
-                        binding.listCart.setAdapter(cartAdapter);
-                    }
-
-                    binding.progressBarRecommended.setVisibility(View.GONE);
-                    binding.progressBarRecommended.setVisibility(View.GONE);
-                } else {
-                    binding.progressBarRecommended.setVisibility(View.GONE);
-                    binding.progressBarRecommended.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        binding.progressBarRecommended.setVisibility(View.GONE);
 
         return binding.getRoot();
     }

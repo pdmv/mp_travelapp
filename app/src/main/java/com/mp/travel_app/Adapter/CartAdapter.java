@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.mp.travel_app.Activity.DetailActivity;
+import com.mp.travel_app.Activity.TicketActivity;
 import com.mp.travel_app.Domain.Tour;
 import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ViewholderCartBinding;
@@ -48,8 +48,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.binding.cartScore.setText("5");
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, DetailActivity.class);
-            intent.putExtra("item", list.get(position));
+            Intent intent = new Intent(context, TicketActivity.class);
+            intent.putExtra("item", itemDomain);
             context.startActivity(intent);
         });
 
