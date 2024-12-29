@@ -50,7 +50,7 @@
             android:paddingTop="16dp">
 
             <TextView
-                android:id="@+id/txtTicketTourDuration"
+                android:id="@+id/txtTicketStatus"
                 android:layout_width="100dp"
                 android:layout_height="30dp"
                 android:background="@drawable/light_blue_bg"
@@ -62,6 +62,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/txtTicketTourDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/darkBlue"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/txtTicketStatus"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txtTicketStatus" />
+
+            <TextView
                 android:id="@+id/txtTicketTourTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,7 +80,7 @@
                 android:textColor="@color/darkBlue"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/txtTicketTourDuration" />
+                app:layout_constraintTop_toBottomOf="@+id/txtTicketStatus" />
 
             <TextView
                 android:id="@+id/txtTicketTourLocation"

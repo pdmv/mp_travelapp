@@ -183,7 +183,7 @@ public class TicketActivity extends BaseActivity {
                         .addOnSuccessListener(aVoid -> Log.d(TAG, "Ticket updated to 'Paid'"))
                         .addOnFailureListener(e -> Log.e(TAG, "Error updating ticket: ", e));
             }
-            bottomNavigationView.setSelectedItemId(R.id.menuCart);
+            getOnBackPressedDispatcher().onBackPressed();
         }
     }
 

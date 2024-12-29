@@ -17,6 +17,10 @@
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
 
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+
         <activity
             android:name=".Activity.User.ReadyToPayActivity"
             android:exported="false" />
@@ -79,6 +83,13 @@
         <activity
             android:name=".Activity.MainActivity"
             android:exported="true" />
+        <activity
+            android:name=".Activity.User.ChangePassActivity"
+            android:exported="false" />
+        <activity android:name=".Activity.User.UpdateInforActivity"
+            android:exported="false" />
+        <activity android:name=".Activity.User.TicketManagementActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -20,16 +20,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mp.travel_app.Activity.MainActivity;
+import com.mp.travel_app.Activity.User.ChangePassActivity;
 import com.mp.travel_app.Activity.User.LoginActivity;
+import com.mp.travel_app.Activity.User.TicketManagementActivity;
+import com.mp.travel_app.Activity.User.UpdateInforActivity;
 import com.mp.travel_app.Domain.Users;
 import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.FragmentProfileBinding;
 
 public class ProfileFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private String mParam1;
-    private String mParam2;
 
     FragmentProfileBinding binding;
     FirebaseDatabase database;
@@ -39,15 +38,6 @@ public class ProfileFragment extends Fragment {
 
     public ProfileFragment() {
         // Required empty public constructor
-    }
-
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -99,6 +89,10 @@ public class ProfileFragment extends Fragment {
         binding.btnChangeAvatar.setOnClickListener(v -> pickMedia.launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
                 .build()));
+
+        binding.btnChangePassword.setOnClickListener(v -> Common.toActivity(binding.getRoot().getContext(), ChangePassActivity.class));
+        binding.btnUpdateInformation.setOnClickListener(v -> Common.toActivity(binding.getRoot().getContext(), UpdateInforActivity.class));
+        binding.btnTicket.setOnClickListener(v -> Common.toActivity(binding.getRoot().getContext(), TicketManagementActivity.class));
 
         return binding.getRoot();
     }
@@ -172,6 +166,30 @@ public class ProfileFragment extends Fragment {
 
                         @Override
                         public void onDeleteFailed(String errorMessage) {
+                            Common.handleImageUpload(newAvatarUri, new Common.OnImageUploadListener() {
+                                @Override
+                                public void onUploadSuccess(String imagePath) {
+                                    user.setAvatar(imagePath);
+                                    Common.updateUserInfo(user, new Common.OnUpdateUserInfoListener() {
+                                        @Override
+                                        public void onUpdateSuccess() {
+                                            bindingUserInformation(user);
+                                            binding.btnChangeAvatar.setEnabled(true);
+                                            Common.showToast(binding.getRoot().getContext(), "Update avatar successfully", Toast.LENGTH_LONG);
+                                        }
+
+                                        @Override
+                                        public void onUpdateFailed(String errorMessage) {
+                                            Common.showToast(binding.getRoot().getContext(), errorMessage, Toast.LENGTH_LONG);
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onUploadFailed(String errorMessage) {
+
+                                }
+                            });
 
                         }
                     });
