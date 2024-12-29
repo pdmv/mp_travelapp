@@ -21,4 +21,7 @@ public class Ticket implements Serializable {
         this.customer = customer;
     }
 
+    public String getStatus() {
+
+    }
 }
