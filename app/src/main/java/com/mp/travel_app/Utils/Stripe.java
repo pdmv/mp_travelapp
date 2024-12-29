@@ -21,7 +21,7 @@ public class Stripe {
     private static final String TAG = "Stripe";
     public static final String BASE_URL = "https://stripeserver-05gr.onrender.com";
 
-    public static void handlePayment(Context context, PaymentSheet paymentSheet, String customerId, Integer amount) {
+    public static void handlePayment(Context context, PaymentSheet paymentSheet, String customerId, Integer amount, PaymentCallback paymentCallback) {
         Log.d(TAG, "Amount: " + amount);
 
         createEphemeralKey(customerId, new Callback() {
@@ -33,11 +33,13 @@ public class Stripe {
                         PaymentSheet.CustomerConfiguration customerConfig =
                                 createCustomerConfig(customerId, ephemeralKey);
                         presentPaymentSheet(paymentSheet, customerConfig, paymentIntent);
+                        paymentCallback.onSuccess(paymentIntent);
                     }
 
                     @Override
                     public void onError(String error) {
                         Log.e(TAG, "Error creating PaymentIntent: " + error);
+                        paymentCallback.onError(error);
                     }
                 });
             }
@@ -45,8 +47,54 @@ public class Stripe {
             @Override
             public void onError(String error) {
                 Log.e(TAG, "Error creating Ephemeral Key: " + error);
+                paymentCallback.onError(error);
             }
         });
+    }
+
+    public static  void presentExistingPaymentSheet(Context context, PaymentSheet paymentSheet, String paymentId, String customerId, PaymentCallback paymentCallback) {
+        JSONObject body = new JSONObject();
+        try {
+            body.put("customerId", customerId);
+        } catch (JSONException e) {
+            paymentCallback.onError("JSON error: " + e.getMessage());
+            return;
+        }
+
+        Fuel.INSTANCE.post(BASE_URL + "/ephemeral-keys", null)
+                .body(body.toString(), Charsets.UTF_8)
+                .header("Content-Type", "application/json")
+                .responseString(new Handler<>() {
+                    @Override
+                    public void success(String s) {
+                        try {
+                            JSONObject result = new JSONObject(s);
+                            String ephemeralKey = result.getString("ephemeralKey");
+                            String publishableKey = result.getString("publishableKey");
+
+                            PaymentConfiguration.init(context, publishableKey);
+
+                            PaymentSheet.CustomerConfiguration customerConfig =
+                                    createCustomerConfig(customerId, ephemeralKey);
+                            presentPaymentSheet(paymentSheet, customerConfig, paymentId);
+
+                            final PaymentSheet.Configuration configuration = new PaymentSheet.Configuration.Builder("Travel App, Inc.")
+                                    .customer(customerConfig)
+                                    .allowsDelayedPaymentMethods(true)
+                                    .build();
+
+                            paymentSheet.presentWithPaymentIntent(paymentId, configuration);
+                            paymentCallback.onSuccess(paymentId);
+                        } catch (JSONException e) {
+                            paymentCallback.onError("JSON error: " + e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void failure(@NonNull FuelError fuelError) {
+                        paymentCallback.onError("Failed to create ephemeral key: " + fuelError.getMessage());
+                    }
+                });
     }
 
     public static void createCustomer(String name, String email, Callback callback) {
@@ -171,6 +219,11 @@ public class Stripe {
     public interface Callback {
         void onSuccess(String result);
 
+        void onError(String error);
+    }
+
+    public interface  PaymentCallback {
+        void onSuccess(String paymentId);
         void onError(String error);
     }
 }

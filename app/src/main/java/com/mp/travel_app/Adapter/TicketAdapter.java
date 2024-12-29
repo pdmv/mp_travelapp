@@ -20,7 +20,6 @@ import java.util.List;
 public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketViewHolder> {
     private final List<Ticket> tickets;
 
-    // Constructor nhận danh sách vé
     public TicketAdapter(List<Ticket> tickets) {
         this.tickets = tickets;
     }
@@ -42,7 +41,6 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         OffsetDateTime offsetDateTime = OffsetDateTime.parse(createdAt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
 
-        // Gán các giá trị vào các TextView trong layout
         holder.binding.txtTicketTourDuration.setText(ticket.getTour().getDuration());
         holder.binding.txtTicketCreatedAt.setText(offsetDateTime.format(formatter));
         holder.binding.txtTicketTourTitle.setText(ticket.getTour().getTitle());
@@ -54,12 +52,11 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         holder.binding.txtTicketCustomerPhone.setText(ticket.getCustomer().getPhoneNumber());
         holder.binding.txtTicketCustomerEmail.setText(ticket.getCustomer().getEmail());
 
-        // Tải ảnh tour từ Firebase
         Common.getFileFromFirebase(ticket.getTour().getImagePath(), new Common.OnGetFileListener() {
             @Override
             public void onUploadSuccess(String downloadUrl) {
                 Glide.with(holder.itemView.getContext())
-                        .load(downloadUrl)  // Tải ảnh từ URL
+                        .load(downloadUrl)
                         .into(holder.binding.imageViewTour);
             }
 

@@ -13,8 +13,13 @@
         android:theme="@style/Theme.TravelApp"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.User.ProfileActivity"
+            android:name=".Activity.User.ReadyToPayActivity"
             android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+
         <activity
             android:name=".Activity.Admin.AdminCategoryBannerActivity"
             android:exported="false" />
@@ -47,7 +52,7 @@
             android:exported="true" />
         <activity
             android:name=".Activity.Admin.AdminDashboardActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".Activity.TicketActivity"
             android:exported="false" />
