@@ -30,9 +30,7 @@ public class Stripe {
                 createPaymentIntent(context, customerId, amount, new Callback() {
                     @Override
                     public void onSuccess(String paymentIntent) {
-                        PaymentSheet.CustomerConfiguration customerConfig =
-                                createCustomerConfig(customerId, ephemeralKey);
-                        presentPaymentSheet(paymentSheet, customerConfig, paymentIntent);
+                        paymentSheet.presentWithPaymentIntent(paymentIntent);
                         paymentCallback.onSuccess(paymentIntent);
                     }
 
@@ -78,12 +76,6 @@ public class Stripe {
                                     createCustomerConfig(customerId, ephemeralKey);
                             presentPaymentSheet(paymentSheet, customerConfig, paymentId);
 
-                            final PaymentSheet.Configuration configuration = new PaymentSheet.Configuration.Builder("Travel App, Inc.")
-                                    .customer(customerConfig)
-                                    .allowsDelayedPaymentMethods(true)
-                                    .build();
-
-                            paymentSheet.presentWithPaymentIntent(paymentId, configuration);
                             paymentCallback.onSuccess(paymentId);
                         } catch (JSONException e) {
                             paymentCallback.onError("JSON error: " + e.getMessage());

@@ -145,4 +145,11 @@
     <string name="admin_save_btn">Save</string>
 
     <string name="all_tour_title">All Tour</string>
+    <string name="cart_title">Cart</string>
+    <string name="edit_change_title">Change Password</string>
+    <string name="edit_update_info">Update Personal Information</string>
+    <string name="sub_title">Review your upcoming bookings below</string>
+    <string name="admin_submit_btn">Submit</string>
+    <string name="profile_update_information">Update Info</string>
+    <string name="profile_ticket">Ticket</string>
 </resources>

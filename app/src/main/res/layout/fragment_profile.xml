@@ -193,26 +193,29 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_gravity="">
+                    android:layout_marginEnd="24dp">
 
                     <Button
                         android:id="@+id/btnChangeAvatar"
-                        android:layout_width="180dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:backgroundTint="@color/lightBlue"
                         android:text="@string/profile_change_avatar"
                         android:textColor="@color/blue"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/btnChangePassword"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.5" />
 
                     <Button
                         android:id="@+id/btnChangePassword"
-                        android:layout_width="180dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:backgroundTint="@color/lightBlue"
                         android:text="@string/profile_change_password"
                         android:textColor="@color/blue"
@@ -220,10 +223,44 @@
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintStart_toEndOf="@+id/btnChangeAvatar"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.5" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp">
 
+                    <Button
+                        android:id="@+id/btnUpdateInformation"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:backgroundTint="@color/lightBlue"
+                        android:text="@string/profile_update_information"
+                        android:textColor="@color/blue"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnTicket"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:backgroundTint="@color/lightBlue"
+                        android:text="@string/profile_ticket"
+                        android:textColor="@color/blue"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
                 <Button
                     android:id="@+id/btnLogout"
                     android:layout_width="match_parent"

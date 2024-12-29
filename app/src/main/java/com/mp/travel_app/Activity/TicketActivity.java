@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mp.travel_app.Domain.Ticket;
 import com.mp.travel_app.Domain.Tour;
 import com.mp.travel_app.Domain.Users;
+import com.mp.travel_app.R;
 import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.Utils.Stripe;
 import com.mp.travel_app.Utils.TourCartManager;
@@ -24,6 +26,7 @@ public class TicketActivity extends BaseActivity {
     private Ticket ticket;
     private PaymentSheet paymentSheet;
     private TourCartManager cartManager;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class TicketActivity extends BaseActivity {
 
         cartManager = new TourCartManager(this);
         paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         getIntentExtra();
         getExistedTicket();
@@ -66,6 +70,7 @@ public class TicketActivity extends BaseActivity {
                 if (ticket != null) {
                     if ("Unpaid".equals(ticket.getStatus())) {
                         Log.d(TAG, "Using existing payment for ticket");
+                        binding.btnPay.setEnabled(true);
                         Stripe.presentExistingPaymentSheet(TicketActivity.this, paymentSheet, ticket.getStripePaymentId(), user.getStripeCustomerId(), new Stripe.PaymentCallback() {
                             @Override
                             public void onSuccess(String result) {
@@ -83,20 +88,22 @@ public class TicketActivity extends BaseActivity {
                     }
                 } else {
                     createTicket(user);
+                    cartManager.removeTour(object.getId());
+
                     if (user.getStripeCustomerId() == null) {
                         Stripe.createCustomer(user.getUsername(), user.getEmail(), new Stripe.Callback() {
                             @Override
                             public void onSuccess(String result) {
-                                cartManager.removeTour(object.getId());
                                 user.setStripeCustomerId(result);
 
                                 database.getReference("Users")
                                         .child(user.getId())
                                         .setValue(user)
-                                        .addOnSuccessListener(aVoid -> createNewPayment(user.getStripeCustomerId()))
+                                        .addOnSuccessListener(aVoid -> {
+                                            createNewPayment(user.getStripeCustomerId());
+                                            binding.btnPay.setEnabled(true);
+                                        })
                                         .addOnFailureListener(e -> Log.e(TAG, "Error updating user: ", e));
-
-                                binding.btnPay.setEnabled(true);
                             }
 
                             @Override
@@ -124,13 +131,14 @@ public class TicketActivity extends BaseActivity {
         Stripe.handlePayment(this, paymentSheet, customerId, (int) object.getPrice(), new Stripe.PaymentCallback() {
             @Override
             public void onSuccess(String paymentId) {
+                Log.d(TAG, "Payment ID: " + paymentId);
                 if (ticket != null) {
                     ticket.setStripePaymentId(paymentId);
                     database.getReference("Ticket")
                             .child(ticket.getId())
                             .setValue(ticket)
-                            .addOnSuccessListener(aVoid -> Log.d(TAG, "Payment ID linked to ticket"))
-                            .addOnFailureListener(e -> Log.e(TAG, "Error linking payment ID: ", e));
+                            .addOnSuccessListener(aVoid -> Log.d(TAG, "Ticket updated with payment ID"))
+                            .addOnFailureListener(e -> Log.e(TAG, "Error updating ticket: ", e));
                 }
             }
 
@@ -175,6 +183,7 @@ public class TicketActivity extends BaseActivity {
                         .addOnSuccessListener(aVoid -> Log.d(TAG, "Ticket updated to 'Paid'"))
                         .addOnFailureListener(e -> Log.e(TAG, "Error updating ticket: ", e));
             }
+            bottomNavigationView.setSelectedItemId(R.id.menuCart);
         }
     }
 
