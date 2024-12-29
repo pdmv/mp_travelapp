@@ -43,6 +43,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         OffsetDateTime offsetDateTime = OffsetDateTime.parse(createdAt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
 
+        holder.binding.txtTicketStatus.setText(ticket.getStatus());
         holder.binding.txtTicketTourDuration.setText(ticket.getTour().getDuration());
         holder.binding.txtTicketCreatedAt.setText(offsetDateTime.format(formatter));
         holder.binding.txtTicketTourTitle.setText(ticket.getTour().getTitle());
