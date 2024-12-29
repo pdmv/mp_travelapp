@@ -2,16 +2,23 @@ package com.mp.travel_app.Fragment.User;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.mp.travel_app.Activity.MainActivity;
 import com.mp.travel_app.Activity.User.LoginActivity;
 import com.mp.travel_app.Domain.Users;
@@ -19,18 +26,49 @@ import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.FragmentProfileBinding;
 
 public class ProfileFragment extends Fragment {
-    private FragmentProfileBinding binding;
-    private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+    private String mParam1;
+    private String mParam2;
+
+    FragmentProfileBinding binding;
+    FirebaseDatabase database;
+    FirebaseStorage storage;
+    StorageReference storageReference;
+    ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
+
+    public ProfileFragment() {
+        // Required empty public constructor
+    }
+
+    public static ProfileFragment newInstance(String param1, String param2) {
+        ProfileFragment fragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = FragmentProfileBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());  
+
+        database = FirebaseDatabase
+                .getInstance("https://travel-app-75022-default-rtdb.asia-southeast1.firebasedatabase.app");
+
+        storage = FirebaseStorage
+                .getInstance("gs://travel-app-75022.firebasestorage.app");
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
 
         binding.backBtn.setOnClickListener(v -> back());
 
-        Common.getCurrentUser(getActivity(), new Common.GetUserCallback() {
+        Common.getCurrentUser(binding.getRoot().getContext(), new Common.GetUserCallback() {
             @Override
             public void onSuccess(Users user) {
                 if (user != null) {
@@ -40,9 +78,8 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onFailure(String errorMessage) {
-                Common.showToast(getActivity(), errorMessage, Toast.LENGTH_LONG);
-                Common.toActivity(getActivity(), LoginActivity.class);
-                getActivity().finish();
+                Common.showToast(binding.getRoot().getContext(), errorMessage, Toast.LENGTH_LONG);
+                Common.toActivity(binding.getRoot().getContext(), LoginActivity.class);
             }
         });
 
@@ -56,16 +93,14 @@ public class ProfileFragment extends Fragment {
         });
 
         binding.btnLogout.setOnClickListener(v -> {
-            Common.logout(getActivity(), MainActivity.class);
-            getActivity().finish();
+            Common.logout(binding.getRoot().getContext(), MainActivity.class);
         });
 
         binding.btnChangeAvatar.setOnClickListener(v -> pickMedia.launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
                 .build()));
-    }
 
-    private void setContentView(FrameLayout root) {
+        return binding.getRoot();
     }
 
     private void bindingUserInformation(Users user) {
@@ -75,7 +110,7 @@ public class ProfileFragment extends Fragment {
         Common.getFileFromFirebase(user.getAvatar(), new Common.OnGetFileListener() {
             @Override
             public void onUploadSuccess(String downloadUrl) {
-                Glide.with(getActivity())
+                Glide.with(requireActivity())
                         .load(downloadUrl)
                         .circleCrop()
                         .into(binding.avatarView);
@@ -93,12 +128,16 @@ public class ProfileFragment extends Fragment {
     }
 
     private void back() {
-        getActivity().finish();
+        if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            requireActivity().finish();
+        } else {
+            requireActivity().getOnBackPressedDispatcher().onBackPressed();
+        }
     }
 
     private void changeAvatar(Uri newAvatarUri) {
         binding.btnChangeAvatar.setEnabled(false);
-        Common.getCurrentUser(getActivity(), new Common.GetUserCallback() {
+        Common.getCurrentUser(binding.getRoot().getContext(), new Common.GetUserCallback() {
             @Override
             public void onSuccess(Users user) {
                 if (user != null) {
@@ -114,12 +153,12 @@ public class ProfileFragment extends Fragment {
                                         public void onUpdateSuccess() {
                                             bindingUserInformation(user);
                                             binding.btnChangeAvatar.setEnabled(true);
-                                            Common.showToast(getActivity(), "Update avatar successfully", Toast.LENGTH_LONG);
+                                            Common.showToast(binding.getRoot().getContext(), "Update avatar successfully", Toast.LENGTH_LONG);
                                         }
 
                                         @Override
                                         public void onUpdateFailed(String errorMessage) {
-                                            Common.showToast(getActivity(), errorMessage, Toast.LENGTH_LONG);
+                                            Common.showToast(binding.getRoot().getContext(), errorMessage, Toast.LENGTH_LONG);
                                         }
                                     });
                                 }
