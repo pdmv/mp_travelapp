@@ -166,6 +166,30 @@ public class ProfileFragment extends Fragment {
 
                         @Override
                         public void onDeleteFailed(String errorMessage) {
+                            Common.handleImageUpload(newAvatarUri, new Common.OnImageUploadListener() {
+                                @Override
+                                public void onUploadSuccess(String imagePath) {
+                                    user.setAvatar(imagePath);
+                                    Common.updateUserInfo(user, new Common.OnUpdateUserInfoListener() {
+                                        @Override
+                                        public void onUpdateSuccess() {
+                                            bindingUserInformation(user);
+                                            binding.btnChangeAvatar.setEnabled(true);
+                                            Common.showToast(binding.getRoot().getContext(), "Update avatar successfully", Toast.LENGTH_LONG);
+                                        }
+
+                                        @Override
+                                        public void onUpdateFailed(String errorMessage) {
+                                            Common.showToast(binding.getRoot().getContext(), errorMessage, Toast.LENGTH_LONG);
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onUploadFailed(String errorMessage) {
+
+                                }
+                            });
 
                         }
                     });

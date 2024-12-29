@@ -30,6 +30,22 @@ public class UpdateInforActivity extends AppCompatActivity {
         btnUpdateInformation = findViewById(R.id.btnUpdate);
         btnBackTo = findViewById(R.id.btnBackTo); // Khởi tạo nút quay lại
 
+        Common.getCurrentUser(this, new Common.GetUserCallback() {
+            @Override
+            public void onSuccess(Users user) {
+                if (user != null) {
+                    editFullName.setText(user.getFullname());
+                    editEmail.setText(user.getEmail());
+                    editPhoneNumber.setText(user.getPhoneNumber());
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        });
+
         // Xử lý sự kiện nút "Cập nhật"
         btnUpdateInformation.setOnClickListener(v -> {
             String fullName = editFullName.getText().toString().trim();

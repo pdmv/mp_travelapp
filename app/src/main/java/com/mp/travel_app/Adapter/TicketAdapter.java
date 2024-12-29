@@ -2,6 +2,7 @@ package com.mp.travel_app.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.mp.travel_app.Activity.TicketActivity;
 import com.mp.travel_app.Domain.Ticket;
 import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.databinding.ViewholderTicketListBinding;
@@ -51,6 +53,12 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         holder.binding.txtTicketCustomerName.setText(ticket.getCustomer().getFullname());
         holder.binding.txtTicketCustomerPhone.setText(ticket.getCustomer().getPhoneNumber());
         holder.binding.txtTicketCustomerEmail.setText(ticket.getCustomer().getEmail());
+
+        holder.binding.mainLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), TicketActivity.class);
+            intent.putExtra("ticket", ticket);
+            holder.itemView.getContext().startActivity(intent);
+        });
 
         Common.getFileFromFirebase(ticket.getTour().getImagePath(), new Common.OnGetFileListener() {
             @Override
