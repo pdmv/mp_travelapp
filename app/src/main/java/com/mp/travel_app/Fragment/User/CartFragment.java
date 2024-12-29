@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +34,7 @@ public class CartFragment extends Fragment {
     private TourCartManager cartManager;
     FragmentCartBinding binding;
     FirebaseDatabase database;
+    BottomNavigationView bottomNavigationView;
 
     private List<Tour> cartItems = new ArrayList<>();
 
@@ -52,7 +54,7 @@ public class CartFragment extends Fragment {
 
         database = FirebaseDatabase
                 .getInstance("https://travel-app-75022-default-rtdb.asia-southeast1.firebasedatabase.app");
-
+        bottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation);
         cartManager = new TourCartManager(requireContext());
 
         cartItems = cartManager.getTours();
@@ -80,6 +82,7 @@ public class CartFragment extends Fragment {
         }
 
         binding.progressBarRecommended.setVisibility(View.GONE);
+        binding.backBtn.setOnClickListener(v-> bottomNavigationView.setSelectedItemId(R.id.menuHome));
 
         return binding.getRoot();
     }
