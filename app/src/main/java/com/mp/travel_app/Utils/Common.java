@@ -15,7 +15,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
@@ -48,84 +47,58 @@ public class Common extends BaseActivity {
     }
 
     public static void changePassword(String username, String oldPassword, String newPassword, final OnChangePasswordListener listener) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference databaseReference = database.getReference("Users");
         Query query = databaseReference.orderByChild("username").equalTo(username);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    boolean isPasswordUpdated = false;
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Users user = snapshot.getValue(Users.class);
-                        if (user != null && checkPassword(oldPassword, user.getPassword())) {
-                            if (!newPassword.equals(oldPassword)) {
-                                user.setPassword(hashPassword(newPassword));
-                                databaseReference.child(user.getId()).setValue(user).addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
-                                        listener.onSuccess();
-                                    } else {
-                                        listener.onFailed("Failed to update password.");
-                                    }
-                                });
-                                isPasswordUpdated = true;
-                            } else {
-                                listener.onFailed("New password cannot be the same as the old password.");
-                            }
-                            break;
-                        }
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Users user = snapshot.getValue(Users.class);
+                    if (user != null && checkPassword(oldPassword, user.getPassword())) {
+                        user.setPassword(hashPassword(newPassword));
+                        databaseReference.child(user.getId()).setValue(user);
+                        listener.onSuccess();
+                        return;
                     }
-                    if (!isPasswordUpdated) {
-                        listener.onFailed("Incorrect old password.");
-                    }
-                } else {
-                    listener.onFailed("User not found.");
+
+                    listener.onFailed("User not found or password incorrect");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                listener.onFailed("Error: " + error.getMessage());
+
             }
         });
     }
 
-    public interface OnChangePasswordListener {
-        void onSuccess();
-        void onFailed(String message);
+    public static String getCurrentDateTime() {
+        return java.time.OffsetDateTime.now().toString();
     }
 
-    public interface OnAuthorizationListener {
-        void onSuccess();
-        void onFailed(String message);
-    }
-
-    public void isAuthorized(String username, String password, final OnAuthorizationListener listener) {
+    public boolean isAuthorized(Context context, String username, String password) {
         DatabaseReference databaseReference = database.getReference("Users");
 
         Query query = databaseReference.orderByChild("username").equalTo(username);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Users user = snapshot.getValue(Users.class);
-                        if (user != null && checkPassword(password, user.getPassword())) {
-                            listener.onSuccess();
-                            return;
-                        }
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Users user = snapshot.getValue(Users.class);
+                    if (user != null && checkPassword(password, user.getPassword())) {
+                        return;
                     }
-                    listener.onFailed("Invalid password.");
-                } else {
-                    listener.onFailed("User not found.");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                listener.onFailed("Error: " + error.getMessage());
+                showToast(context, "Error: " + error.getMessage(), Toast.LENGTH_SHORT);
             }
         });
+
+        return false;
     }
 
     public static void storeUserCredentials(String username, String password) {
@@ -329,4 +302,8 @@ public class Common extends BaseActivity {
         void onUpdateFailed(String errorMessage);
     }
 
+    public interface OnChangePasswordListener {
+        void onSuccess();
+        void onFailed(String errorMessage);
+    }
 }

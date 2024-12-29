@@ -40,8 +40,8 @@
     <string name="detail_per_person">/ Person</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_favorite">Explorer</string>
-    <string name="menu_cart">Bookmark</string>
+    <string name="menu_all_tour">All tour</string>
+    <string name="menu_cart">Cart</string>
     <string name="menu_profile">Profile</string>
 
 
@@ -144,14 +144,6 @@
     <string name="edit_profile_re_password">Re-enter new password</string>
     <string name="admin_save_btn">Save</string>
 
-    <string name="edit_change_title">Change Password</string>
-    <string name="admin_submit_btn">Submit</string>
-    <string name="login_change_btn">Here</string>
-    <string name="login_to_change">Forget Password?</string>
-    <string name="login_to_account">Account</string>
-    <string name="edit_update_info">Update Personal Information</string>
-    <string name="profile_update_information">Update Information</string>
-    <string name="profile_ticket">Ticket</string>
-    <string name="ticket_manage">Management Ticket</string>
-    <string name="sub_title">Review your upcoming bookings below</string>
+    <string name="all_tour_title">All Tour</string>
+    <string name="cart_title">Cart</string>
 </resources>

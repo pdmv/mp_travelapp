@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -24,24 +26,29 @@ import com.mp.travel_app.Domain.Location;
 import com.mp.travel_app.Domain.SliderItem;
 import com.mp.travel_app.Domain.Tour;
 import com.mp.travel_app.R;
+import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.Utils.LoadData;
 import com.mp.travel_app.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
     private String mParam2;
+    private final List<Tour> itemDomains = new ArrayList<>();
+    private final List<Tour> filteredItem = new ArrayList<>();
+    private RecommendedAdapter filteredRecommendedAdapter;
+    private PopularAdapter filteredPopularAdapter;
 
     FragmentHomeBinding binding;
     FirebaseDatabase database;
     FirebaseStorage storage;
     DatabaseReference popularRef, locationRef, bannerRef, categoryRef, itemRef;
     StorageReference storageReference;
-    private List<Tour> itemDomains = new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -99,6 +106,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        binding.searchBtn.setOnClickListener(v -> {
+            String query = binding.searchBox.getText().toString().trim();
+            filterBySearch(query);
+        });
+
+        binding.recommendedSeeAllBtn.setOnClickListener(v -> toAllTour());
+        binding.popularSeeAllBtn.setOnClickListener(v -> toAllTour());
+
         return binding.getRoot();
     }
 
@@ -120,6 +135,13 @@ public class HomeFragment extends Fragment {
         List<Category> categories = new ArrayList<>();
 
         CategoryAdapter categoryAdapter = new CategoryAdapter(categories);
+
+        categoryAdapter.setOnCategorySelectedListener(new CategoryAdapter.OnCategorySelectedListener() {
+            @Override
+            public void onCategorySelected(Category category) {
+                filterDataByCategory(category);
+            }
+        });
 
         LoadData.loadDataIntoRecyclerView(categoryRef, binding.recyclerViewCategory, binding.progressBarCategory,
                 binding.noDataCategoryTxt, Category.class, categoryAdapter, categories);
@@ -143,7 +165,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void filterDataByLocation(Location location) {
-        List<Tour> filteredItem = new ArrayList<>();
+        filteredItem.clear();
 
         for (Tour itemDomain : itemDomains) {
             if (itemDomain.getLocation().getLoc().equals(location.getLoc())) {
@@ -151,9 +173,52 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        RecommendedAdapter filteredRecommendedAdapter = new RecommendedAdapter(filteredItem);
-        PopularAdapter filteredPopularAdapter = new PopularAdapter(filteredItem);
+        filteredRecommendedAdapter = new RecommendedAdapter(filteredItem);
+        filteredPopularAdapter = new PopularAdapter(filteredItem);
         binding.recyclerViewRecommended.setAdapter(filteredRecommendedAdapter);
         binding.recyclerViewPopular.setAdapter(filteredPopularAdapter);
+    }
+
+    private void filterDataByCategory(Category category) {
+        filteredItem.clear();
+
+        for (Tour itemDomain : itemDomains) {
+            if (itemDomain.getCategory().getName().equals(category.getName())) {
+                filteredItem.add(itemDomain);
+            }
+        }
+
+        filteredRecommendedAdapter = new RecommendedAdapter(filteredItem);
+        filteredPopularAdapter = new PopularAdapter(filteredItem);
+        binding.recyclerViewRecommended.setAdapter(filteredRecommendedAdapter);
+        binding.recyclerViewPopular.setAdapter(filteredPopularAdapter);
+    }
+
+    private void filterBySearch(String query) {
+        filteredItem.clear();
+
+        String queryLower = query.toLowerCase();
+
+        for (Tour itemDomain : itemDomains) {
+            if (itemDomain.getDateTour().toLowerCase().contains(queryLower)
+                    || itemDomain.getDuration().toLowerCase().contains(queryLower)
+                    || itemDomain.getTimeTour().toLowerCase().contains(queryLower)
+                    || String.valueOf(itemDomain.getPrice()).toLowerCase().contains(queryLower)
+                    || itemDomain.getTourGuide().getFullname().toLowerCase().contains(queryLower)
+                    || itemDomain.getTourGuide().getPhoneNumber().toLowerCase().contains(queryLower)) {
+                        filteredItem.add(itemDomain);
+            }
+        }
+
+        filteredRecommendedAdapter = new RecommendedAdapter(filteredItem);
+        filteredPopularAdapter = new PopularAdapter(filteredItem);
+        binding.recyclerViewRecommended.setAdapter(filteredRecommendedAdapter);
+        binding.recyclerViewPopular.setAdapter(filteredPopularAdapter);
+    }
+
+    private void toAllTour() {
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setSelectedItemId(R.id.menuAllTour);
     }
 }
