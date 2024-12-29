@@ -40,8 +40,8 @@
     <string name="detail_per_person">/ Person</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_favorite">Explorer</string>
-    <string name="menu_cart">Bookmark</string>
+    <string name="menu_all_tour">All tour</string>
+    <string name="menu_cart">Cart</string>
     <string name="menu_profile">Profile</string>
 
 
@@ -143,4 +143,6 @@
     <string name="edit_profile_new_password">New password</string>
     <string name="edit_profile_re_password">Re-enter new password</string>
     <string name="admin_save_btn">Save</string>
+
+    <string name="all_tour_title">All Tour</string>
 </resources>

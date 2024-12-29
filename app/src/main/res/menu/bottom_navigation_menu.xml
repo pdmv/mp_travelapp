@@ -6,13 +6,13 @@
         android:title="@string/menu_home" />
 
     <item
-        android:id="@+id/menuFavorite"
-        android:icon="@drawable/bottom_btn2"
-        android:title="@string/menu_favorite" />
+        android:id="@+id/menuAllTour"
+        android:icon="@drawable/all_tour"
+        android:title="@string/menu_all_tour" />
 
     <item
         android:id="@+id/menuCart"
-        android:icon="@drawable/bottom_btn3"
+        android:icon="@drawable/cart"
         android:title="@string/menu_cart" />
 
     <item
