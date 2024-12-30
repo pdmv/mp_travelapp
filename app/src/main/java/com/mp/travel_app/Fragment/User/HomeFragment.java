@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
@@ -26,28 +25,24 @@ import com.mp.travel_app.Domain.Location;
 import com.mp.travel_app.Domain.SliderItem;
 import com.mp.travel_app.Domain.Tour;
 import com.mp.travel_app.R;
-import com.mp.travel_app.Utils.Common;
 import com.mp.travel_app.Utils.LoadData;
 import com.mp.travel_app.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
     private String mParam2;
-    private final List<Tour> itemDomains = new ArrayList<>();
-    private final List<Tour> filteredItem = new ArrayList<>();
-    private RecommendedAdapter filteredRecommendedAdapter;
-    private PopularAdapter filteredPopularAdapter;
+    private final List<Tour> popularTour = new ArrayList<>();
+    private final List<Tour> recommendedTour = new ArrayList<>();
 
     FragmentHomeBinding binding;
     FirebaseDatabase database;
     FirebaseStorage storage;
-    DatabaseReference popularRef, locationRef, bannerRef, categoryRef, itemRef;
+    DatabaseReference locationRef, bannerRef, categoryRef, itemRef;
     StorageReference storageReference;
 
     public HomeFragment() {
@@ -77,7 +72,6 @@ public class HomeFragment extends Fragment {
         locationRef = database.getReference("Location");
         categoryRef = database.getReference("Category");
         itemRef = database.getReference("Tour");
-        popularRef = database.getReference("Populars");
         storageReference = storage.getReference();
     }
 
@@ -97,7 +91,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Location selectedLocation = (Location) parent.getItemAtPosition(position);
-                filterDataByLocation(selectedLocation);
+                filterData(selectedLocation);
             }
 
             @Override
@@ -108,7 +102,7 @@ public class HomeFragment extends Fragment {
 
         binding.searchBtn.setOnClickListener(v -> {
             String query = binding.searchBox.getText().toString().trim();
-            filterBySearch(query);
+            filterData(query);
         });
 
         binding.recommendedSeeAllBtn.setOnClickListener(v -> toAllTour());
@@ -118,17 +112,21 @@ public class HomeFragment extends Fragment {
     }
 
     private void initPopular() {
-        PopularAdapter popularAdapter = new PopularAdapter(itemDomains);
+        PopularAdapter popularAdapter = new PopularAdapter(popularTour);
 
-        LoadData.loadDataIntoRecyclerView(popularRef, binding.recyclerViewPopular, binding.progressBarPopular,
-                binding.noDataPopularTxt, Tour.class, popularAdapter, itemDomains);
+        LoadData.loadFilterDataIntoRecyclerView(itemRef, binding.recyclerViewPopular, binding.progressBarPopular,
+                binding.noDataPopularTxt, Tour.class, popularAdapter, popularTour, tour -> {
+                    return tour.getStatus().equals("Popular");
+                });
     }
 
     private void initRecommended() {
-        RecommendedAdapter recommendedAdapter = new RecommendedAdapter(itemDomains);
+        RecommendedAdapter recommendedAdapter = new RecommendedAdapter(recommendedTour);
 
-        LoadData.loadDataIntoRecyclerView(itemRef, binding.recyclerViewRecommended, binding.progressBarRecommended,
-                binding.noDataRecommendedTxt, Tour.class, recommendedAdapter, itemDomains);
+        LoadData.loadFilterDataIntoRecyclerView(itemRef, binding.recyclerViewRecommended, binding.progressBarRecommended,
+                binding.noDataRecommendedTxt, Tour.class, recommendedAdapter, recommendedTour, tour -> {
+                    return tour.getStatus().equals("Recommended");
+                });
     }
 
     private void initCategory() {
@@ -139,7 +137,7 @@ public class HomeFragment extends Fragment {
         categoryAdapter.setOnCategorySelectedListener(new CategoryAdapter.OnCategorySelectedListener() {
             @Override
             public void onCategorySelected(Category category) {
-                filterDataByCategory(category);
+                filterData(category);
             }
         });
 
@@ -164,56 +162,62 @@ public class HomeFragment extends Fragment {
         binding.locationSp.setAdapter(locationAdapter);
     }
 
-    private void filterDataByLocation(Location location) {
-        filteredItem.clear();
+    private void filterData(Object filterCriteria) {
+        List<Tour> filteredPopular = new ArrayList<>();
+        List<Tour> filteredRecommended = new ArrayList<>();
 
-        for (Tour itemDomain : itemDomains) {
-            if (itemDomain.getLocation().getLoc().equals(location.getLoc())) {
-                filteredItem.add(itemDomain);
+        for (Tour popular : popularTour) {
+            if (isMatching(popular, filterCriteria)) {
+                filteredPopular.add(popular);
             }
         }
 
-        filteredRecommendedAdapter = new RecommendedAdapter(filteredItem);
-        filteredPopularAdapter = new PopularAdapter(filteredItem);
-        binding.recyclerViewRecommended.setAdapter(filteredRecommendedAdapter);
-        binding.recyclerViewPopular.setAdapter(filteredPopularAdapter);
+        for (Tour recommended : recommendedTour) {
+            if (isMatching(recommended, filterCriteria)) {
+                filteredRecommended.add(recommended);
+            }
+        }
+
+        updateAdapters(filteredPopular, filteredRecommended);
     }
 
-    private void filterDataByCategory(Category category) {
-        filteredItem.clear();
-
-        for (Tour itemDomain : itemDomains) {
-            if (itemDomain.getCategory().getName().equals(category.getName())) {
-                filteredItem.add(itemDomain);
-            }
+    private boolean isMatching(Tour tour, Object filterCriteria) {
+        if (filterCriteria instanceof Location) {
+            Location location = (Location) filterCriteria;
+            return tour.getLocation().getLoc().equals(location.getLoc());
+        } else if (filterCriteria instanceof Category) {
+            Category category = (Category) filterCriteria;
+            return tour.getCategory().getName().equals(category.getName());
+        } else if (filterCriteria instanceof String) {
+            String query = (String) filterCriteria;
+            String queryLower = query.toLowerCase();
+            return tour.getDateTour().toLowerCase().contains(queryLower)
+                    || tour.getDuration().toLowerCase().contains(queryLower)
+                    || tour.getTimeTour().toLowerCase().contains(queryLower)
+                    || String.valueOf(tour.getPrice()).toLowerCase().contains(queryLower)
+                    || tour.getTourGuide().getFullname().toLowerCase().contains(queryLower)
+                    || tour.getTourGuide().getPhoneNumber().toLowerCase().contains(queryLower);
         }
-
-        filteredRecommendedAdapter = new RecommendedAdapter(filteredItem);
-        filteredPopularAdapter = new PopularAdapter(filteredItem);
-        binding.recyclerViewRecommended.setAdapter(filteredRecommendedAdapter);
-        binding.recyclerViewPopular.setAdapter(filteredPopularAdapter);
+        return false;
     }
 
-    private void filterBySearch(String query) {
-        filteredItem.clear();
+    private void updateAdapters(List<Tour> filteredPopular, List<Tour> filteredRecommended) {
+        PopularAdapter filteredPopularAdapter = new PopularAdapter(filteredPopular);
+        RecommendedAdapter filteredRecommendedAdapter = new RecommendedAdapter(filteredRecommended);
+        binding.recyclerViewPopular.setAdapter(filteredPopularAdapter);
+        binding.recyclerViewRecommended.setAdapter(filteredRecommendedAdapter);
 
-        String queryLower = query.toLowerCase();
-
-        for (Tour itemDomain : itemDomains) {
-            if (itemDomain.getDateTour().toLowerCase().contains(queryLower)
-                    || itemDomain.getDuration().toLowerCase().contains(queryLower)
-                    || itemDomain.getTimeTour().toLowerCase().contains(queryLower)
-                    || String.valueOf(itemDomain.getPrice()).toLowerCase().contains(queryLower)
-                    || itemDomain.getTourGuide().getFullname().toLowerCase().contains(queryLower)
-                    || itemDomain.getTourGuide().getPhoneNumber().toLowerCase().contains(queryLower)) {
-                        filteredItem.add(itemDomain);
-            }
+        if (filteredPopular.isEmpty()) {
+            binding.noDataPopularTxt.setVisibility(View.VISIBLE);
+        } else {
+            binding.noDataPopularTxt.setVisibility(View.GONE);
         }
 
-        filteredRecommendedAdapter = new RecommendedAdapter(filteredItem);
-        filteredPopularAdapter = new PopularAdapter(filteredItem);
-        binding.recyclerViewRecommended.setAdapter(filteredRecommendedAdapter);
-        binding.recyclerViewPopular.setAdapter(filteredPopularAdapter);
+        if (filteredRecommended.isEmpty()) {
+            binding.noDataRecommendedTxt.setVisibility(View.VISIBLE);
+        } else {
+            binding.noDataRecommendedTxt.setVisibility(View.GONE);
+        }
     }
 
     private void toAllTour() {

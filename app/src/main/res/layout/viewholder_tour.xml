@@ -10,6 +10,21 @@
     android:elevation="3dp"
     android:paddingBottom="8dp">
 
+    <TextView
+        android:id="@+id/tourStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/light_blue_bg"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:gravity="center"
+        android:textColor="@color/blue"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/tourPicture"
         android:layout_width="match_parent"
@@ -18,7 +33,7 @@
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tourStatus"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.circleImageView"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 

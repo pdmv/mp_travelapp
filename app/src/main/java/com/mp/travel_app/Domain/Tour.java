@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 public class Tour implements Serializable {
     private double price;
-    private String id, title, description, duration, imagePath, dateTour, timeTour;
+    private String id, title, description, duration, imagePath, dateTour, timeTour, status;
     private Users tourGuide;
     private Location location;
     private Category category;
@@ -19,7 +19,7 @@ public class Tour implements Serializable {
     public Tour() {
     }
 
-    public Tour(String id, double price, String title, String description, String duration, String imagePath, String dateTour, String timeTour, Users tourGuide, Location location, Category category) {
+    public Tour(String id, double price, String title, String description, String duration, String imagePath, String dateTour, String timeTour, Users tourGuide, Location location, Category category, String status) {
         this.id = id;
         this.price = price;
         this.title = title;
@@ -31,6 +31,7 @@ public class Tour implements Serializable {
         this.tourGuide = tourGuide;
         this.location = location;
         this.category = category;
+        this.status = status;
     }
 
     @NonNull
