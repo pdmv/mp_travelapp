@@ -196,7 +196,8 @@ public class HomeFragment extends Fragment {
                     || tour.getTimeTour().toLowerCase().contains(queryLower)
                     || String.valueOf(tour.getPrice()).toLowerCase().contains(queryLower)
                     || tour.getTourGuide().getFullname().toLowerCase().contains(queryLower)
-                    || tour.getTourGuide().getPhoneNumber().toLowerCase().contains(queryLower);
+                    || tour.getTourGuide().getPhoneNumber().toLowerCase().contains(queryLower)
+                    || tour.getTitle().toLowerCase().contains(queryLower);
         }
         return false;
     }
