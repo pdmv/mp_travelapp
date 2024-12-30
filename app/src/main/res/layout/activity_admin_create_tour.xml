@@ -146,19 +146,28 @@
                     android:layout_width="0dp"
                     android:layout_height="45dp"
                     android:layout_margin="16dp"
-                    app:layout_constraintEnd_toStartOf="@+id/newTourSelectImageBtn"
+                    app:layout_constraintEnd_toStartOf="@+id/newTourStatusSpinner"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/newTourGuideSpinner" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/newTourSelectImageBtn"
+                <Spinner
+                    android:id="@+id/newTourStatusSpinner"
                     android:layout_width="0dp"
                     android:layout_height="45dp"
                     android:layout_margin="16dp"
-                    android:text="@string/admin_choose_image_btn"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/newTourLocationSpinner"
                     app:layout_constraintTop_toBottomOf="@+id/newTourCategorySpinner" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/newTourSelectImageBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_margin="16dp"
+                    android:text="@string/admin_choose_image_btn"
+                    app:layout_constraintEnd_toEndOf="@+id/newTourStatusSpinner"
+                    app:layout_constraintStart_toStartOf="@+id/newTourLocationSpinner"
+                    app:layout_constraintTop_toBottomOf="@+id/newTourLocationSpinner" />
 
                 <ImageView
                     android:id="@+id/newTourImageView"

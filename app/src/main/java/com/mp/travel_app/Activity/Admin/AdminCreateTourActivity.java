@@ -34,6 +34,7 @@ import java.util.Objects;
 
 public class AdminCreateTourActivity extends BaseActivity {
     private boolean isUploading = false;
+    private static final String[] status = {"None", "Recommended", "Popular"};
 
     ActivityAdminCreateTourBinding binding;
     DatabaseReference tourRef, tourGuideRef;
@@ -64,6 +65,7 @@ public class AdminCreateTourActivity extends BaseActivity {
         initLocation();
         initCategory();
         initTourGuide();
+        initStatusSpinner();
 
         binding.newTourDateTxt.setOnClickListener(v -> showDatePicker());
         binding.newTourTimeTxt.setOnClickListener(v -> showTimePicker());
@@ -116,6 +118,13 @@ public class AdminCreateTourActivity extends BaseActivity {
         LoadData.loadDataFromDatabase(AdminCreateTourActivity.this, categoryRef, categoryAdapter, Category.class);
 
         binding.newTourCategorySpinner.setAdapter(categoryAdapter);
+    }
+
+    private void initStatusSpinner() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                AdminCreateTourActivity.this, android.R.layout.simple_spinner_item, status);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.newTourStatusSpinner.setAdapter(adapter);
     }
 
     private void showDatePicker() {
@@ -188,6 +197,7 @@ public class AdminCreateTourActivity extends BaseActivity {
         newTour.setTourGuide((Users) binding.newTourGuideSpinner.getSelectedItem());
         newTour.setLocation((Location) binding.newTourLocationSpinner.getSelectedItem());
         newTour.setPrice(Double.parseDouble(priceString));
+        newTour.setStatus((String) binding.newTourStatusSpinner.getSelectedItem());
 
         Object tag = binding.newTourImageView.getTag();
 
@@ -220,6 +230,7 @@ public class AdminCreateTourActivity extends BaseActivity {
         binding.newTourCategorySpinner.setSelection(0);
         binding.newTourGuideSpinner.setSelection(0);
         binding.newTourLocationSpinner.setSelection(0);
+        binding.newTourStatusSpinner.setSelection(0);
         binding.newTourImageView.setImageResource(android.R.drawable.ic_menu_gallery);
         binding.newTourImageView.setTag(null);
         binding.newTourPriceTxt.setText("");
