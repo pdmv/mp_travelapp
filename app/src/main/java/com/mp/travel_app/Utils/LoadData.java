@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class LoadData {
     public static <T> void loadDataFromDatabase(Context context, DatabaseReference databaseReference, final ArrayAdapter<T> adapter, final Class<T> dataClass) {
@@ -37,7 +38,6 @@ public class LoadData {
 
                         try {
                             Method getIdMethod = dataClass.getMethod("getId");
-                            Object idObject = getIdMethod.invoke(data);
                         } catch (NoSuchMethodException e) {
                             Log.e("LoadData", "Method getId() not found for class: " + dataClass.getSimpleName(), e);
                         } catch (Exception e) {
@@ -78,6 +78,53 @@ public class LoadData {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         T data = dataSnapshot.getValue(dataClass);
                         dataList.add(data);
+                    }
+
+                    if (!dataList.isEmpty()) {
+                        recyclerView.setLayoutManager(new LinearLayoutManager(
+                                recyclerView.getContext(),
+                                RecyclerView.HORIZONTAL,
+                                false
+                        ));
+
+                        adapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(adapter);
+                    }
+
+                    noDataTextView.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    noDataTextView.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public static <T> void loadFilterDataIntoRecyclerView(DatabaseReference databaseReference, RecyclerView recyclerView, ProgressBar progressBar, TextView noDataTextView,
+                                                    Class<T> dataClass, RecyclerView.Adapter<?> adapter, List<T> dataList, Predicate<T> filterPredicate) {
+        progressBar.setVisibility(View.VISIBLE);
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataList.clear();
+
+                if (snapshot.exists()) {
+                    dataList.clear();
+
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        T data = dataSnapshot.getValue(dataClass);
+
+                        if (filterPredicate.test(data)) {
+                            dataList.add(data);
+                        }
                     }
 
                     if (!dataList.isEmpty()) {

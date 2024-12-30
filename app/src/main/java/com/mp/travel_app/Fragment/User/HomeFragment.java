@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;
     FirebaseDatabase database;
     FirebaseStorage storage;
-    DatabaseReference popularRef, locationRef, bannerRef, categoryRef, itemRef;
+    DatabaseReference locationRef, bannerRef, categoryRef, itemRef;
     StorageReference storageReference;
 
     public HomeFragment() {
@@ -72,7 +72,6 @@ public class HomeFragment extends Fragment {
         locationRef = database.getReference("Location");
         categoryRef = database.getReference("Category");
         itemRef = database.getReference("Tour");
-        popularRef = database.getReference("Populars");
         storageReference = storage.getReference();
     }
 
@@ -115,15 +114,19 @@ public class HomeFragment extends Fragment {
     private void initPopular() {
         PopularAdapter popularAdapter = new PopularAdapter(popularTour);
 
-        LoadData.loadDataIntoRecyclerView(popularRef, binding.recyclerViewPopular, binding.progressBarPopular,
-                binding.noDataPopularTxt, Tour.class, popularAdapter, popularTour);
+        LoadData.loadFilterDataIntoRecyclerView(itemRef, binding.recyclerViewPopular, binding.progressBarPopular,
+                binding.noDataPopularTxt, Tour.class, popularAdapter, popularTour, tour -> {
+                    return tour.getStatus().equals("Popular");
+                });
     }
 
     private void initRecommended() {
         RecommendedAdapter recommendedAdapter = new RecommendedAdapter(recommendedTour);
 
-        LoadData.loadDataIntoRecyclerView(itemRef, binding.recyclerViewRecommended, binding.progressBarRecommended,
-                binding.noDataRecommendedTxt, Tour.class, recommendedAdapter, recommendedTour);
+        LoadData.loadFilterDataIntoRecyclerView(itemRef, binding.recyclerViewRecommended, binding.progressBarRecommended,
+                binding.noDataRecommendedTxt, Tour.class, recommendedAdapter, recommendedTour, tour -> {
+                    return tour.getStatus().equals("Recommended");
+                });
     }
 
     private void initCategory() {
