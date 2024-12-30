@@ -43,6 +43,7 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourViewHolder
         holder.binding.tourPrice.setText(String.format("$%.2f", tour.getPrice()));
         holder.binding.tourTime.setText(tour.getTimeTour());
         holder.binding.tourGuideFullname.setText(tour.getTourGuide().getFullname());
+        holder.binding.tourStatus.setText(tour.getStatus());
 
         Common.getFileFromFirebase(tour.getImagePath(), new Common.OnGetFileListener() {
             @Override

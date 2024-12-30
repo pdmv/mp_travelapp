@@ -32,8 +32,8 @@ import java.util.List;
 
 public class AdminUsersActivity extends BaseActivity {
     private boolean isUploading = false;
-    public static final String[] roles = {"Admin", "Customer", "TourGuide"};
-    public static final String[] roleFilterOptions = {"All", "Admin", "TourGuide", "Customer"};
+    private static final String[] roles = {"Admin", "Customer", "TourGuide"};
+    private static final String[] roleFilterOptions = {"All", "Admin", "TourGuide", "Customer"};
     private final List<Users> users = new ArrayList<>();
 
     ActivityAdminUsersBinding binding;
